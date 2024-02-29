@@ -1,0 +1,15 @@
+Apuntes reunión 26/2/2024:
+
+openmpi -> en el cluster viene instalado
+
+pruebas:
+
+-funciones de reduccion
+-rpc: cuanto se tarda la comunicación
+-comparar entre las alternativas de upc++
+
+
+-empezar un esquema de memoria
+-empezar por benchmarks de las reducciones
+-benchmark del ping pong -> entero incrementandose o algo así
+benchmarks configurables: nº de bytes que se mandan, numero de procesos, etc
