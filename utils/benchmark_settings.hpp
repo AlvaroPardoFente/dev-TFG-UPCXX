@@ -20,6 +20,7 @@ namespace settings
         std::optional<int> value;
         bool isByteValue{false};
         std::optional<int> repetitions;
+        bool warmup{true};
     };
 
     // Helper function to convert a string representation of bytes to an integer
@@ -64,6 +65,8 @@ namespace settings
         S("-v", verbose, true),
 
         S("--quiet", verbose, false),
+
+        S("--no-warmup", warmup, false),
     };
 #undef S
 

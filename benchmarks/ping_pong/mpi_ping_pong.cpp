@@ -3,6 +3,11 @@
 #include "../../utils/benchmark_settings.hpp"
 #include <iostream>
 
+// ping_pong_count used on warmup
+constexpr uint32_t warmup_count = 1024;
+// warmup executions
+constexpr uint32_t warmup_repetitions = 10;
+
 int main(int argc, char *argv[])
 {
     uint32_t ping_pong_count = 1024;
@@ -36,6 +41,28 @@ int main(int argc, char *argv[])
     // Rank to send to and receive from
     int neighbor_rank = (world_rank + 1) % 2;
 
+    // Warmup
+    if (settings.warmup)
+    {
+        for (int i = 0; i < warmup_repetitions; i++)
+        {
+            for (uint32_t i = 0; i < warmup_count; i++)
+            {
+                if (world_rank == i % 2)
+                {
+                    ping_pong_value++;
+                    MPI_Send(&ping_pong_value, 1, MPI_INT, neighbor_rank, 0, MPI_COMM_WORLD);
+                }
+                else
+                {
+                    MPI_Recv(&ping_pong_value, 1, MPI_INT, neighbor_rank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+                }
+            }
+            // Reset counter
+            ping_pong_value = 0;
+        }
+    }
+
     // Start clock
     if (world_rank == 0)
     {
@@ -55,6 +82,7 @@ int main(int argc, char *argv[])
         }
     }
 
+    // End clock
     if (world_rank == 0)
     {
         end_ops = std::chrono::high_resolution_clock::now();

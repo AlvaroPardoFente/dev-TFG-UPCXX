@@ -1,47 +1,67 @@
 #include <upcxx/upcxx.hpp>
+#include <chrono>
+#include <iostream>
+#include "../../utils/benchmark_settings.hpp"
 
 int main(int argc, char **argv)
 {
-    int ping_pong_count = 1024;
-    if (argc > 1)
+    uint32_t ping_pong_count = 1024;
+
+    settings::BenchmarkSettings settings = settings::parse_settings(argc, const_cast<const char **>(argv));
+    if (settings.value.has_value())
     {
-        try
+        if (settings.isByteValue)
         {
-            ping_pong_count = std::stoi(argv[1]);
+            ping_pong_count = settings.value.value();
         }
-        catch (const std::invalid_argument &e)
+        else
         {
-            // Argument is not a number, do nothing
+            ping_pong_count = settings.value.value();
         }
     }
+
     upcxx::init();
 
     int world_rank, world_size;
     world_size = upcxx::rank_n();
     world_rank = upcxx::rank_me();
 
+    // Clocks
+    std::chrono::high_resolution_clock::time_point start_ops, end_ops;
+
     int neighbor_rank = (world_rank + 1) % 2;
-    std::cout << "Rank " << world_rank << " has neighbor rank " << neighbor_rank << std::endl;
 
-    upcxx::dist_object<upcxx::global_ptr<int>> global_ping_pong_object = upcxx::new_<int>(0);
-    int &ping_pong_value = *global_ping_pong_object->local();
-    upcxx::global_ptr<int> neighbor_ping_pong_ptr = global_ping_pong_object.fetch(neighbor_rank).wait();
+    upcxx::dist_object<upcxx::global_ptr<uint32_t>> global_ping_pong_object = upcxx::new_<uint32_t>(0);
+    uint32_t &ping_pong_value = *global_ping_pong_object->local();
+    upcxx::global_ptr<uint32_t> neighbor_ping_pong_ptr = global_ping_pong_object.fetch(neighbor_rank).wait();
 
-    for (int i = 0; i < ping_pong_count; i++)
+    // Start clock
+    if (world_rank == 0)
+    {
+        start_ops = std::chrono::high_resolution_clock::now();
+    }
+
+    for (uint32_t i = 0; i < ping_pong_count; i++)
     {
         if (world_rank == i % 2)
         {
-            std::cout << "Rank " << world_rank << " will increment " << ping_pong_value << " and send to rank " << neighbor_rank << std::endl;
             ping_pong_value++;
             upcxx::rput(ping_pong_value, neighbor_ping_pong_ptr).wait();
-            std::cout << "Rank " << world_rank << " sent " << ping_pong_value << " to rank " << neighbor_rank << std::endl;
             upcxx::barrier();
         }
         else
         {
             upcxx::barrier();
-            std::cout << "Rank " << world_rank << " received " << ping_pong_value << " from rank " << neighbor_rank << std::endl;
         }
+    }
+
+    // End clock
+    if (world_rank == 0)
+    {
+        end_ops = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(end_ops - start_ops);
+        std::cout << "Ping-pong time: " << time_span.count() << " seconds" << std::endl;
+        std::cout << "Ping-pong value: " << ping_pong_value << std::endl;
     }
 
     upcxx::finalize();
