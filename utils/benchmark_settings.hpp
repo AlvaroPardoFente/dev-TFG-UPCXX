@@ -19,7 +19,7 @@ namespace settings
         std::optional<std::string> outfile;
         std::optional<int> value;
         bool isByteValue{false};
-        std::optional<int> repetitions;
+        std::optional<u_int> repetitions;
         bool warmup{true};
     };
 
@@ -102,10 +102,26 @@ namespace settings
                  s.isByteValue = false;
                  s.value = stoi(arg);
              }
+
+             if (s.value <= 0)
+             {
+                 throw std::runtime_error{"value must be a positive integer"};
+             }
          }},
 
         // Performing string -> int conversion
-        S("--repetitions", repetitions, stoi(arg)),
+        {"--repetitions", [](BenchmarkSettings &s, const std::string &arg)
+         {
+             int reps_arg = stoi(arg);
+             if (reps_arg > 0)
+             {
+                 s.repetitions = reps_arg;
+             }
+             else
+             {
+                 throw std::runtime_error{"repetitions must be a positive integer"};
+             }
+         }},
     };
 #undef S
 

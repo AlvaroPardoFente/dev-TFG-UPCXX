@@ -11,6 +11,7 @@ constexpr uint32_t warmup_repetitions = 10;
 int main(int argc, char *argv[])
 {
     uint32_t ping_pong_count = 1024;
+    uint reps = 1;
 
     settings::BenchmarkSettings settings = settings::parse_settings(argc, const_cast<const char **>(argv));
     if (settings.value.has_value())
@@ -25,6 +26,11 @@ int main(int argc, char *argv[])
         }
     }
 
+    if (settings.repetitions.has_value())
+    {
+        reps = settings.repetitions.value();
+    }
+
     // MPI initialization
     MPI_Init(&argc, &argv);
 
@@ -34,6 +40,7 @@ int main(int argc, char *argv[])
 
     // Clocks
     std::chrono::high_resolution_clock::time_point start_ops, end_ops;
+    std::vector<double> times(reps);
 
     // Int to increase
     uint32_t ping_pong_value = 0;
@@ -63,32 +70,52 @@ int main(int argc, char *argv[])
         }
     }
 
-    // Start clock
-    if (world_rank == 0)
+    for (uint rep = 0; rep < reps; ++rep)
     {
-        start_ops = std::chrono::high_resolution_clock::now();
+
+        // Start clock
+        if (world_rank == 0)
+        {
+            start_ops = std::chrono::high_resolution_clock::now();
+        }
+
+        for (uint32_t i = 0; i < ping_pong_count; i++)
+        {
+            if (world_rank == i % 2)
+            {
+                ping_pong_value++;
+                MPI_Send(&ping_pong_value, 1, MPI_INT, neighbor_rank, 0, MPI_COMM_WORLD);
+            }
+            else
+            {
+                MPI_Recv(&ping_pong_value, 1, MPI_INT, neighbor_rank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+            }
+        }
+
+        // End clock
+        if (world_rank == 0)
+        {
+            end_ops = std::chrono::high_resolution_clock::now();
+            std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(end_ops - start_ops);
+            times[rep] = time_span.count();
+            // std::cout << "value: " << ping_pong_value << std::endl;
+        }
+
+        // Reset counter
+        ping_pong_value = 0;
     }
 
-    for (uint32_t i = 0; i < ping_pong_count; i++)
-    {
-        if (world_rank == i % 2)
-        {
-            ping_pong_value++;
-            MPI_Send(&ping_pong_value, 1, MPI_INT, neighbor_rank, 0, MPI_COMM_WORLD);
-        }
-        else
-        {
-            MPI_Recv(&ping_pong_value, 1, MPI_INT, neighbor_rank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-        }
-    }
-
-    // End clock
     if (world_rank == 0)
     {
-        end_ops = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(end_ops - start_ops);
-        std::cout << "Ping-pong time: " << time_span.count() << " seconds" << std::endl;
-        std::cout << "Ping-pong value: " << ping_pong_value << std::endl;
+        std::cout << "Ping-pong count: " << ping_pong_count << std::endl;
+        std::cout << "Repetitions: " << reps << std::endl;
+        std::cout << "Times (seconds): " << std::endl;
+        std::cout << times[0];
+        for (uint rep = 1; rep < reps; ++rep)
+        {
+            std::cout << ", " << times[rep];
+        }
+        std::cout << std::endl;
     }
 
     MPI_Finalize();
