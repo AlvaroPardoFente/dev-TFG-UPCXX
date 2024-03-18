@@ -10,9 +10,11 @@ constexpr uint32_t warmup_repetitions = 10;
 
 int main(int argc, char **argv)
 {
+    // Init default values
     uint32_t ping_pong_count = 1024;
     uint reps = 1;
 
+    // Handle Input
     settings::BenchmarkSettings settings = settings::parse_settings(argc, const_cast<const char **>(argv));
     if (settings.value.has_value())
     {
@@ -31,6 +33,7 @@ int main(int argc, char **argv)
         reps = settings.repetitions.value();
     }
 
+    // UPCXX initialization
     upcxx::init();
 
     int world_rank, world_size;
@@ -71,6 +74,7 @@ int main(int argc, char **argv)
         }
     }
 
+    // Benchmark
     for (uint rep = 0; rep < reps; ++rep)
     {
         // Start clock
