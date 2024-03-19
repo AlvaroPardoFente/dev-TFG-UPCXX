@@ -25,12 +25,12 @@ UPCXX_CODEMODE ?= debug
 export UPCXX_CODEMODE
 CXX = $(UPCXX)
 
-CXXFLAGS = # optional command-line override
+CXXFLAGS = -O3 -std=c++17 # optional command-line override
 
 # Programs to build, assuming each has a corresponding *.cpp file
 EXAMPLES = \
   mpi_ping_pong \
-  compute-pi-multi-examples 
+  upcxx_ping_pong_rput \ 
 
 all: $(EXAMPLES)
 
