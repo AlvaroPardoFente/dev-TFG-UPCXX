@@ -57,6 +57,7 @@ int main(int argc, char *argv[])
     {
         for (uint32_t i = 0; i < warmup_repetitions; i++)
         {
+            MPI_Barrier(MPI_COMM_WORLD);
             MPI_Reduce(value.data(), result.data(), number_count / world_size, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
             // Reset result
             std::fill(result.begin(), result.end(), 0);
@@ -66,6 +67,9 @@ int main(int argc, char *argv[])
     // Benchmark
     for (uint rep = 0; rep < reps; ++rep)
     {
+        // Sync all nodes
+        MPI_Barrier(MPI_COMM_WORLD);
+
         // Start clock
         if (world_rank == 0)
         {
@@ -80,7 +84,6 @@ int main(int argc, char *argv[])
             end_ops = std::chrono::high_resolution_clock::now();
             std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(end_ops - start_ops);
             times[rep] = time_span.count();
-            // std::cout << "Ping-pong value: " << number_count << std::endl;
         }
 
         // if (world_rank == 0)
@@ -118,9 +121,10 @@ int main(int argc, char *argv[])
         std::cout << "Repetitions: " << reps << std::endl;
         std::cout << "Average time: " << std::accumulate(times.begin(), times.end(), 0.0) / reps << std::endl;
         std::cout << "Times: ";
-        for (uint32_t i = 0; i < reps; i++)
+        std::cout << times[0];
+        for (uint rep = 1; rep < reps; ++rep)
         {
-            std::cout << times[i] << ", ";
+            std::cout << ", " << times[rep];
         }
         std::cout << std::endl;
     }

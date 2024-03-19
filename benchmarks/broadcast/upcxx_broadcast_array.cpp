@@ -32,9 +32,10 @@ int main(int argc, char *argv[])
         reps = settings.repetitions.value();
     }
 
-    // UPCXX initialization
+    // UPCXX Initialization
     upcxx::init();
-    int world_size, world_rank;
+
+    int world_rank, world_size;
     world_size = upcxx::rank_n();
     world_rank = upcxx::rank_me();
 
@@ -43,14 +44,11 @@ int main(int argc, char *argv[])
     std::vector<double> times(reps);
 
     // Vector initialization
-    std::vector<uint32_t> value(number_count / world_size);
-    for (uint32_t i = 0; i < number_count / world_size; i++)
+    std::vector<uint32_t> value(number_count);
+    for (uint32_t i = 0; i < number_count; i++)
     {
-        value.at(i) = i * world_size + world_rank;
+        value.at(i) = i;
     }
-
-    // Result vector
-    std::vector<uint32_t> result(number_count / world_size);
 
     // Warmup
     if (settings.warmup)
@@ -58,9 +56,11 @@ int main(int argc, char *argv[])
         for (uint32_t i = 0; i < warmup_repetitions; i++)
         {
             upcxx::barrier();
-            upcxx::reduce_one(value.data(), result.data(), number_count / world_size, upcxx::op_fast_add, 0).wait();
+
+            upcxx::broadcast(value.data(), number_count, 0).wait();
             // Reset result
-            std::fill(result.begin(), result.end(), 0);
+            if (world_rank != 0)
+                std::fill(value.begin(), value.end(), 0);
         }
     }
 
@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
             start_ops = std::chrono::high_resolution_clock::now();
         }
 
-        upcxx::reduce_one(value.data(), result.data(), number_count / world_size, upcxx::op_fast_add, 0).wait();
+        upcxx::broadcast(value.data(), number_count, 0).wait();
 
         // End clock
         if (world_rank == 0)
@@ -86,32 +86,12 @@ int main(int argc, char *argv[])
             times[rep] = time_span.count();
         }
 
-        // if (world_rank == 0)
-        // {
-        //     std::cout << "Result: ";
-        //     for (uint32_t i = 0; i < number_count / world_size; i++)
-        //     {
-        //         std::cout << result.at(i) << " ";
-        //     }
-        //     std::cout << std::endl;
-
-        //     std::vector<uint32_t> expected_result(number_count / world_size);
-        //     for (uint32_t i = 0; i < number_count; i++)
-        //     {
-        //         expected_result.at(i / world_size) += i;
-        //     }
-
-        //     for (uint32_t i = 0; i < number_count / world_size; i++)
-        //     {
-        //         if (result.at(i) != expected_result.at(i))
-        //         {
-        //             std::cout << "Error: " << result.at(i) << " != " << expected_result.at(i) << std::endl;
-        //         }
-        //     }
-        // }
+        // for (size_t i = 0; i < value.size(); i++)
+        //     UPCXX_ASSERT_ALWAYS(value[i] == (int)i);
 
         // Reset result
-        std::fill(result.begin(), result.end(), 0);
+        if (world_rank != 0)
+            std::fill(value.begin(), value.end(), 0);
     }
 
     // Done

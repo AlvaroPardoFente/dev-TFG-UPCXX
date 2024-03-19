@@ -1,4 +1,4 @@
-#include <upcxx/upcxx.hpp>
+#include <mpi.h>
 #include "../../utils/benchmark_settings.hpp"
 #include <iostream>
 #include <chrono>
@@ -32,35 +32,33 @@ int main(int argc, char *argv[])
         reps = settings.repetitions.value();
     }
 
-    // UPCXX initialization
-    upcxx::init();
+    // MPI initialization
+    MPI_Init(NULL, NULL);
     int world_size, world_rank;
-    world_size = upcxx::rank_n();
-    world_rank = upcxx::rank_me();
+    MPI_Comm_size(MPI_COMM_WORLD, &world_size);
+    MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
 
     // Clocks
     std::chrono::high_resolution_clock::time_point start_ops, end_ops;
     std::vector<double> times(reps);
 
     // Vector initialization
-    std::vector<uint32_t> value(number_count / world_size);
-    for (uint32_t i = 0; i < number_count / world_size; i++)
+    std::vector<uint32_t> value(number_count);
+    for (uint32_t i = 0; i < number_count; i++)
     {
-        value.at(i) = i * world_size + world_rank;
+        value.at(i) = i;
     }
-
-    // Result vector
-    std::vector<uint32_t> result(number_count / world_size);
 
     // Warmup
     if (settings.warmup)
     {
         for (uint32_t i = 0; i < warmup_repetitions; i++)
         {
-            upcxx::barrier();
-            upcxx::reduce_one(value.data(), result.data(), number_count / world_size, upcxx::op_fast_add, 0).wait();
+            MPI_Barrier(MPI_COMM_WORLD);
+            MPI_Bcast(value.data(), number_count, MPI_INT, 0, MPI_COMM_WORLD);
             // Reset result
-            std::fill(result.begin(), result.end(), 0);
+            if (world_rank != 0)
+                std::fill(value.begin(), value.end(), 0);
         }
     }
 
@@ -68,7 +66,7 @@ int main(int argc, char *argv[])
     for (uint rep = 0; rep < reps; ++rep)
     {
         // Sync all nodes
-        upcxx::barrier();
+        MPI_Barrier(MPI_COMM_WORLD);
 
         // Start clock
         if (world_rank == 0)
@@ -76,7 +74,7 @@ int main(int argc, char *argv[])
             start_ops = std::chrono::high_resolution_clock::now();
         }
 
-        upcxx::reduce_one(value.data(), result.data(), number_count / world_size, upcxx::op_fast_add, 0).wait();
+        MPI_Bcast(value.data(), number_count, MPI_INT, 0, MPI_COMM_WORLD);
 
         // End clock
         if (world_rank == 0)
@@ -86,32 +84,20 @@ int main(int argc, char *argv[])
             times[rep] = time_span.count();
         }
 
-        // if (world_rank == 0)
+        // if (world_rank)
         // {
-        //     std::cout << "Result: ";
-        //     for (uint32_t i = 0; i < number_count / world_size; i++)
+        //     for (auto it = value.begin(); it != value.end(); ++it)
         //     {
-        //         std::cout << result.at(i) << " ";
-        //     }
-        //     std::cout << std::endl;
-
-        //     std::vector<uint32_t> expected_result(number_count / world_size);
-        //     for (uint32_t i = 0; i < number_count; i++)
-        //     {
-        //         expected_result.at(i / world_size) += i;
-        //     }
-
-        //     for (uint32_t i = 0; i < number_count / world_size; i++)
-        //     {
-        //         if (result.at(i) != expected_result.at(i))
+        //         if (*it != std::distance(value.begin(), it))
         //         {
-        //             std::cout << "Error: " << result.at(i) << " != " << expected_result.at(i) << std::endl;
+        //             std::cout << "Error at " << std::distance(value.begin(), it) << " with value " << *it << std::endl;
         //         }
         //     }
         // }
 
         // Reset result
-        std::fill(result.begin(), result.end(), 0);
+        if (world_rank != 0)
+            std::fill(value.begin(), value.end(), 0);
     }
 
     // Done
@@ -129,5 +115,5 @@ int main(int argc, char *argv[])
         std::cout << std::endl;
     }
 
-    upcxx::finalize();
+    MPI_Finalize();
 }

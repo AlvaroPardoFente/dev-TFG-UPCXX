@@ -2,6 +2,7 @@
 #include <chrono>
 #include "../../utils/benchmark_settings.hpp"
 #include <iostream>
+#include <numeric>
 
 // ping_pong_count used on warmup
 constexpr uint32_t warmup_count = 1024;
@@ -112,6 +113,7 @@ int main(int argc, char *argv[])
     {
         std::cout << "Ping-pong count: " << ping_pong_count << std::endl;
         std::cout << "Repetitions: " << reps << std::endl;
+        std::cout << "Average time: " << std::accumulate(times.begin(), times.end(), 0.0) / reps << std::endl;
         std::cout << "Times (seconds): " << std::endl;
         std::cout << times[0];
         for (uint rep = 1; rep < reps; ++rep)
