@@ -2,6 +2,7 @@
 ## Compilación:
 - Se ha de utilizar el argumento -std=c++17 tanto en mpicxx como en upcxx
 - Todos los resultados actuales se han compilado en -O3
+- Hay una prueba de Makefile en benchmarks/ping_pong, pero no está completa
 ## Ejecución:
 - Ejecutable:
 ```
@@ -16,3 +17,5 @@ sbatch -N <nodos> -n <procesos> --ntasks-per-node=<procesos por nodo> -c 1 -t <t
 El valor puede ser un entero o un entero seguido de K, KB, M, MB, G, GB o B. Por el momento, los valores en múltiplos de bytes solo son multiplicadores (1K == 1 * 1024), no se corresponden con el tamaño en bytes.
 2. --repetitions <number>: El número de veces que se repite la prueba. Cada iteración ejecuta la prueba, mide el tiempo y reinicia las variables que haya modificado.
 3. --no-warmup: Por defecto, se ejecutan algunas iteraciones como warmup, sin medición de tiempos. Con este flag se desactivan.
+# Salida
+Algunos resultados de benchmarks en el cluster están guardados en results/
