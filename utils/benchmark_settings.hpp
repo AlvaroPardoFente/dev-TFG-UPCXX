@@ -15,10 +15,8 @@ namespace settings
     // Options struct
     struct benchmark_settings
     {
-        bool help{false};
-        bool verbose{false};
-        std::optional<std::string> infile;
-        std::optional<std::string> outfile;
+        // bool help{false};
+        // bool verbose{false};
         std::optional<int> value;
         bool isByteValue{false};
         std::optional<u_int> repetitions;
@@ -60,13 +58,13 @@ namespace settings
 
     // No argument flag behavior
     const std::unordered_map<std::string, NoArgHandle> NoArgs{
-        S("--help", help, true),
-        S("-h", help, true),
+        // S("--help", help, true),
+        // S("-h", help, true),
 
-        S("--verbose", verbose, true),
-        S("-v", verbose, true),
+        // S("--verbose", verbose, true),
+        // S("-v", verbose, true),
 
-        S("--quiet", verbose, false),
+        // S("--quiet", verbose, false),
 
         S("--no-warmup", warmup, false),
     };
@@ -81,14 +79,6 @@ namespace settings
 
     // One argument flag behavior
     const std::unordered_map<std::string, OneArgHandle> OneArgs{
-        // Writing out the whole lambda
-        {"-o", [](benchmark_settings &s, const std::string &arg)
-         {
-             s.outfile = arg;
-         }},
-
-        // Using the macro
-        S("--output", outfile, arg),
 
         // Performing string -> int conversion
         {"--value", [](benchmark_settings &s, const std::string &arg)
@@ -132,16 +122,15 @@ namespace settings
     {
         benchmark_settings settings;
 
-        // argv[0] is traditionally the program name, so start at 1
         for (int i{1}; i < argc; i++)
         {
             std::string opt{argv[i]};
 
-            // Is this a NoArg?
+            // NoArg
             if (auto j{NoArgs.find(opt)}; j != NoArgs.end())
                 j->second(settings); // Yes, handle it!
 
-            // No, how about a OneArg?
+            // OneArg
             else if (auto k{OneArgs.find(opt)}; k != OneArgs.end())
                 // Yes, do we have a parameter?
                 if (++i < argc)
@@ -151,12 +140,7 @@ namespace settings
                     // No, and we cannot continue, throw an error
                     throw std::runtime_error{"missing param after " + opt};
 
-            // No, has infile been set yet?
-            else if (!settings.infile)
-                // No, use this as the input file
-                settings.infile = argv[i];
-
-            // Yes, possibly throw here, or just print an error
+            // Throw an error for unrecognized options
             else
                 throw std::runtime_error{"unrecognized command-line option " + opt};
         }
