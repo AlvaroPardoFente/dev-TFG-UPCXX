@@ -1,3 +1,5 @@
+#pragma once
+
 // These are the headers we'll be using in this post
 #include <functional>
 #include <iostream>
@@ -11,7 +13,7 @@ namespace settings
 {
 
     // Options struct
-    struct BenchmarkSettings
+    struct benchmark_settings
     {
         bool help{false};
         bool verbose{false};
@@ -49,11 +51,11 @@ namespace settings
         return std::nullopt;
     }
 
-    typedef std::function<void(BenchmarkSettings &)> NoArgHandle;
+    typedef std::function<void(benchmark_settings &)> NoArgHandle;
 
-#define S(str, f, v)                               \
-    {                                              \
-        str, [](BenchmarkSettings &s) { s.f = v; } \
+#define S(str, f, v)                                \
+    {                                               \
+        str, [](benchmark_settings &s) { s.f = v; } \
     }
 
     // No argument flag behavior
@@ -70,17 +72,17 @@ namespace settings
     };
 #undef S
 
-    typedef std::function<void(BenchmarkSettings &, const std::string &)> OneArgHandle;
+    typedef std::function<void(benchmark_settings &, const std::string &)> OneArgHandle;
 
-#define S(str, f, v)                                                       \
-    {                                                                      \
-        str, [](BenchmarkSettings &s, const std::string &arg) { s.f = v; } \
+#define S(str, f, v)                                                        \
+    {                                                                       \
+        str, [](benchmark_settings &s, const std::string &arg) { s.f = v; } \
     }
 
     // One argument flag behavior
     const std::unordered_map<std::string, OneArgHandle> OneArgs{
         // Writing out the whole lambda
-        {"-o", [](BenchmarkSettings &s, const std::string &arg)
+        {"-o", [](benchmark_settings &s, const std::string &arg)
          {
              s.outfile = arg;
          }},
@@ -89,7 +91,7 @@ namespace settings
         S("--output", outfile, arg),
 
         // Performing string -> int conversion
-        {"--value", [](BenchmarkSettings &s, const std::string &arg)
+        {"--value", [](benchmark_settings &s, const std::string &arg)
          {
              std::optional<int> value = parseBytes(arg);
              if (value.has_value())
@@ -110,7 +112,7 @@ namespace settings
          }},
 
         // Performing string -> int conversion
-        {"--repetitions", [](BenchmarkSettings &s, const std::string &arg)
+        {"--repetitions", [](benchmark_settings &s, const std::string &arg)
          {
              int reps_arg = stoi(arg);
              if (reps_arg > 0)
@@ -126,9 +128,9 @@ namespace settings
 #undef S
 
     // Parse the command line arguments
-    BenchmarkSettings parse_settings(int argc, const char *argv[])
+    benchmark_settings parse_settings(int argc, const char *argv[])
     {
-        BenchmarkSettings settings;
+        benchmark_settings settings;
 
         // argv[0] is traditionally the program name, so start at 1
         for (int i{1}; i < argc; i++)

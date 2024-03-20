@@ -16,7 +16,7 @@ int main(int argc, char **argv)
     uint reps = 1;
 
     // Handle Input
-    settings::BenchmarkSettings settings = settings::parse_settings(argc, const_cast<const char **>(argv));
+    settings::benchmark_settings settings = settings::parse_settings(argc, const_cast<const char **>(argv));
     if (settings.value.has_value())
     {
         if (settings.isByteValue)
