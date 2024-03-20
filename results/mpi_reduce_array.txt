@@ -1,0 +1,7 @@
+JOBID=27776
+Nodes=4 Procs=4 TasksPerNode=1 ThreadsPerTask=1 NREPS=1 /home/alvaro.pardo/dev-TFG-UPCXX/benchmarks/reduce/mpi_reduce_array --value 100M --repetitions 10
+srun -N 4 -n 4 --ntasks-per-node=1 /home/alvaro.pardo/dev-TFG-UPCXX/benchmarks/reduce/mpi_reduce_array --value 100M --repetitions 10
+Number count: 104857600
+Repetitions: 10
+Average time: 0.074489
+Times: 0.0743794, 0.0744644, 0.0744357, 0.0744125, 0.0747847, 0.0744883, 0.0745078, 0.0745134, 0.0745516, 0.0743521

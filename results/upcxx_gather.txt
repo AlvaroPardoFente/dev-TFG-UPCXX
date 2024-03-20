@@ -1,0 +1,7 @@
+JOBID=27789
+Nodes=4 Procs=4 TasksPerNode=1 ThreadsPerTask=1 NREPS=1 /home/alvaro.pardo/dev-TFG-UPCXX/benchmarks/gather/upcxx_gather --value 100M --repetitions 10
+/home/alvaro.pardo/new_upcxx_202403/bin/upcxx-run -N 4 -n 4 /home/alvaro.pardo/dev-TFG-UPCXX/benchmarks/gather/upcxx_gather --value 100M --repetitions 10
+Number count: 104857600
+Repetitions: 10
+Average time: 0.0709049
+Times: 0.0708779, 0.0708886, 0.070862, 0.070867, 0.0707618, 0.0715811, 0.0708812, 0.0707623, 0.0706759, 0.0708908

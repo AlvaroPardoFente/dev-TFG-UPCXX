@@ -1,0 +1,8 @@
+JOBID=27785
+Nodes=2 Procs=2 TasksPerNode=1 ThreadsPerTask=1 NREPS=1 /home/alvaro.pardo/dev-TFG-UPCXX/benchmarks/ping_pong/upcxx_ping_pong_rput --value 1M --repetitions 10
+/home/alvaro.pardo/new_upcxx_202403/bin/upcxx-run -N 2 -n 2 /home/alvaro.pardo/dev-TFG-UPCXX/benchmarks/ping_pong/upcxx_ping_pong_rput --value 1M --repetitions 10
+Ping-pong count: 1048576
+Repetitions: 10
+Average time: 3.48263
+Times (seconds): 
+3.48431, 3.48319, 3.48288, 3.48255, 3.48159, 3.48243, 3.48277, 3.48296, 3.48187, 3.48172
