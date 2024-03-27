@@ -1,51 +1,167 @@
 #include <upcxx/upcxx.hpp>
+#include <chrono>
+#include <iostream>
+#include "../../utils/benchmark_settings.hpp"
+#include <numeric>
+
+// ping_pong_count used on warmup
+constexpr uint32_t warmup_count = 1024;
+// warmup executions
+constexpr uint32_t warmup_repetitions = 10;
 
 int main(int argc, char **argv)
 {
-    int ping_pong_count = 1024;
-    if (argc > 1)
+    // Init default values
+    uint32_t ping_pong_count = 1024;
+    uint reps = 1;
+
+    // Handle Input
+    settings::benchmark_settings settings = settings::parse_settings(argc, const_cast<const char **>(argv));
+    if (settings.value.has_value())
     {
-        try
+        if (settings.isByteValue)
         {
-            ping_pong_count = std::stoi(argv[1]);
+            ping_pong_count = settings.value.value();
         }
-        catch (const std::invalid_argument &e)
+        else
         {
-            // Argument is not a number, do nothing
+            ping_pong_count = settings.value.value();
         }
     }
+
+    if (settings.repetitions.has_value())
+    {
+        reps = settings.repetitions.value();
+    }
+
+    // UPCXX initialization
     upcxx::init();
 
     int world_rank, world_size;
     world_size = upcxx::rank_n();
     world_rank = upcxx::rank_me();
 
-    int neighbor_rank = (world_rank + 1) % 2;
-    std::cout << "Rank " << world_rank << " has neighbor rank " << neighbor_rank << std::endl;
-
-    upcxx::dist_object<upcxx::global_ptr<int>> global_ping_pong_object = upcxx::new_<int>(0);
-    int &ping_pong_value = *global_ping_pong_object->local();
-    upcxx::global_ptr<int> neighbor_ping_pong_ptr = global_ping_pong_object.fetch(neighbor_rank).wait();
-
-    for (int i = 0; i < ping_pong_count; i++)
+    if (world_size != 2)
     {
-        if (world_rank == i % 2)
+        if (world_rank == 0)
         {
-            std::cout << "Rank " << world_rank << " will increment " << ping_pong_value << " and send to rank " << neighbor_rank << std::endl;
-            ping_pong_value++;
-            upcxx::rpc(
-                neighbor_rank, [](upcxx::dist_object<upcxx::global_ptr<int>> &dist_ptr, int value)
-                { *dist_ptr->local() = value; },
-                global_ping_pong_object, ping_pong_value)
-                .wait();
-            std::cout << "Rank " << world_rank << " sent " << ping_pong_value << " to rank " << neighbor_rank << std::endl;
-            upcxx::barrier();
+            std::cerr << "This benchmark must be run with 2 processes" << std::endl;
         }
-        else
+        upcxx::finalize();
+        return 1;
+    }
+
+    // Clocks
+    std::chrono::high_resolution_clock::time_point start_ops, end_ops;
+    std::vector<double> times(reps);
+
+    int neighbor_rank = (world_rank + 1) % 2;
+
+    upcxx::dist_object<uint32_t> ping_pong_object(0);
+
+    // Flag to check if the message was received
+    upcxx::dist_object<bool> received_flag(false);
+
+    // Warmup
+    if (settings.warmup)
+    {
+        for (int i = 0; i < warmup_repetitions; i++)
         {
-            upcxx::barrier();
-            std::cout << "Rank " << world_rank << " received " << ping_pong_value << " from rank " << neighbor_rank << std::endl;
+            for (uint32_t i = 0; i < warmup_count; i++)
+            {
+
+                if (world_rank == i % 2)
+                {
+                    (*ping_pong_object)++;
+                    upcxx::rpc(
+                        neighbor_rank, [](const uint32_t &value, upcxx::dist_object<uint32_t> &ping_pong_object, upcxx::dist_object<bool> &received_flag)
+                        {
+                            *ping_pong_object = value;
+                            *received_flag = true; },
+                        *ping_pong_object, ping_pong_object, received_flag)
+                        .wait();
+
+                    std::cout << "value: " << *ping_pong_object << std::endl;
+                }
+                else
+                {
+                    while (!*received_flag)
+                    {
+                        upcxx::progress();
+                    }
+
+                    *received_flag = false;
+                }
+            }
+            // Reset counter
+            *ping_pong_object = 0;
         }
+    }
+
+    std::cout << "Warmup finished" << std::endl;
+
+    // Benchmark
+    for (uint rep = 0; rep < reps; ++rep)
+    {
+        upcxx::barrier();
+
+        // Start clock
+        if (world_rank == 0)
+        {
+            start_ops = std::chrono::high_resolution_clock::now();
+        }
+
+        for (uint32_t i = 0; i < ping_pong_count; i++)
+        {
+
+            if (world_rank == i % 2)
+            {
+                (*ping_pong_object)++;
+                upcxx::rpc(
+                    neighbor_rank, [](const uint32_t &value, upcxx::dist_object<uint32_t> &ping_pong_object, upcxx::dist_object<bool> &received_flag)
+                    {
+                        *ping_pong_object = value;
+                        *received_flag = true; },
+                    *ping_pong_object, ping_pong_object, received_flag)
+                    .wait();
+            }
+            else
+            {
+                while (!*received_flag)
+                {
+                    upcxx::progress();
+                }
+                std::cout << "value: " << *ping_pong_object << std::endl;
+
+                *received_flag = false;
+            }
+        }
+
+        // End clock
+        if (world_rank == 0)
+        {
+            end_ops = std::chrono::high_resolution_clock::now();
+            std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(end_ops - start_ops);
+            times[rep] = time_span.count();
+            std::cout << "value: " << *ping_pong_object << std::endl;
+        }
+
+        // Reset counter
+        *ping_pong_object = 0;
+    }
+
+    if (world_rank == 0)
+    {
+        std::cout << "Ping-pong count: " << ping_pong_count << std::endl;
+        std::cout << "Repetitions: " << reps << std::endl;
+        std::cout << "Average time: " << std::accumulate(times.begin(), times.end(), 0.0) / reps << std::endl;
+        std::cout << "Times (seconds): " << std::endl;
+        std::cout << times[0];
+        for (uint rep = 1; rep < reps; ++rep)
+        {
+            std::cout << ", " << times[rep];
+        }
+        std::cout << std::endl;
     }
 
     upcxx::finalize();

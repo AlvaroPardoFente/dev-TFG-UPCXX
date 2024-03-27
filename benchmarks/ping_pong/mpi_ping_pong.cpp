@@ -41,6 +41,16 @@ int main(int argc, char *argv[])
     MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
     MPI_Comm_size(MPI_COMM_WORLD, &world_size);
 
+    if (world_size != 2)
+    {
+        if (world_rank == 0)
+        {
+            std::cerr << "This benchmark must be run with 2 processes" << std::endl;
+        }
+        MPI_Finalize();
+        return 1;
+    }
+
     // Clocks
     std::chrono::high_resolution_clock::time_point start_ops, end_ops;
     std::vector<double> times(reps);
@@ -76,6 +86,7 @@ int main(int argc, char *argv[])
     // Benchmark
     for (uint rep = 0; rep < reps; ++rep)
     {
+        MPI_Barrier(MPI_COMM_WORLD);
 
         // Start clock
         if (world_rank == 0)

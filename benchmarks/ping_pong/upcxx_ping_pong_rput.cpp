@@ -41,6 +41,16 @@ int main(int argc, char **argv)
     world_size = upcxx::rank_n();
     world_rank = upcxx::rank_me();
 
+    if (world_size != 2)
+    {
+        if (world_rank == 0)
+        {
+            std::cerr << "This benchmark must be run with 2 processes" << std::endl;
+        }
+        upcxx::finalize();
+        return 1;
+    }
+
     // Clocks
     std::chrono::high_resolution_clock::time_point start_ops, end_ops;
     std::vector<double> times(reps);
@@ -50,6 +60,9 @@ int main(int argc, char **argv)
     upcxx::dist_object<upcxx::global_ptr<uint32_t>> global_ping_pong_object = upcxx::new_<uint32_t>(0);
     uint32_t &ping_pong_value = *global_ping_pong_object->local();
     upcxx::global_ptr<uint32_t> neighbor_ping_pong_ptr = global_ping_pong_object.fetch(neighbor_rank).wait();
+
+    // Flag to check if the message was received
+    bool received_flag = false;
 
     // Warmup
     if (settings.warmup)
@@ -62,12 +75,17 @@ int main(int argc, char **argv)
                 if (world_rank == i % 2)
                 {
                     ping_pong_value++;
-                    upcxx::rput(ping_pong_value, neighbor_ping_pong_ptr).wait();
-                    upcxx::barrier();
+                    upcxx::rput(ping_pong_value, neighbor_ping_pong_ptr, upcxx::remote_cx::as_rpc([&received_flag]()
+                                                                                                  { received_flag = true; }));
                 }
                 else
                 {
-                    upcxx::barrier();
+                    while (!received_flag)
+                    {
+                        upcxx::progress();
+                    }
+
+                    received_flag = false;
                 }
             }
             // Reset counter
@@ -78,6 +96,8 @@ int main(int argc, char **argv)
     // Benchmark
     for (uint rep = 0; rep < reps; ++rep)
     {
+        upcxx::barrier();
+
         // Start clock
         if (world_rank == 0)
         {
@@ -89,12 +109,17 @@ int main(int argc, char **argv)
             if (world_rank == i % 2)
             {
                 ping_pong_value++;
-                upcxx::rput(ping_pong_value, neighbor_ping_pong_ptr).wait();
-                upcxx::barrier();
+                upcxx::rput(ping_pong_value, neighbor_ping_pong_ptr, upcxx::remote_cx::as_rpc([&received_flag]()
+                                                                                              { received_flag = true; }));
             }
             else
             {
-                upcxx::barrier();
+                while (!received_flag)
+                {
+                    upcxx::progress();
+                }
+
+                received_flag = false;
             }
         }
 
