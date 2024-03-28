@@ -80,8 +80,6 @@ int main(int argc, char **argv)
                             *received_flag = true; },
                         *ping_pong_object, ping_pong_object, received_flag)
                         .wait();
-
-                    std::cout << "value: " << *ping_pong_object << std::endl;
                 }
                 else
                 {
@@ -97,8 +95,6 @@ int main(int argc, char **argv)
             *ping_pong_object = 0;
         }
     }
-
-    std::cout << "Warmup finished" << std::endl;
 
     // Benchmark
     for (uint rep = 0; rep < reps; ++rep)
@@ -131,7 +127,6 @@ int main(int argc, char **argv)
                 {
                     upcxx::progress();
                 }
-                std::cout << "value: " << *ping_pong_object << std::endl;
 
                 *received_flag = false;
             }
@@ -143,7 +138,6 @@ int main(int argc, char **argv)
             end_ops = std::chrono::high_resolution_clock::now();
             std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(end_ops - start_ops);
             times[rep] = time_span.count();
-            std::cout << "value: " << *ping_pong_object << std::endl;
         }
 
         // Reset counter
