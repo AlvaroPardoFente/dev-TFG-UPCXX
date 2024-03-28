@@ -118,7 +118,6 @@ int main(int argc, char *argv[])
 
             for (int i = 0; i < world_size; i++)
             {
-                auto value_n = value_g.fetch(i).wait();
                 upcxx::rget(global_ptrs.at(i), &result.data()[i * nums_per_rank], nums_per_rank, upcxx::operation_cx::as_promise(p));
             }
 
