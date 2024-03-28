@@ -62,7 +62,8 @@ int main(int argc, char **argv)
     upcxx::global_ptr<uint32_t> neighbor_ping_pong_ptr = global_ping_pong_object.fetch(neighbor_rank).wait();
 
     // Flag to check if the message was received
-    bool received_flag = false;
+    upcxx::dist_object<bool> received_flag(false);
+    // bool received_flag = false;
 
     // Warmup
     if (settings.warmup)
@@ -75,17 +76,18 @@ int main(int argc, char **argv)
                 if (world_rank == i % 2)
                 {
                     ping_pong_value++;
-                    upcxx::rput(ping_pong_value, neighbor_ping_pong_ptr, upcxx::remote_cx::as_rpc([&received_flag]()
-                                                                                                  { received_flag = true; }));
+                    upcxx::rput(ping_pong_value, neighbor_ping_pong_ptr, upcxx::remote_cx::as_rpc([](upcxx::dist_object<bool> &received_flag)
+                                                                                                  { *received_flag = true; },
+                                                                                                  received_flag));
                 }
                 else
                 {
-                    while (!received_flag)
+                    while (!*received_flag)
                     {
                         upcxx::progress();
                     }
 
-                    received_flag = false;
+                    *received_flag = false;
                 }
             }
             // Reset counter
@@ -109,17 +111,18 @@ int main(int argc, char **argv)
             if (world_rank == i % 2)
             {
                 ping_pong_value++;
-                upcxx::rput(ping_pong_value, neighbor_ping_pong_ptr, upcxx::remote_cx::as_rpc([&received_flag]()
-                                                                                              { received_flag = true; }));
+                upcxx::rput(ping_pong_value, neighbor_ping_pong_ptr, upcxx::remote_cx::as_rpc([](upcxx::dist_object<bool> &received_flag)
+                                                                                              { *received_flag = true; },
+                                                                                              received_flag));
             }
             else
             {
-                while (!received_flag)
+                while (!*received_flag)
                 {
                     upcxx::progress();
                 }
 
-                received_flag = false;
+                *received_flag = false;
             }
         }
 
