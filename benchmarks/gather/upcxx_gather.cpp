@@ -60,6 +60,18 @@ int main(int argc, char *argv[])
         result.resize(number_count);
     }
 
+    // Fetch pointers for all processes
+    std::vector<upcxx::global_ptr<uint32_t>> global_ptrs;
+
+    if (world_rank == 0)
+    {
+        global_ptrs.resize(world_size);
+        for (int i = 0; i < world_size; i++)
+        {
+            global_ptrs.at(i) = value_g.fetch(i).wait();
+        }
+    }
+
     // Warmup
     if (settings.warmup)
     {
@@ -75,8 +87,7 @@ int main(int argc, char *argv[])
                 // Gather data adding to promise
                 for (int i = 0; i < world_size; i++)
                 {
-                    auto value_n = value_g.fetch(i).wait();
-                    upcxx::rget(value_n, &result.data()[i * nums_per_rank], nums_per_rank, upcxx::operation_cx::as_promise(p));
+                    upcxx::rget(global_ptrs.at(i), &result.data()[i * nums_per_rank], nums_per_rank, upcxx::operation_cx::as_promise(p));
                 }
 
                 // Wait for all operations to finish
@@ -108,7 +119,7 @@ int main(int argc, char *argv[])
             for (int i = 0; i < world_size; i++)
             {
                 auto value_n = value_g.fetch(i).wait();
-                upcxx::rget(value_n, &result.data()[i * nums_per_rank], nums_per_rank, upcxx::operation_cx::as_promise(p));
+                upcxx::rget(global_ptrs.at(i), &result.data()[i * nums_per_rank], nums_per_rank, upcxx::operation_cx::as_promise(p));
             }
 
             // Wait for all operations to finish
