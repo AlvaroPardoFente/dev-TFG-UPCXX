@@ -7,6 +7,9 @@
 // warmup executions
 constexpr uint32_t warmup_repetitions = 10;
 
+// Count for remote completions
+int count = 0;
+
 int main(int argc, char *argv[])
 {
     // Init default values
@@ -66,7 +69,18 @@ int main(int argc, char *argv[])
         {
             upcxx::barrier();
 
-            upcxx::rput(value, root_ptr + world_rank * nums_per_rank, nums_per_rank).wait();
+            upcxx::rput(value, root_ptr + world_rank * nums_per_rank, nums_per_rank, upcxx::remote_cx::as_rpc([]()
+                                                                                                              { count++; }));
+
+            // Check for completion
+            if (world_rank == 0)
+            {
+                while (count < world_size)
+                {
+                    upcxx::progress();
+                }
+                count = 0;
+            }
 
             if (world_rank == 0)
             {
@@ -82,6 +96,7 @@ int main(int argc, char *argv[])
     // Benchmark
     for (uint rep = 0; rep < reps; ++rep)
     {
+
         // Sync all nodes
         upcxx::barrier();
 
@@ -91,7 +106,18 @@ int main(int argc, char *argv[])
             start_ops = std::chrono::high_resolution_clock::now();
         }
 
-        upcxx::rput(value, root_ptr + world_rank * nums_per_rank, nums_per_rank).wait();
+        upcxx::rput(value, root_ptr + world_rank * nums_per_rank, nums_per_rank, upcxx::remote_cx::as_rpc([]()
+                                                                                                          { count++; }));
+
+        // Check for completion
+        if (world_rank == 0)
+        {
+            while (count < world_size)
+            {
+                upcxx::progress();
+            }
+            count = 0;
+        }
 
         // End clock
         if (world_rank == 0)
