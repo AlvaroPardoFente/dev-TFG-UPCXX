@@ -111,8 +111,8 @@ int main(int argc, char *argv[])
                     upcxx::rput(value[i], root_ptr + i, upcxx::operation_cx::as_promise(p));
                 }
 
-                p.finalize().then([root_flag_ptr]()
-                                  { upcxx::rput(true, root_flag_ptr).wait(); });
+                p.finalize().wait();
+                upcxx::rput(true, root_flag_ptr).wait();
             }
 
             // Check for completion
@@ -161,9 +161,8 @@ int main(int argc, char *argv[])
                 upcxx::rput(value[i], root_ptr + i, upcxx::operation_cx::as_promise(p));
             }
 
-            p.finalize().then([root_flag_ptr]()
-                              { upcxx::rput(true, root_flag_ptr).wait(); });
-            // upcxx::rput(true, root_flag_ptr).wait();
+            p.finalize().wait();
+            upcxx::rput(true, root_flag_ptr).wait();
         }
 
         // Check for completion
