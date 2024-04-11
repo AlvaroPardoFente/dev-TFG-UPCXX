@@ -2,6 +2,7 @@
 #include <chrono>
 #include <iostream>
 #include "../../utils/benchmark_settings.hpp"
+#include "../../utils/benchmark_timer.hpp"
 #include <numeric>
 
 // ping_pong_count used on warmup
@@ -52,8 +53,11 @@ int main(int argc, char **argv)
     }
 
     // Clocks
-    std::chrono::high_resolution_clock::time_point start_ops, end_ops;
-    std::vector<double> times(reps);
+    benchmark_timer timer;
+    if (world_rank == 0)
+    {
+        timer.reserve(reps);
+    }
 
     int neighbor_rank = (world_rank + 1) % 2;
 
@@ -106,7 +110,7 @@ int main(int argc, char **argv)
         // Start clock
         if (world_rank == 0)
         {
-            start_ops = std::chrono::high_resolution_clock::now();
+            timer.start();
         }
 
         for (uint32_t i = 0; i < ping_pong_count; i++)
@@ -137,27 +141,20 @@ int main(int argc, char **argv)
         // End clock
         if (world_rank == 0)
         {
-            end_ops = std::chrono::high_resolution_clock::now();
-            std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(end_ops - start_ops);
-            times[rep] = time_span.count();
+            timer.stop();
+            timer.add_time();
         }
 
         // Reset counter
         *ping_pong_object = 0;
     }
 
+    // Done
     if (world_rank == 0)
     {
         std::cout << "Ping-pong count: " << ping_pong_count << std::endl;
         std::cout << "Repetitions: " << reps << std::endl;
-        std::cout << "Average time: " << std::accumulate(times.begin(), times.end(), 0.0) / reps << std::endl;
-        std::cout << "Times (seconds): " << std::endl;
-        std::cout << times[0];
-        for (uint rep = 1; rep < reps; ++rep)
-        {
-            std::cout << ", " << times[rep];
-        }
-        std::cout << std::endl;
+        timer.print_times();
     }
 
     upcxx::finalize();

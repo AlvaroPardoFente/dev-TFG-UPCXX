@@ -1,5 +1,6 @@
 #include <upcxx/upcxx.hpp>
 #include "../../utils/benchmark_settings.hpp"
+#include "../../utils/benchmark_timer.hpp"
 #include <iostream>
 #include <chrono>
 #include <numeric>
@@ -40,8 +41,11 @@ int main(int argc, char *argv[])
     world_rank = upcxx::rank_me();
 
     // Clocks
-    std::chrono::high_resolution_clock::time_point start_ops, end_ops;
-    std::vector<double> times(reps);
+    benchmark_timer timer;
+    if (world_rank == 0)
+    {
+        timer.reserve(reps);
+    }
 
     // Vector initialization
     int32_t nums_per_rank = number_count / world_size;
@@ -133,7 +137,7 @@ int main(int argc, char *argv[])
         // Start clock
         if (world_rank == 0)
         {
-            start_ops = std::chrono::high_resolution_clock::now();
+            timer.start();
         }
 
         int stride = 1;
@@ -170,9 +174,8 @@ int main(int argc, char *argv[])
         // End clock
         if (world_rank == 0)
         {
-            end_ops = std::chrono::high_resolution_clock::now();
-            std::chrono::duration<double> time_span = std::chrono::duration_cast<std::chrono::duration<double>>(end_ops - start_ops);
-            times[rep] = time_span.count();
+            timer.stop();
+            timer.add_time();
         }
 
         // // Print result
@@ -201,14 +204,7 @@ int main(int argc, char *argv[])
     {
         std::cout << "Number count: " << number_count << std::endl;
         std::cout << "Repetitions: " << reps << std::endl;
-        std::cout << "Average time: " << std::accumulate(times.begin(), times.end(), 0.0) / reps << std::endl;
-        std::cout << "Times: ";
-        std::cout << times[0];
-        for (uint rep = 1; rep < reps; ++rep)
-        {
-            std::cout << ", " << times[rep];
-        }
-        std::cout << std::endl;
+        timer.print_times();
     }
 
     upcxx::finalize();

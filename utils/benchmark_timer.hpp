@@ -44,7 +44,8 @@ public:
 
     void print_times()
     {
-        std::cout << "Average time: " << std::accumulate(m_times.begin(), m_times.end(), 0.0) / m_times.size() << std::endl;
+        std::cout << "Average time: " << this->get_average_time() << std::endl;
+        std::cout << "Min time: " << this->get_min_time() << std::endl;
         std::cout << "Times: ";
         std::cout << m_times[0];
         for (auto time : m_times)
@@ -52,6 +53,16 @@ public:
             std::cout << ", " << time;
         }
         std::cout << std::endl;
+    }
+
+    double get_average_time()
+    {
+        return std::accumulate(m_times.begin(), m_times.end(), 0.0) / m_times.size();
+    }
+
+    double get_min_time()
+    {
+        return *std::min_element(m_times.begin(), m_times.end());
     }
 
     // Get the time in seconds
