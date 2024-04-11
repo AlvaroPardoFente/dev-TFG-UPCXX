@@ -70,6 +70,8 @@ int main(int argc, char **argv)
     {
         for (int i = 0; i < warmup_repetitions; i++)
         {
+            upcxx::barrier();
+
             for (uint32_t i = 0; i < warmup_count; i++)
             {
 

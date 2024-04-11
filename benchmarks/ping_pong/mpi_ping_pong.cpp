@@ -64,8 +64,11 @@ int main(int argc, char *argv[])
     // Warmup
     if (settings.warmup)
     {
+
         for (int i = 0; i < warmup_repetitions; i++)
         {
+            MPI_Barrier(MPI_COMM_WORLD);
+
             for (uint32_t i = 0; i < warmup_count; i++)
             {
                 if (world_rank == i % 2)
