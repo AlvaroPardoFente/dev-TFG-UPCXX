@@ -19,35 +19,66 @@ export UPCXX_CODEMODE
 # MPI compiler
 MPICXX = mpicxx
 
-# Compiler flags
-CXXFLAGS = -std=c++17 -O3
+# Default compiler
+CXX = upcxx
+
+# Set different compilers for targets with specific prefixes
+upcxx%: CXX = $(UPCXX)
+mpi%: CXX = $(MPICXX)
 
 # Source and build directories
 SRC_DIR = ./benchmarks
+INC_DIR = ./include
+LIB_DIR = ./lib
 BUILD_DIR = ./build
+OBJ_DIR = ./obj
+
+# Optimization flags
+OPT = -O3
+
+# Dependency flags
+DEPFLAGS= -MP -MMD -MF $(OBJ_DIR)/$*.Td
+
+# Compiler flags
+CXXFLAGS = -std=c++17 -I$(INC_DIR) $(OPT) $(DEPFLAGS)
 
 # Find all .cpp files in the source directory
 SOURCES := $(shell find $(SRC_DIR) -name '*.cpp')
-# Get list of object files, with paths
+
+# Find all .cpp files in the lib directory
+LIB_SOURCES := $(wildcard $(LIB_DIR)/*.cpp)
+
+# Get list of lib object files
+LIB_OBJECTS = $(addprefix $(OBJ_DIR)/, $(notdir $(LIB_SOURCES:.cpp=.o)))
+
 # Get list of executable names
 EXE_NAMES := $(basename $(notdir $(SOURCES)))
 
 # Default rule
 all: $(EXE_NAMES)
 
+# Rule to compile a lib source file into an object file
+$(LIB_OBJECTS): $(OBJ_DIR)/%.o: $(LIB_DIR)/%.cpp
+	@mkdir -p $(OBJ_DIR); \
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+	mv -f $(OBJ_DIR)/$*.Td $(OBJ_DIR)/$*.d && touch $@
+
 # Rule to compile a specific source file
-%:
-	@file=$$(find $(SRC_DIR) -name $@.cpp); \
+$(EXE_NAMES): %: $(LIB_OBJECTS)
+	@target=$@; \
+	file=$$(find $(SRC_DIR) -name $$target.cpp); \
 	build_file=$(BUILD_DIR)/$$(dirname $$file | sed "s|$(SRC_DIR)/||")/$@; \
 	mkdir -p $$(dirname $$build_file); \
-	if echo $$file | xargs basename | grep -q "^upcxx"; then \
-		$(UPCXX) $(CXXFLAGS) -o $$build_file $$file; \
-	else \
-		if echo $$file | xargs basename | grep -q "^mpi"; then \
-			$(MPICXX) $(CXXFLAGS) -o $$build_file $$file; \
-		fi; \
-	fi
+	$(CXX) $(CXXFLAGS) -o $$build_file $$file $(LIB_OBJECTS); \
+	mv -f $(OBJ_DIR)/$$target.Td $(OBJ_DIR)/$$target.d && touch $$build_file;
 
-# Rule to clean the build directory
+# Rule to clean the build and object directories
 clean:
-	rm -rf $(BUILD_DIR)
+	rm -rf $(BUILD_DIR) $(OBJ_DIR)
+
+# Include the dependencies
+-include $(patsubst %,$(OBJ_DIR)/%.d,$(basename $(EXE_NAMES)))
+
+.PHONY: all clean
+
+.PRECIOUS: $(OBJ_DIR)/%.o

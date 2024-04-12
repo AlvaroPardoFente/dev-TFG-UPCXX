@@ -3,8 +3,8 @@
 #include <chrono>
 #include <numeric>
 
-#include "../../utils/benchmark_settings.hpp"
-#include "../../utils/benchmark_timer.hpp"
+#include <benchmark_settings.hpp>
+#include <benchmark_timer.hpp>
 
 // warmup executions
 constexpr uint32_t warmup_repetitions = 10;

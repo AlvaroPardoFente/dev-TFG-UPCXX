@@ -1,8 +1,8 @@
 #include <upcxx/upcxx.hpp>
 #include <chrono>
 #include <iostream>
-#include "../../utils/benchmark_settings.hpp"
-#include "../../utils/benchmark_timer.hpp"
+#include <benchmark_settings.hpp>
+#include <benchmark_timer.hpp>
 #include <numeric>
 
 // ping_pong_count used on warmup

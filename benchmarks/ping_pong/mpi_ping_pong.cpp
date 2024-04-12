@@ -1,7 +1,7 @@
 #include <mpi.h>
 #include <chrono>
-#include "../../utils/benchmark_settings.hpp"
-#include "../../utils/benchmark_timer.hpp"
+#include <benchmark_settings.hpp>
+#include <benchmark_timer.hpp>
 #include <iostream>
 #include <numeric>
 
