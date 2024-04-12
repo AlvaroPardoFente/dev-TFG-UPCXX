@@ -60,7 +60,7 @@ all: $(EXE_NAMES)
 # Rule to compile a lib source file into an object file
 $(LIB_OBJECTS): $(OBJ_DIR)/%.o: $(LIB_DIR)/%.cpp
 	@mkdir -p $(OBJ_DIR); \
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) -c $< -o $@; \
 	mv -f $(OBJ_DIR)/$*.Td $(OBJ_DIR)/$*.d && touch $@
 
 # Rule to compile a specific source file
