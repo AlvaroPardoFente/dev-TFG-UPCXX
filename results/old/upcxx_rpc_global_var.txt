@@ -1,0 +1,7 @@
+JOBID=27969
+Nodes=2 Procs=2 TasksPerNode=1 ThreadsPerTask=1 NREPS=1 /home/alvaro.pardo/dev-TFG-UPCXX/build/remote_completion/upcxx_rpc_global_var --value 10M --repetitions 10
+/home/alvaro.pardo/new_upcxx_202403/bin/upcxx-run -N 2 -n 2 /home/alvaro.pardo/dev-TFG-UPCXX/build/remote_completion/upcxx_rpc_global_var --value 10M --repetitions 10
+Number count: 10485760
+Repetitions: 10
+Average time: 4.75884
+Times: 4.7503, 4.75935, 4.75947, 4.755, 4.75799, 4.75293, 4.76534, 4.75486, 4.76568, 4.76752
