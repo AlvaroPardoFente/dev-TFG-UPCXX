@@ -36,13 +36,16 @@ void benchmark_timer::print_times()
 {
     std::cout << "Average time: " << this->get_average_time() << std::endl;
     std::cout << "Min time: " << this->get_min_time() << std::endl;
-    std::cout << "Times: ";
-    std::cout << m_times[0];
-    for (auto time : m_times)
+    std::cout << "Times:" << std::endl;
+    if (!m_times.empty())
     {
-        std::cout << ", " << time;
+        std::cout << m_times[0];
+        for (auto it = m_times.begin() + 1; it != m_times.end(); ++it)
+        {
+            std::cout << ", " << *it;
+        }
+        std::cout << std::endl;
     }
-    std::cout << std::endl;
 }
 
 double benchmark_timer::get_average_time()
