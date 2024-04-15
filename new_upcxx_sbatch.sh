@@ -15,6 +15,10 @@ for i in "$@"; do
     		NREPS="${i#*=}"
     		shift # past argument=value
     		;;
+		--sizes=*)
+            SIZES_FILE="${i#*=}"
+            shift # past argument=value
+            ;;
     	*)
         	# unknown option
     		;;
@@ -46,8 +50,21 @@ echo Nodes=$nodes Procs=$procs TasksPerNode=$ntaskspernode ThreadsPerTask=$threa
 # ulimit -s unlimited
 ulimit -c 0
 
-for ((i=1; i<=$NREPS; i++)); do
-	echo ${HOME}/new_upcxx_202403/bin/upcxx-run -N $nodes -n $procs $*
-	${HOME}/new_upcxx_202403/bin/upcxx-run -N $nodes -n $procs $*
-done
+args=$@
 
+if [[ -n $SIZES_FILE ]]; then
+    while IFS= read -r size
+    do
+        # Add the --value $size argument
+        cmd="$args --value $size"
+        for ((i=1; i<=$NREPS; i++)); do
+            echo ${HOME}/new_upcxx_202403/bin/upcxx-run -N $nodes -n $procs $cmd
+            ${HOME}/new_upcxx_202403/bin/upcxx-run -N $nodes -n $procs $cmd
+        done
+    done < "$SIZES_FILE"
+else
+    for ((i=1; i<=$NREPS; i++)); do
+        echo ${HOME}/new_upcxx_202403/bin/upcxx-run -N $nodes -n $procs $args
+        ${HOME}/new_upcxx_202403/bin/upcxx-run -N $nodes -n $procs $args
+    done
+fi
