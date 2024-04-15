@@ -57,6 +57,7 @@ int main(int argc, char **argv)
     if (world_rank == 0)
     {
         timer.reserve(reps);
+        timer.set_settings(&settings);
     }
 
     int neighbor_rank = (world_rank + 1) % 2;
@@ -143,8 +144,6 @@ int main(int argc, char **argv)
     // Done
     if (world_rank == 0)
     {
-        std::cout << "Ping-pong count: " << ping_pong_count << std::endl;
-        std::cout << "Repetitions: " << reps << std::endl;
         timer.print_times();
     }
 

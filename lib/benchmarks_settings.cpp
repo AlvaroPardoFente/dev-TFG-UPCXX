@@ -43,7 +43,8 @@ const std::unordered_map<std::string, settings::NoArgHandle> settings::NoArgs{
     // S("--verbose", verbose, true),
     // S("-v", verbose, true),
 
-    // S("--quiet", verbose, false),
+    S("--quiet", o_mode, settings::output_mode::quiet),
+    S("-q", o_mode, settings::output_mode::quiet),
 
     S("--no-warmup", warmup, false),
 };
@@ -60,6 +61,7 @@ const std::unordered_map<std::string, settings::OneArgHandle> settings::OneArgs{
     // Performing string -> int conversion
     {"--value", [](settings::benchmark_settings &s, const std::string &arg)
      {
+         s.raw_value = arg;
          std::optional<int> value = parseBytes(arg);
          if (value.has_value())
          {

@@ -7,12 +7,21 @@
 
 namespace settings
 {
+    // Output mode enum
+    enum class output_mode
+    {
+        none,
+        verbose,
+        quiet
+    };
 
     // Options struct
     struct benchmark_settings
     {
         // bool help{false};
         // bool verbose{false};
+        output_mode o_mode{output_mode::none};
+        std::optional<std::string> raw_value;
         std::optional<int> value;
         bool isByteValue{false};
         std::optional<u_int> repetitions;

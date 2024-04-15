@@ -1,5 +1,7 @@
 #pragma once
 
+#include <benchmark_settings.hpp>
+
 #include <chrono>
 #include <vector>
 
@@ -11,9 +13,13 @@ private:
 
     std::vector<double> m_times;
 
+    settings::benchmark_settings *m_settings;
+
 public:
-    benchmark_timer();
-    benchmark_timer(const int32_t p_size);
+    benchmark_timer(settings::benchmark_settings *p_settings = nullptr);
+    benchmark_timer(const int32_t p_size, settings::benchmark_settings *p_settings = nullptr);
+
+    void set_settings(settings::benchmark_settings *p_settings);
 
     void reserve(const int32_t p_size);
 

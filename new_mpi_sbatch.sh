@@ -55,7 +55,7 @@ if [[ -n $SIZES_FILE ]]; then
         # Add the --value $size argument
         cmd="$args --value $size"
         for ((i=1; i<=$NREPS; i++)); do
-            echo srun -N $nodes -n $procs --ntasks-per-node=$ntaskspernode $cmd
+            # echo srun -N $nodes -n $procs --ntasks-per-node=$ntaskspernode $cmd
             srun -N $nodes -n $procs --ntasks-per-node=$ntaskspernode $cmd
         done
     done

@@ -106,8 +106,6 @@ int main(int argc, char *argv[])
     // Done
     if (world_rank == 0)
     {
-        std::cout << "Number count: " << number_count << std::endl;
-        std::cout << "Repetitions: " << reps << std::endl;
         timer.print_times();
     }
 
