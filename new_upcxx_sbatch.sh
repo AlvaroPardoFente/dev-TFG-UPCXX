@@ -53,7 +53,7 @@ ulimit -c 0
 args=$@
 
 if [[ -n $SIZES_FILE ]]; then
-    while IFS= read -r size
+    for size in $(cat $SIZES_FILE);
     do
         # Add the --value $size argument
         cmd="$args --value $size"
@@ -61,7 +61,7 @@ if [[ -n $SIZES_FILE ]]; then
             echo ${HOME}/new_upcxx_202403/bin/upcxx-run -N $nodes -n $procs $cmd
             ${HOME}/new_upcxx_202403/bin/upcxx-run -N $nodes -n $procs $cmd
         done
-    done < "$SIZES_FILE"
+    done
 else
     for ((i=1; i<=$NREPS; i++)); do
         echo ${HOME}/new_upcxx_202403/bin/upcxx-run -N $nodes -n $procs $args

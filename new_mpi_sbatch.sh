@@ -50,7 +50,7 @@ ulimit -c 0
 args=$@
 
 if [[ -n $SIZES_FILE ]]; then
-    while IFS= read -r size
+    for size in $(cat $SIZES_FILE);
     do
         # Add the --value $size argument
         cmd="$args --value $size"
@@ -58,7 +58,7 @@ if [[ -n $SIZES_FILE ]]; then
             echo srun -N $nodes -n $procs --ntasks-per-node=$ntaskspernode $cmd
             srun -N $nodes -n $procs --ntasks-per-node=$ntaskspernode $cmd
         done
-    done < "$SIZES_FILE"
+    done
 else
     for ((i=1; i<=$NREPS; i++)); do
         echo srun -N $nodes -n $procs --ntasks-per-node=$ntaskspernode $args
