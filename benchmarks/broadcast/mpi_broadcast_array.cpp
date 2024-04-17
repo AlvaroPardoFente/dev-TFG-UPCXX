@@ -44,6 +44,7 @@ int main(int argc, char *argv[])
     if (world_rank == 0)
     {
         timer.reserve(reps);
+        timer.set_settings(&settings);
     }
 
     // Vector initialization

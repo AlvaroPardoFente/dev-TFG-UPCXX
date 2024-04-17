@@ -45,7 +45,8 @@ void benchmark_timer::print_times()
 {
     if (m_settings->o_mode == settings::output_mode::none)
     {
-        std::cout << "Count: " << m_settings->raw_value.value_or("1 K") << std::endl;
+        if (m_settings->raw_value)
+            std::cout << "Count: " << m_settings->raw_value.value() << std::endl;
         std::cout << "Repetitions: " << m_times.size() << std::endl;
         std::cout << "Average time: " << this->get_average_time() << std::endl;
         std::cout << "Min time: " << this->get_min_time() << std::endl;
@@ -62,7 +63,8 @@ void benchmark_timer::print_times()
     }
     else if (m_settings->o_mode == settings::output_mode::quiet)
     {
-        std::cout << m_settings->raw_value.value_or("1 K") << ", ";
+        if (m_settings->raw_value)
+            std::cout << m_settings->raw_value.value() << ", ";
         if (!m_times.empty())
         {
             std::cout << m_times[0];
