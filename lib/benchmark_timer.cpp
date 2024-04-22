@@ -63,16 +63,12 @@ void benchmark_timer::print_times()
     }
     else if (m_settings->o_mode == settings::output_mode::quiet)
     {
-        if (m_settings->raw_value)
-            std::cout << m_settings->raw_value.value() << ", ";
         if (!m_times.empty())
         {
-            std::cout << m_times[0];
-            for (auto it = m_times.begin() + 1; it != m_times.end(); ++it)
+            for (auto it = m_times.begin(); it != m_times.end(); ++it)
             {
-                std::cout << ", " << *it;
+                std::cout << m_settings->raw_value.value() << ", " << std::distance(m_times.begin(), it) + 1 << ", " << *it << std::endl;
             }
-            std::cout << std::endl;
         }
     }
 }
