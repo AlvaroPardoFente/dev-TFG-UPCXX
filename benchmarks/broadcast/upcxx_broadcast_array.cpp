@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
 {
     // Init default values
     uint32_t number_count = 1024;
-    uint reps = 1;
+    uint32_t reps = 1;
 
     // Handle Input
     settings::benchmark_settings settings = settings::parse_settings(argc, const_cast<const char **>(argv));

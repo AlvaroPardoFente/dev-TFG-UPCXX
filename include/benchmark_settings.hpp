@@ -24,7 +24,7 @@ namespace settings
         std::optional<std::string> raw_value;
         std::optional<int> value;
         bool isByteValue{false};
-        std::optional<u_int> repetitions;
+        std::optional<u_int32_t> repetitions;
         bool warmup{true};
     };
 
