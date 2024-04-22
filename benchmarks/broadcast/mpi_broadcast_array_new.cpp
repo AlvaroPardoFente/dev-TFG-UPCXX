@@ -4,7 +4,7 @@
 #include <chrono>
 #include <numeric>
 
-class mpi_broadcast_array_new : public MpiBenchmarkTemplate
+class mpi_broadcast_array : public MpiBenchmarkTemplate
 {
 public:
     std::vector<uint32_t> value;
@@ -59,7 +59,7 @@ public:
 
 int main(int argc, char *argv[])
 {
-    mpi_broadcast_array_new test;
+    mpi_broadcast_array test;
     test.run(argc, argv);
     return 0;
 }
