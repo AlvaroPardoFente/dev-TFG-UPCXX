@@ -55,6 +55,7 @@ int main(int argc, char *argv[])
     if (world_rank == 0)
     {
         timer.reserve(reps);
+        timer.set_settings(&settings);
     }
 
     upcxx::dist_object<upcxx::global_ptr<uint32_t>> value_g(upcxx::new_array<uint32_t>(number_count));
@@ -189,8 +190,6 @@ int main(int argc, char *argv[])
     // Done
     if (world_rank == 0)
     {
-        std::cout << "Number count: " << number_count << std::endl;
-        std::cout << "Repetitions: " << reps << std::endl;
         timer.print_times();
     }
 

@@ -4,10 +4,19 @@
 #include <iostream>
 #include <numeric>
 
-benchmark_timer::benchmark_timer() {}
-benchmark_timer::benchmark_timer(const int32_t p_size)
+benchmark_timer::benchmark_timer(settings::benchmark_settings *p_settings)
+{
+    m_settings = p_settings;
+}
+benchmark_timer::benchmark_timer(const int32_t p_size, settings::benchmark_settings *p_settings)
 {
     m_times.reserve(p_size);
+    m_settings = p_settings;
+}
+
+void benchmark_timer::set_settings(settings::benchmark_settings *p_settings)
+{
+    m_settings = p_settings;
 }
 
 void benchmark_timer::reserve(const int32_t p_size)
@@ -34,17 +43,33 @@ void benchmark_timer::add_time()
 
 void benchmark_timer::print_times()
 {
-    std::cout << "Average time: " << this->get_average_time() << std::endl;
-    std::cout << "Min time: " << this->get_min_time() << std::endl;
-    std::cout << "Times:" << std::endl;
-    if (!m_times.empty())
+    if (m_settings->o_mode == settings::output_mode::none)
     {
-        std::cout << m_times[0];
-        for (auto it = m_times.begin() + 1; it != m_times.end(); ++it)
+        if (m_settings->raw_value)
+            std::cout << "Count: " << m_settings->raw_value.value() << std::endl;
+        std::cout << "Repetitions: " << m_times.size() << std::endl;
+        std::cout << "Average time: " << this->get_average_time() << std::endl;
+        std::cout << "Min time: " << this->get_min_time() << std::endl;
+        std::cout << "Times:" << std::endl;
+        if (!m_times.empty())
         {
-            std::cout << ", " << *it;
+            std::cout << m_times[0];
+            for (auto it = m_times.begin() + 1; it != m_times.end(); ++it)
+            {
+                std::cout << ", " << *it;
+            }
+            std::cout << std::endl;
         }
-        std::cout << std::endl;
+    }
+    else if (m_settings->o_mode == settings::output_mode::quiet)
+    {
+        if (!m_times.empty())
+        {
+            for (auto it = m_times.begin(); it != m_times.end(); ++it)
+            {
+                std::cout << m_settings->raw_value.value() << ", " << std::distance(m_times.begin(), it) + 1 << ", " << *it << std::endl;
+            }
+        }
     }
 }
 

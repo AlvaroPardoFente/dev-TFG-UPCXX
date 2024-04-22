@@ -8,13 +8,21 @@
 
 
 NREPS=1
-
+IS_QUIET=0
 for i in "$@"; do
 	case $i in
     	-n=*|--nreps=*)
     		NREPS="${i#*=}"
     		shift # past argument=value
     		;;
+		--sizes=*)
+            SIZES_FILE="${i#*=}"
+            shift # past argument=value
+            ;;
+        -q|--quiet)
+            IS_QUIET=1
+            shift # past argument with no value
+            ;;
     	*)
         	# unknown option
     		;;
@@ -41,13 +49,36 @@ export MPIRUN_CMD="srun -N $nodes -n %N --ntasks-per-node=$ntaskspernode -c $thr
 
 
 echo JOBID=$SLURM_JOB_ID
-echo Nodes=$nodes Procs=$procs TasksPerNode=$ntaskspernode ThreadsPerTask=$threads NREPS=$NREPS $*
+
+if [[ $IS_QUIET -eq 0 ]]; then
+    echo Nodes=$nodes Procs=$procs TasksPerNode=$ntaskspernode ThreadsPerTask=$threads NREPS=$NREPS $*
+else
+    echo Size, Index, Time
+fi
 
 # ulimit -s unlimited
 ulimit -c 0
 
-for ((i=1; i<=$NREPS; i++)); do
-	echo ${HOME}/new_upcxx_202403/bin/upcxx-run -N $nodes -n $procs $*
-	${HOME}/new_upcxx_202403/bin/upcxx-run -N $nodes -n $procs $*
-done
+args=$@
 
+# Add -q to args if IS_QUIET is set
+if [[ $IS_QUIET -eq 1 ]]; then
+    args="$args -q"
+fi
+
+if [[ -n $SIZES_FILE ]]; then
+    for size in $(cat $SIZES_FILE);
+    do
+        # Add the --value $size argument
+        cmd="$args --value $size"
+        for ((i=1; i<=$NREPS; i++)); do
+            # echo ${HOME}/new_upcxx_202403/bin/upcxx-run -N $nodes -n $procs $cmd
+            ${HOME}/new_upcxx_202403/bin/upcxx-run -N $nodes -n $procs $cmd
+        done
+    done
+else
+    for ((i=1; i<=$NREPS; i++)); do
+        echo ${HOME}/new_upcxx_202403/bin/upcxx-run -N $nodes -n $procs $args
+        ${HOME}/new_upcxx_202403/bin/upcxx-run -N $nodes -n $procs $args
+    done
+fi

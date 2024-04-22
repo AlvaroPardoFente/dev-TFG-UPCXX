@@ -45,6 +45,7 @@ int main(int argc, char *argv[])
     if (world_rank == 0)
     {
         timer.reserve(reps);
+        timer.set_settings(&settings);
     }
 
     // Vector initialization
@@ -161,8 +162,6 @@ int main(int argc, char *argv[])
     // Done
     if (world_rank == 0)
     {
-        std::cout << "Number count: " << number_count << std::endl;
-        std::cout << "Repetitions: " << reps << std::endl;
         timer.print_times();
     }
 
