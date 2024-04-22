@@ -3,12 +3,12 @@
 
 void UpcxxBenchmarkTemplate::init(int argc, char *argv[])
 {
-    BenchmarkTemplate::init(argc, argv);
-
     // UPC++ initialization
     upcxx::init();
     world_size = upcxx::rank_n();
     world_rank = upcxx::rank_me();
+
+    BenchmarkTemplate::init(argc, argv);
 }
 
 void UpcxxBenchmarkTemplate::finalize()

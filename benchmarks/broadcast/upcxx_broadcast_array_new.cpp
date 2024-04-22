@@ -1,7 +1,5 @@
 #include <upcxx/upcxx.hpp>
 #include <upcxx_benchmark_template.hpp>
-#include <benchmark_settings.hpp>
-#include <benchmark_timer.hpp>
 #include <iostream>
 #include <chrono>
 #include <numeric>
