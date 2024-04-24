@@ -26,6 +26,7 @@ namespace settings
         bool isByteValue{false};
         std::optional<u_int32_t> repetitions;
         bool warmup{true};
+        std::optional<u_int32_t> warmup_repetitions;
     };
 
     typedef std::function<void(benchmark_settings &)> NoArgHandle;

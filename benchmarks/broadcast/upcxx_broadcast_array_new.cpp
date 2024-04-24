@@ -1,17 +1,17 @@
 #include <upcxx/upcxx.hpp>
-#include <upcxx_benchmark_template.hpp>
+#include <upcxx_benchmark_scheme.hpp>
 #include <iostream>
 #include <chrono>
 #include <numeric>
 
-class upcxx_broadcast_array : public UpcxxBenchmarkTemplate
+class UpcxxBroadcastArray : public UpcxxBenchmarkScheme
 {
 public:
     std::vector<uint32_t> value;
 
     void init(int argc, char *argv[]) override
     {
-        UpcxxBenchmarkTemplate::init(argc, argv);
+        UpcxxBenchmarkScheme::init(argc, argv);
 
         // Vector initialization
         value.resize(number_count);
@@ -20,18 +20,6 @@ public:
             value.at(i) = i;
         }
     };
-
-    void warmup() override
-    {
-        upcxx::barrier();
-        UpcxxBenchmarkTemplate::warmup();
-    }
-
-    void run_benchmark() override
-    {
-        upcxx::barrier();
-        UpcxxBenchmarkTemplate::run_benchmark();
-    }
 
     void benchmark_body() override
     {
@@ -52,7 +40,7 @@ public:
 
 int main(int argc, char *argv[])
 {
-    upcxx_broadcast_array test;
+    UpcxxBroadcastArray test;
     test.run(argc, argv);
     return 0;
 }

@@ -3,13 +3,12 @@
 #include <benchmark_settings.hpp>
 #include <benchmark_timer.hpp>
 
-constexpr uint32_t warmup_repetitions = 10;
-
-class BenchmarkTemplate
+class BenchmarkScheme
 {
 public:
     uint32_t number_count = 1024;
     uint32_t reps = 1;
+    uint32_t warmup_repetitions = 10;
 
     // MPI and UPCXX world size and rank
     int world_size, world_rank;
@@ -20,8 +19,8 @@ public:
     // Timer wrapper with time measurements
     benchmark_timer timer;
 
-    BenchmarkTemplate() = default;
-    virtual ~BenchmarkTemplate() = default;
+    BenchmarkScheme() = default;
+    virtual ~BenchmarkScheme() = default;
 
     // Initialize all data needed
     virtual void init(int argc, char *argv[]);
@@ -32,11 +31,11 @@ public:
     // Reset result for next iteration
     virtual void reset_result() = 0;
 
-    // Warmup wrapper for benchmark_body
-    virtual void warmup();
+    // Implementation-dependent barrier
+    virtual void barrier() = 0;
 
     // Wrapper for benchmark body with measurements
-    virtual void run_benchmark();
+    virtual void run_benchmark(bool use_barrier = true);
 
     virtual void print_results();
 

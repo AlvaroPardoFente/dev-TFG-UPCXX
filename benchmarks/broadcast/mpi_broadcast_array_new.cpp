@@ -1,17 +1,17 @@
 #include <mpi.h>
-#include <mpi_benchmark_template.hpp>
+#include <mpi_benchmark_scheme.hpp>
 #include <iostream>
 #include <chrono>
 #include <numeric>
 
-class mpi_broadcast_array : public MpiBenchmarkTemplate
+class MpiBroadcastArray : public MpiBenchmarkScheme
 {
 public:
     std::vector<uint32_t> value;
 
     void init(int argc, char *argv[]) override
     {
-        MpiBenchmarkTemplate::init(argc, argv);
+        MpiBenchmarkScheme::init(argc, argv);
 
         // Vector initialization
         value.resize(number_count);
@@ -20,18 +20,6 @@ public:
             value.at(i) = i;
         }
     };
-
-    void warmup() override
-    {
-        MPI_Barrier(MPI_COMM_WORLD);
-        MpiBenchmarkTemplate::warmup();
-    }
-
-    void run_benchmark() override
-    {
-        MPI_Barrier(MPI_COMM_WORLD);
-        MpiBenchmarkTemplate::run_benchmark();
-    }
 
     void benchmark_body() override
     {
@@ -59,7 +47,7 @@ public:
 
 int main(int argc, char *argv[])
 {
-    mpi_broadcast_array test;
+    MpiBroadcastArray test;
     test.run(argc, argv);
     return 0;
 }

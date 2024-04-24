@@ -1,6 +1,6 @@
-#include <benchmark_template.hpp>
+#include <benchmark_scheme.hpp>
 
-void BenchmarkTemplate::init(int argc, char *argv[])
+void BenchmarkScheme::init(int argc, char *argv[])
 {
     settings = settings::parse_settings(argc, const_cast<const char **>(argv));
     if (settings.value.has_value())
@@ -20,6 +20,11 @@ void BenchmarkTemplate::init(int argc, char *argv[])
         reps = settings.repetitions.value();
     }
 
+    if (settings.warmup_repetitions.has_value())
+    {
+        warmup_repetitions = settings.warmup_repetitions.value();
+    }
+
     if (world_rank == 0)
     {
         timer.reserve(reps);
@@ -27,14 +32,13 @@ void BenchmarkTemplate::init(int argc, char *argv[])
     }
 }
 
-void BenchmarkTemplate::warmup()
+void BenchmarkScheme::run_benchmark(bool use_barrier)
 {
-    benchmark_body();
-    reset_result();
-}
+    if (use_barrier)
+    {
+        barrier();
+    }
 
-void BenchmarkTemplate::run_benchmark()
-{
     // Start clock
     if (world_rank == 0)
     {
@@ -53,7 +57,7 @@ void BenchmarkTemplate::run_benchmark()
     reset_result();
 }
 
-void BenchmarkTemplate::print_results()
+void BenchmarkScheme::print_results()
 {
     if (world_rank == 0)
     {
@@ -61,7 +65,7 @@ void BenchmarkTemplate::print_results()
     }
 }
 
-void BenchmarkTemplate::run(int argc, char *argv[])
+void BenchmarkScheme::run(int argc, char *argv[])
 {
 
     init(argc, argv);
@@ -70,7 +74,8 @@ void BenchmarkTemplate::run(int argc, char *argv[])
     {
         for (uint32_t i = 0; i < warmup_repetitions; i++)
         {
-            warmup();
+            run_benchmark();
+            timer.reset_times();
         }
     }
 

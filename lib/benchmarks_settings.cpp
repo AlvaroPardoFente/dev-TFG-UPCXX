@@ -93,6 +93,19 @@ const std::unordered_map<std::string, settings::OneArgHandle> settings::OneArgs{
              throw std::runtime_error{"repetitions must be a positive integer"};
          }
      }},
+    // Performing string -> int conversion
+    {"--warmup-repetitions", [](settings::benchmark_settings &s, const std::string &arg)
+     {
+         int reps_arg = stoi(arg);
+         if (reps_arg > 0)
+         {
+             s.warmup_repetitions = reps_arg;
+         }
+         else
+         {
+             throw std::runtime_error{"repetitions must be a positive integer"};
+         }
+     }},
 };
 #undef S
 
