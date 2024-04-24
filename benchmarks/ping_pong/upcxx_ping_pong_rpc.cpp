@@ -1,120 +1,39 @@
 #include <upcxx/upcxx.hpp>
-#include <chrono>
+#include <upcxx_benchmark_scheme.hpp>
 #include <iostream>
-#include <benchmark_settings.hpp>
-#include <benchmark_timer.hpp>
-#include <numeric>
 
-// ping_pong_count used on warmup
-constexpr uint32_t warmup_count = 1024;
-// warmup executions
-constexpr uint32_t warmup_repetitions = 10;
-
-int main(int argc, char **argv)
+class UpcxxPingPongRpc : public UpcxxBenchmarkScheme
 {
-    // Init default values
-    uint32_t ping_pong_count = 1024;
-    uint reps = 1;
-
-    // Handle Input
-    settings::benchmark_settings settings = settings::parse_settings(argc, const_cast<const char **>(argv));
-    if (settings.value.has_value())
-    {
-        if (settings.isByteValue)
-        {
-            ping_pong_count = settings.value.value();
-        }
-        else
-        {
-            ping_pong_count = settings.value.value();
-        }
-    }
-
-    if (settings.repetitions.has_value())
-    {
-        reps = settings.repetitions.value();
-    }
-
-    // UPCXX initialization
-    upcxx::init();
-
-    int world_rank, world_size;
-    world_size = upcxx::rank_n();
-    world_rank = upcxx::rank_me();
-
-    if (world_size != 2)
-    {
-        if (world_rank == 0)
-        {
-            std::cerr << "This benchmark must be run with 2 processes" << std::endl;
-        }
-        upcxx::finalize();
-        return 1;
-    }
-
-    // Clocks
-    benchmark_timer timer;
-    if (world_rank == 0)
-    {
-        timer.reserve(reps);
-        timer.set_settings(&settings);
-    }
-
-    int neighbor_rank = (world_rank + 1) % 2;
-
-    upcxx::dist_object<uint32_t> ping_pong_object(0);
-
+public:
+    int neighbor_rank;
+    upcxx::dist_object<uint32_t> ping_pong_object;
     // Flag to check if the message was received
-    upcxx::dist_object<bool> received_flag(false);
+    upcxx::dist_object<bool> received_flag;
 
-    // Warmup
-    if (settings.warmup)
+    void init(int argc, char *argv[]) override
     {
-        for (int i = 0; i < warmup_repetitions; i++)
-        {
-            upcxx::barrier();
+        UpcxxBenchmarkScheme::init(argc, argv);
 
-            for (uint32_t i = 0; i < warmup_count; i++)
+        if (world_size != 2)
+        {
+            if (world_rank == 0)
             {
-
-                if (world_rank == i % 2)
-                {
-                    (*ping_pong_object)++;
-                    upcxx::rpc(
-                        neighbor_rank, [](const uint32_t &value, upcxx::dist_object<uint32_t> &ping_pong_object, upcxx::dist_object<bool> &received_flag)
-                        {
-                            *ping_pong_object = value;
-                            *received_flag = true; },
-                        *ping_pong_object, ping_pong_object, received_flag)
-                        .wait();
-                }
-                else
-                {
-                    while (!*received_flag)
-                    {
-                        upcxx::progress();
-                    }
-
-                    *received_flag = false;
-                }
+                std::cerr << "This benchmark must be run with 2 processes" << std::endl;
             }
-            // Reset counter
-            *ping_pong_object = 0;
+            upcxx::finalize();
+            std::exit(1);
         }
-    }
 
-    // Benchmark
-    for (uint rep = 0; rep < reps; ++rep)
+        neighbor_rank = (world_rank + 1) % 2;
+
+        ping_pong_object = upcxx::dist_object<uint32_t>(0);
+
+        received_flag = upcxx::dist_object<bool>(false);
+    };
+
+    void benchmark_body() override
     {
-        upcxx::barrier();
-
-        // Start clock
-        if (world_rank == 0)
-        {
-            timer.start();
-        }
-
-        for (uint32_t i = 0; i < ping_pong_count; i++)
+        for (uint32_t i = 0; i < number_count; i++)
         {
 
             if (world_rank == i % 2)
@@ -137,26 +56,21 @@ int main(int argc, char **argv)
 
                 *received_flag = false;
             }
-        }
 
-        // End clock
-        if (world_rank == 0)
-        {
-            timer.stop();
-            timer.add_time();
+            // std::cout << "Rank " << world_rank << " object:" << *ping_pong_object << std::endl;
         }
+    }
 
+    void reset_result() override
+    {
         // Reset counter
         *ping_pong_object = 0;
     }
+};
 
-    // Done
-    if (world_rank == 0)
-    {
-        timer.print_times();
-    }
-
-    upcxx::finalize();
-
+int main(int argc, char *argv[])
+{
+    UpcxxPingPongRpc test;
+    test.run(argc, argv);
     return 0;
 }
