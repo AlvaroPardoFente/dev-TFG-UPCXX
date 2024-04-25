@@ -1,6 +1,9 @@
 #include <upcxx/upcxx.hpp>
 #include <upcxx_benchmark_scheme.hpp>
+#include <gather_settings.hpp>
 #include <iostream>
+
+int count = 0;
 
 class UpcxxGatherRget : public UpcxxBenchmarkScheme
 {
@@ -13,6 +16,10 @@ public:
     std::vector<uint32_t> result;
 
     std::vector<upcxx::global_ptr<uint32_t>> global_ptrs;
+
+    GatherSettings *gather_settings;
+
+    UpcxxGatherRget() : UpcxxBenchmarkScheme(gather_settings = new GatherSettings()) {}
 
     void init(int argc, char *argv[]) override
     {
@@ -34,7 +41,7 @@ public:
         }
 
         // Fetch pointers for all processes
-        if (world_rank == 0)
+        if (world_rank == 0 && !gather_settings->measure_fetch)
         {
             global_ptrs.resize(world_size);
             for (int i = 0; i < world_size; i++)
@@ -48,16 +55,34 @@ public:
     {
         if (world_rank == 0)
         {
-            // Init promise
-            upcxx::promise<> p;
-
-            for (int i = 0; i < world_size; i++)
+            if (gather_settings->measure_fetch)
             {
-                upcxx::rget(global_ptrs.at(i), &result.data()[i * nums_per_rank], nums_per_rank, upcxx::operation_cx::as_promise(p));
-            }
+                // Measure fetch time
+                for (int i = 0; i < world_size; i++)
+                {
+                    value_g.fetch(i).then([=](upcxx::global_ptr<uint32_t> gptr)
+                                          { upcxx::rget(gptr, &result.data()[i * nums_per_rank], nums_per_rank).then([]()
+                                                                                                                     { count++; }); });
+                }
 
-            // Wait for all operations to finish
-            p.finalize().wait();
+                while (count < world_size)
+                {
+                    upcxx::progress();
+                }
+            }
+            else
+            {
+                // Init promise
+                upcxx::promise<> p;
+
+                for (int i = 0; i < world_size; i++)
+                {
+                    upcxx::rget(global_ptrs.at(i), &result.data()[i * nums_per_rank], nums_per_rank, upcxx::operation_cx::as_promise(p));
+                }
+
+                // Wait for all operations to finish
+                p.finalize().wait();
+            }
         }
     }
 
@@ -71,6 +96,11 @@ public:
         //     }
         //     std::cout << std::endl;
         // }
+
+        if (gather_settings->measure_fetch && world_rank == 0)
+        {
+            count = 0;
+        }
 
         // Reset result
         std::fill(result.begin(), result.end(), 0);
