@@ -73,6 +73,11 @@ void benchmark_timer::print_times()
     }
 }
 
+void benchmark_timer::reset_times()
+{
+    m_times.clear();
+}
+
 double benchmark_timer::get_average_time()
 {
     return std::accumulate(m_times.begin(), m_times.end(), 0.0) / m_times.size();

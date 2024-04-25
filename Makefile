@@ -51,6 +51,13 @@ LIB_SOURCES := $(wildcard $(LIB_DIR)/*.cpp)
 # Get list of lib object files
 LIB_OBJECTS = $(addprefix $(OBJ_DIR)/, $(notdir $(LIB_SOURCES:.cpp=.o)))
 
+# Filter out the object files that start with upcxx
+MPI_LIB_OBJECTS = $(filter-out $(OBJ_DIR)/upcxx%, $(LIB_OBJECTS))
+UPCXX_LIB_OBJECTS = $(filter-out $(OBJ_DIR)/mpi%, $(LIB_OBJECTS))
+
+upcxx%: LINK_OBJECTS = $(UPCXX_LIB_OBJECTS)
+mpi%: LINK_OBJECTS = $(MPI_LIB_OBJECTS)
+
 # Get list of executable names
 EXE_NAMES := $(basename $(notdir $(SOURCES)))
 
@@ -69,7 +76,7 @@ $(EXE_NAMES): %: $(LIB_OBJECTS)
 	file=$$(find $(SRC_DIR) -name $$target.cpp); \
 	build_file=$(BUILD_DIR)/$$(dirname $$file | sed "s|$(SRC_DIR)/||")/$@; \
 	mkdir -p $$(dirname $$build_file); \
-	$(CXX) $(CXXFLAGS) -o $$build_file $$file $(LIB_OBJECTS); \
+	$(CXX) $(CXXFLAGS) -o $$build_file $$file $(LINK_OBJECTS); \
 	mv -f $(OBJ_DIR)/$$target.Td $(OBJ_DIR)/$$target.d && touch $$build_file;
 
 # Rule to clean the build and object directories

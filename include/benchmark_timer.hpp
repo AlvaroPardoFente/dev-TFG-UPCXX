@@ -33,6 +33,8 @@ public:
 
     void print_times();
 
+    void reset_times();
+
     double get_average_time();
 
     double get_min_time();

@@ -1,139 +1,59 @@
 #include <upcxx/upcxx.hpp>
-#include <benchmark_settings.hpp>
-#include <benchmark_timer.hpp>
+#include <upcxx_benchmark_scheme.hpp>
 #include <iostream>
-#include <chrono>
-#include <numeric>
 
-// warmup executions
-constexpr uint32_t warmup_repetitions = 10;
-
-int main(int argc, char *argv[])
+class UpcxxRpcDistObject : public UpcxxBenchmarkScheme
 {
-    // Init default values
-    uint32_t number_count = 1024;
-    uint reps = 1;
-
-    // Handle Input
-    settings::benchmark_settings settings = settings::parse_settings(argc, const_cast<const char **>(argv));
-    if (settings.value.has_value())
-    {
-        if (settings.isByteValue)
-        {
-            number_count = settings.value.value();
-        }
-        else
-        {
-            number_count = settings.value.value();
-        }
-    }
-
-    if (settings.repetitions.has_value())
-    {
-        reps = settings.repetitions.value();
-    }
-
-    // UPCXX Initialization
-    upcxx::init();
-
-    int world_rank, world_size;
-    world_size = upcxx::rank_n();
-    world_rank = upcxx::rank_me();
-
-    if (world_size != 2)
-    {
-        if (world_rank == 0)
-        {
-            std::cerr << "This benchmark must be run with 2 processes" << std::endl;
-        }
-        upcxx::finalize();
-        return 1;
-    }
-
-    // Clocks
-    benchmark_timer timer;
-    if (world_rank == 0)
-    {
-        timer.reserve(reps);
-        timer.set_settings(&settings);
-    }
-
-    upcxx::dist_object<upcxx::global_ptr<uint32_t>> value_g(upcxx::new_array<uint32_t>(number_count));
-    uint32_t *value = value_g->local();
-
-    if (world_rank == 1)
-    {
-        for (uint32_t i = 0; i < number_count; i++)
-        {
-            value[i] = i;
-        }
-    }
-    else if (world_rank == 0)
-    {
-        for (uint32_t i = 0; i < number_count; i++)
-        {
-            value[i] = 0;
-        }
-    }
+public:
+    upcxx::dist_object<upcxx::global_ptr<uint32_t>> value_g;
+    uint32_t *value;
 
     // Counter as a dist object
-    upcxx::dist_object<uint32_t> count(0);
+    upcxx::dist_object<uint32_t> count;
 
     // Root pointer
-    upcxx::global_ptr<uint32_t> root_ptr = value_g.fetch(0).wait();
+    upcxx::global_ptr<uint32_t> root_ptr;
 
-    // Warmup
-    if (settings.warmup)
+    void init(int argc, char *argv[]) override
     {
-        for (uint32_t i = 0; i < warmup_repetitions; i++)
+        UpcxxBenchmarkScheme::init(argc, argv);
+
+        if (world_size != 2)
         {
-            upcxx::barrier();
-
-            if (world_rank == 1)
-            {
-                for (uint32_t i = 0; i < number_count; i++)
-                {
-                    upcxx::rput(value[i], root_ptr + i, upcxx::remote_cx::as_rpc([](upcxx::dist_object<uint32_t> &count)
-                                                                                 { (*count)++; },
-                                                                                 count));
-                }
-            }
-
-            // Check for completion
             if (world_rank == 0)
             {
-                while (*count < number_count)
-                {
-                    upcxx::progress();
-                }
-
-                *count = 0;
+                std::cerr << "This benchmark must be run with 2 processes" << std::endl;
             }
-
-            if (world_rank == 0)
-            {
-                auto *value_l = value_g->local();
-                for (uint32_t i = 0; i < number_count; i++)
-                {
-                    value_l[i] = 0;
-                }
-            }
+            upcxx::finalize();
+            std::exit(1);
         }
-    }
 
-    // Benchmark
-    for (uint rep = 0; rep < reps; ++rep)
-    {
+        value_g = upcxx::dist_object<upcxx::global_ptr<uint32_t>>(upcxx::new_array<uint32_t>(number_count));
+        value = value_g->local();
 
-        // Sync all nodes
-        upcxx::barrier();
-
-        // Start clock
-        if (world_rank == 0)
+        if (world_rank == 1)
         {
-            timer.start();
+            for (uint32_t i = 0; i < number_count; i++)
+            {
+                value[i] = i + 1;
+            }
+        }
+        else if (world_rank == 0)
+        {
+            for (uint32_t i = 0; i < number_count; i++)
+            {
+                value[i] = 0;
+            }
         }
 
+        root_ptr = value_g.fetch(0).wait();
+
+        // Counter as a dist object
+        count = upcxx::dist_object<uint32_t>(0);
+    };
+
+    void benchmark_body() override
+    {
         // Perform rput for every value, increasing counter with rpc
         if (world_rank == 1)
         {
@@ -155,43 +75,35 @@ int main(int argc, char *argv[])
 
             *count = 0;
         }
+    }
 
-        // End clock
+    void reset_result() override
+    {
+        // // Print result
+        // if (world_rank == 0)
+        // {
+        //     for (int i = 0; i < number_count; i++)
+        //     {
+        //         std::cout << value_g->local()[i] << " ";
+        //     }
+        //     std::cout << std::endl;
+        // }
+
+        // Reset result
         if (world_rank == 0)
         {
-            timer.stop();
-            timer.add_time();
-        }
-
-        if (world_rank == 0)
-        {
-            // // Print result
-            // if (world_rank == 0)
-            // {
-            //     for (int i = 0; i < number_count; i++)
-            //     {
-            //         std::cout << value_g->local()[i] << " ";
-            //     }
-            //     std::cout << std::endl;
-            // }
-
-            // Reset result
-            if (world_rank == 0)
+            auto *value_l = value_g->local();
+            for (uint32_t i = 0; i < number_count; i++)
             {
-                auto *value_l = value_g->local();
-                for (uint32_t i = 0; i < number_count; i++)
-                {
-                    value_l[i] = 0;
-                }
+                value_l[i] = 0;
             }
         }
     }
+};
 
-    // Done
-    if (world_rank == 0)
-    {
-        timer.print_times();
-    }
-
-    upcxx::finalize();
+int main(int argc, char *argv[])
+{
+    UpcxxRpcDistObject test;
+    test.run(argc, argv);
+    return 0;
 }
