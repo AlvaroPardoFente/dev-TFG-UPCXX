@@ -11,6 +11,19 @@ void MpiBenchmarkScheme::init(int argc, char *argv[])
     BenchmarkScheme::init(argc, argv);
 }
 
+void MpiBenchmarkScheme::join_results()
+{
+    barrier();
+    if (world_rank == 0)
+    {
+        MPI_Reduce(MPI_IN_PLACE, timer.m_times.data(), timer.m_times.size(), MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
+    }
+    else
+    {
+        MPI_Reduce(timer.m_times.data(), NULL, timer.m_times.size(), MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
+    }
+}
+
 void MpiBenchmarkScheme::barrier()
 {
     MPI_Barrier(MPI_COMM_WORLD);

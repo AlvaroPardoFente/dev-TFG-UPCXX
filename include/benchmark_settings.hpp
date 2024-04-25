@@ -27,6 +27,7 @@ namespace settings
         std::optional<u_int32_t> repetitions;
         bool warmup{true};
         std::optional<u_int32_t> warmup_repetitions;
+        bool measure_max_time{false};
     };
 
     typedef std::function<void(benchmark_settings &)> NoArgHandle;

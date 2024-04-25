@@ -11,6 +11,13 @@ void UpcxxBenchmarkScheme::init(int argc, char *argv[])
     BenchmarkScheme::init(argc, argv);
 }
 
+void UpcxxBenchmarkScheme::join_results()
+{
+    barrier();
+
+    upcxx::reduce_one(timer.m_times.data(), timer.m_times.data(), timer.m_times.size(), upcxx::op_fast_max, 0).wait();
+}
+
 void UpcxxBenchmarkScheme::barrier()
 {
     upcxx::barrier();

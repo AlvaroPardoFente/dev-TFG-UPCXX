@@ -9,6 +9,7 @@ public:
     virtual ~UpcxxBenchmarkScheme() = default;
 
     virtual void init(int argc, char *argv[]) override;
+    virtual void join_results() override;
     void barrier() override;
     void finalize() override;
 };

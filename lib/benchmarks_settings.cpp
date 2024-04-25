@@ -47,6 +47,7 @@ const std::unordered_map<std::string, settings::NoArgHandle> settings::NoArgs{
     S("-q", o_mode, settings::output_mode::quiet),
 
     S("--no-warmup", warmup, false),
+    S("--max-time", measure_max_time, true),
 };
 #undef S
 
