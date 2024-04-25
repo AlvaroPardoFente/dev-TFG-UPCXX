@@ -2,7 +2,7 @@
 
 void BenchmarkScheme::init(int argc, char *argv[])
 {
-    settings = settings::parse_settings(argc, const_cast<const char **>(argv));
+    settings.parse_settings(argc, const_cast<const char **>(argv));
     if (settings.value.has_value())
     {
         if (settings.isByteValue)

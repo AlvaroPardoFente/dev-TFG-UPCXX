@@ -14,7 +14,7 @@ public:
     int world_size, world_rank;
 
     // Settings based on args
-    settings::benchmark_settings settings;
+    BenchmarkSettings settings;
 
     // Timer wrapper with time measurements
     benchmark_timer timer;
