@@ -2,7 +2,7 @@
 #include <upcxx_benchmark_scheme.hpp>
 #include <iostream>
 
-class UpcxxReduceArray : public UpcxxBenchmarkScheme
+class UpcxxReduceOne : public UpcxxBenchmarkScheme
 {
 public:
     std::vector<uint32_t> value;
@@ -20,7 +20,10 @@ public:
         }
 
         // Result vector
-        result.resize(number_count / world_size);
+        if (world_rank == 0)
+        {
+            result.resize(number_count / world_size);
+        }
     };
 
     void benchmark_body() override
@@ -50,7 +53,7 @@ public:
 
 int main(int argc, char *argv[])
 {
-    UpcxxReduceArray test;
+    UpcxxReduceOne test;
     test.run(argc, argv);
     return 0;
 }
