@@ -14,13 +14,14 @@ public:
     int world_size, world_rank;
 
     // Settings based on args
-    BenchmarkSettings settings;
+    BenchmarkSettings *settings;
 
     // Timer wrapper with time measurements
     benchmark_timer timer;
 
-    BenchmarkScheme() = default;
-    virtual ~BenchmarkScheme() = default;
+    BenchmarkScheme() : settings(new BenchmarkSettings()){};
+    BenchmarkScheme(BenchmarkSettings *settings) : settings(settings) {}
+    virtual ~BenchmarkScheme();
 
     // Initialize all data needed
     virtual void init(int argc, char *argv[]);

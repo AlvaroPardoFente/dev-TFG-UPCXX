@@ -6,6 +6,7 @@ class MpiBenchmarkScheme : public BenchmarkScheme
 {
 public:
     MpiBenchmarkScheme() = default;
+    MpiBenchmarkScheme(BenchmarkSettings *settings) : BenchmarkScheme(settings){};
     virtual ~MpiBenchmarkScheme() = default;
 
     virtual void init(int argc, char *argv[]) override;
