@@ -2,13 +2,15 @@
 #include <upcxx_benchmark_scheme.hpp>
 #include <iostream>
 
+bool received_flag = false;
+
 class UpcxxPingPongRpc : public UpcxxBenchmarkScheme
 {
 public:
     int neighbor_rank;
     upcxx::dist_object<uint32_t> ping_pong_object;
     // Flag to check if the message was received
-    upcxx::dist_object<bool> received_flag;
+    // upcxx::dist_object<bool> received_flag;
 
     void init(int argc, char *argv[]) override
     {
@@ -28,7 +30,7 @@ public:
 
         ping_pong_object = upcxx::dist_object<uint32_t>(0);
 
-        received_flag = upcxx::dist_object<bool>(false);
+        // received_flag = upcxx::dist_object<bool>(false);
     };
 
     void benchmark_body() override
@@ -40,21 +42,21 @@ public:
             {
                 (*ping_pong_object)++;
                 upcxx::rpc(
-                    neighbor_rank, [](const uint32_t &value, upcxx::dist_object<uint32_t> &ping_pong_object, upcxx::dist_object<bool> &received_flag)
+                    neighbor_rank, [](const uint32_t &value, upcxx::dist_object<uint32_t> &ping_pong_object, bool &received_flag)
                     {
                         *ping_pong_object = value;
-                        *received_flag = true; },
+                        received_flag = true; },
                     *ping_pong_object, ping_pong_object, received_flag)
                     .wait();
             }
             else
             {
-                while (!*received_flag)
+                while (!received_flag)
                 {
                     upcxx::progress();
                 }
 
-                *received_flag = false;
+                received_flag = false;
             }
 
             // std::cout << "Rank " << world_rank << " object:" << *ping_pong_object << std::endl;
