@@ -46,7 +46,7 @@ void BenchmarkScheme::run_benchmark(bool use_barrier)
     }
 
     // Start clock
-    if (world_rank == 0 || settings.measure_max_time)
+    if (world_rank == 0 || settings->measure_max_time)
     {
         timer.start();
     }
@@ -54,7 +54,7 @@ void BenchmarkScheme::run_benchmark(bool use_barrier)
     benchmark_body();
 
     // End clock
-    if (world_rank == 0 || settings.measure_max_time)
+    if (world_rank == 0 || settings->measure_max_time)
     {
         timer.stop();
         timer.add_time();
@@ -90,7 +90,7 @@ void BenchmarkScheme::run(int argc, char *argv[])
         run_benchmark();
     }
 
-    if (settings.measure_max_time)
+    if (settings->measure_max_time)
     {
         // if (world_rank)
         // {
