@@ -1,35 +1,40 @@
 #include <benchmark_scheme.hpp>
 #include <iostream>
 
+BenchmarkScheme::~BenchmarkScheme()
+{
+    delete settings;
+}
+
 void BenchmarkScheme::init(int argc, char *argv[])
 {
-    settings = settings::parse_settings(argc, const_cast<const char **>(argv));
-    if (settings.value.has_value())
+    settings->parse_settings(argc, const_cast<const char **>(argv));
+    if (settings->value.has_value())
     {
-        if (settings.isByteValue)
+        if (settings->isByteValue)
         {
-            number_count = settings.value.value();
+            number_count = settings->value.value();
         }
         else
         {
-            number_count = settings.value.value();
+            number_count = settings->value.value();
         }
     }
 
-    if (settings.repetitions.has_value())
+    if (settings->repetitions.has_value())
     {
-        reps = settings.repetitions.value();
+        reps = settings->repetitions.value();
     }
 
-    if (settings.warmup_repetitions.has_value())
+    if (settings->warmup_repetitions.has_value())
     {
-        warmup_repetitions = settings.warmup_repetitions.value();
+        warmup_repetitions = settings->warmup_repetitions.value();
     }
 
     if (world_rank == 0)
     {
         timer.reserve(reps);
-        timer.set_settings(&settings);
+        timer.set_settings(settings);
     }
 }
 
@@ -71,7 +76,7 @@ void BenchmarkScheme::run(int argc, char *argv[])
 
     init(argc, argv);
 
-    if (settings.warmup)
+    if (settings->warmup)
     {
         for (uint32_t i = 0; i < warmup_repetitions; i++)
         {

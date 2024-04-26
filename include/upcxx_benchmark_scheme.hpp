@@ -6,6 +6,7 @@ class UpcxxBenchmarkScheme : public BenchmarkScheme
 {
 public:
     UpcxxBenchmarkScheme() = default;
+    UpcxxBenchmarkScheme(BenchmarkSettings *settings) : BenchmarkScheme(settings){};
     virtual ~UpcxxBenchmarkScheme() = default;
 
     virtual void init(int argc, char *argv[]) override;

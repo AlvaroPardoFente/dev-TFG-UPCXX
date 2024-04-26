@@ -11,15 +11,15 @@ private:
     // Start and end timepoints
     std::chrono::high_resolution_clock::time_point m_start, m_end;
 
-    settings::benchmark_settings *m_settings;
+    BenchmarkSettings *m_settings;
 
 public:
     std::vector<double> m_times;
 
-    benchmark_timer(settings::benchmark_settings *p_settings = nullptr);
-    benchmark_timer(const int32_t p_size, settings::benchmark_settings *p_settings = nullptr);
+    benchmark_timer(BenchmarkSettings *p_settings = nullptr);
+    benchmark_timer(const int32_t p_size, BenchmarkSettings *p_settings = nullptr);
 
-    void set_settings(settings::benchmark_settings *p_settings);
+    void set_settings(BenchmarkSettings *p_settings);
 
     void reserve(const int32_t p_size);
 

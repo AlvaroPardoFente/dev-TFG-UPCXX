@@ -4,17 +4,17 @@
 #include <iostream>
 #include <numeric>
 
-benchmark_timer::benchmark_timer(settings::benchmark_settings *p_settings)
+benchmark_timer::benchmark_timer(BenchmarkSettings *p_settings)
 {
     m_settings = p_settings;
 }
-benchmark_timer::benchmark_timer(const int32_t p_size, settings::benchmark_settings *p_settings)
+benchmark_timer::benchmark_timer(const int32_t p_size, BenchmarkSettings *p_settings)
 {
     m_times.reserve(p_size);
     m_settings = p_settings;
 }
 
-void benchmark_timer::set_settings(settings::benchmark_settings *p_settings)
+void benchmark_timer::set_settings(BenchmarkSettings *p_settings)
 {
     m_settings = p_settings;
 }
@@ -43,7 +43,7 @@ void benchmark_timer::add_time()
 
 void benchmark_timer::print_times()
 {
-    if (m_settings->o_mode == settings::output_mode::none)
+    if (m_settings->o_mode == BenchmarkSettings::OutputMode::none)
     {
         if (m_settings->raw_value)
             std::cout << "Count: " << m_settings->raw_value.value() << std::endl;
@@ -61,7 +61,7 @@ void benchmark_timer::print_times()
             std::cout << std::endl;
         }
     }
-    else if (m_settings->o_mode == settings::output_mode::quiet)
+    else if (m_settings->o_mode == BenchmarkSettings::OutputMode::quiet)
     {
         if (!m_times.empty())
         {
