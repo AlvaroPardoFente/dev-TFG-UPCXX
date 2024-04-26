@@ -1,5 +1,6 @@
 #include <upcxx/upcxx.hpp>
 #include <upcxx_benchmark_scheme.hpp>
+#include <ping_pong_settings.hpp>
 #include <iostream>
 
 bool received_flag = false;
@@ -7,17 +8,22 @@ bool received_flag = false;
 class UpcxxPingPongRput : public UpcxxBenchmarkScheme
 {
 public:
+    PingPongSettings *ping_pong_settings;
+
+    uint32_t block_size{1};
+
     int neighbor_rank;
     upcxx::dist_object<upcxx::global_ptr<uint32_t>> global_ping_pong_object;
-    uint32_t *ping_pong_value;
+    uint32_t *ping_pong_values;
     upcxx::global_ptr<uint32_t> neighbor_ping_pong_ptr;
 
-    // Flag to check if the message was received
-    // upcxx::dist_object<bool> received_flag;
+    UpcxxPingPongRput() : UpcxxBenchmarkScheme(ping_pong_settings = new PingPongSettings()) {}
 
     void init(int argc, char *argv[]) override
     {
         UpcxxBenchmarkScheme::init(argc, argv);
+
+        block_size = ping_pong_settings->block_size.has_value() ? ping_pong_settings->block_size.value() : 1;
 
         if (world_size != 2)
         {
@@ -31,11 +37,9 @@ public:
 
         neighbor_rank = (world_rank + 1) % 2;
 
-        global_ping_pong_object = upcxx::dist_object<upcxx::global_ptr<uint32_t>>(upcxx::new_<uint32_t>(0));
-        ping_pong_value = global_ping_pong_object->local();
+        global_ping_pong_object = upcxx::dist_object<upcxx::global_ptr<uint32_t>>(upcxx::new_array<uint32_t>(block_size));
+        ping_pong_values = global_ping_pong_object->local();
         neighbor_ping_pong_ptr = global_ping_pong_object.fetch(neighbor_rank).wait();
-
-        // received_flag = upcxx::dist_object<bool>(false);
     };
 
     void benchmark_body() override
@@ -44,9 +48,9 @@ public:
         {
             if (world_rank == i % 2)
             {
-                (*ping_pong_value)++;
-                upcxx::rput(*ping_pong_value, neighbor_ping_pong_ptr, upcxx::remote_cx::as_rpc([]()
-                                                                                               { received_flag = true; }));
+                ping_pong_values[0]++;
+                upcxx::rput(ping_pong_values, neighbor_ping_pong_ptr, block_size, upcxx::remote_cx::as_rpc([]()
+                                                                                                           { received_flag = true; }));
             }
             else
             {
@@ -62,8 +66,14 @@ public:
 
     void reset_result() override
     {
+        // std::cout << "Final values: " << std::endl;
+        // for (size_t i = 0; i < block_size; i++)
+        // {
+        //     std::cout << ping_pong_values[i] << ", ";
+        // }
+        // std::cout << std::endl;
         // Reset counter
-        (*ping_pong_value) = 0;
+        ping_pong_values[0] = 0;
     }
 };
 
