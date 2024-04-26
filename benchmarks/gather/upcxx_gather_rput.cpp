@@ -1,6 +1,7 @@
 #include <upcxx/upcxx.hpp>
 #include <upcxx_benchmark_scheme.hpp>
 #include <iostream>
+#include <algorithm>
 
 // Count for remote completions
 int count = 0;
@@ -40,8 +41,24 @@ public:
 
     void benchmark_body() override
     {
-        upcxx::rput(value, root_ptr + world_rank * nums_per_rank, nums_per_rank, upcxx::remote_cx::as_rpc([]()
-                                                                                                          { count++; }));
+        if (world_rank != 0)
+        {
+            upcxx::rput(value, root_ptr + world_rank * nums_per_rank, nums_per_rank, upcxx::remote_cx::as_rpc([]()
+                                                                                                              { count++; }));
+        }
+        else
+        {
+            std::copy(value, value + nums_per_rank, result.local());
+        }
+
+        if (world_rank == 0)
+        {
+            // Wait for completion
+            while (count < world_size - 1)
+            {
+                upcxx::progress();
+            }
+        }
     }
 
     void reset_result() override
