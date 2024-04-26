@@ -42,11 +42,11 @@ public:
             {
                 (*ping_pong_object)++;
                 upcxx::rpc(
-                    neighbor_rank, [](const uint32_t &value, upcxx::dist_object<uint32_t> &ping_pong_object, bool &received_flag)
+                    neighbor_rank, [](const uint32_t &value, upcxx::dist_object<uint32_t> &ping_pong_object)
                     {
                         *ping_pong_object = value;
                         received_flag = true; },
-                    *ping_pong_object, ping_pong_object, received_flag)
+                    *ping_pong_object, ping_pong_object)
                     .wait();
             }
             else

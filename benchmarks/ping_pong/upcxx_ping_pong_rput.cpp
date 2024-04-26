@@ -45,9 +45,8 @@ public:
             if (world_rank == i % 2)
             {
                 (*ping_pong_value)++;
-                upcxx::rput(*ping_pong_value, neighbor_ping_pong_ptr, upcxx::remote_cx::as_rpc([](bool &received_flag)
-                                                                                               { received_flag = true; },
-                                                                                               received_flag));
+                upcxx::rput(*ping_pong_value, neighbor_ping_pong_ptr, upcxx::remote_cx::as_rpc([]()
+                                                                                               { received_flag = true; }));
             }
             else
             {
