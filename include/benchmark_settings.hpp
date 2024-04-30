@@ -52,6 +52,7 @@ public:
     std::optional<u_int32_t> repetitions;
     bool warmup{true};
     std::optional<u_int32_t> warmup_repetitions;
+    bool measure_max_time{false};
 
     typedef std::function<void(BenchmarkSettings &)> NoArgHandle;
 // No argument flag behavior
@@ -72,6 +73,7 @@ public:
         S("-q", o_mode, BenchmarkSettings::OutputMode::quiet),
 
         S("--no-warmup", warmup, false),
+        S("--max-time", measure_max_time, true),
     };
 #undef S
 
