@@ -2,7 +2,7 @@
 #include <mpi_benchmark_scheme.hpp>
 #include <iostream>
 
-class MpiReduceArray : public MpiBenchmarkScheme
+class MpiReduceOne : public MpiBenchmarkScheme
 {
 public:
     std::vector<uint32_t> value;
@@ -20,7 +20,10 @@ public:
         }
 
         // Result vector
-        result.resize(number_count / world_size);
+        if (world_rank == 0)
+        {
+            result.resize(number_count / world_size);
+        }
     };
 
     void benchmark_body() override
@@ -46,7 +49,7 @@ public:
 
 int main(int argc, char *argv[])
 {
-    MpiReduceArray test;
+    MpiReduceOne test;
     test.run(argc, argv);
     return 0;
 }

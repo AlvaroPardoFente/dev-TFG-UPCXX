@@ -38,6 +38,8 @@ public:
     // Wrapper for benchmark body with measurements
     virtual void run_benchmark(bool use_barrier = true);
 
+    virtual void join_results() = 0;
+
     virtual void print_results();
 
     virtual void finalize() = 0;
