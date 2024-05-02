@@ -2,7 +2,7 @@
 #include <upcxx_benchmark_scheme.hpp>
 #include <iostream>
 
-class UpcxxRpc : public UpcxxBenchmarkScheme
+class UpcxxRpcFf : public UpcxxBenchmarkScheme
 {
 public:
     void init(int argc, char *argv[]) override
@@ -47,7 +47,7 @@ public:
 
 int main(int argc, char *argv[])
 {
-    UpcxxRpc test;
+    UpcxxRpcFf test;
     test.run(argc, argv);
     return 0;
 }

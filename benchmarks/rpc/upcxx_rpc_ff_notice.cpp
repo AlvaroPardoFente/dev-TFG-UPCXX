@@ -4,7 +4,7 @@
 
 uint32_t count = 0;
 
-class UpcxxRpc : public UpcxxBenchmarkScheme
+class UpcxxRpcFfNotice : public UpcxxBenchmarkScheme
 {
 public:
     void init(int argc, char *argv[]) override
@@ -51,7 +51,7 @@ public:
 
 int main(int argc, char *argv[])
 {
-    UpcxxRpc test;
+    UpcxxRpcFfNotice test;
     test.run(argc, argv);
     return 0;
 }
