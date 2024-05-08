@@ -14,19 +14,11 @@ public:
     // Root pointer
     upcxx::global_ptr<uint32_t> root_ptr;
 
+    UpcxxRpcGlobalVar() : UpcxxBenchmarkScheme(2) {}
+
     void init(int argc, char *argv[]) override
     {
         UpcxxBenchmarkScheme::init(argc, argv);
-
-        if (world_size != 2)
-        {
-            if (world_rank == 0)
-            {
-                std::cerr << "This benchmark must be run with 2 processes" << std::endl;
-            }
-            upcxx::finalize();
-            std::exit(1);
-        }
 
         value_g = upcxx::dist_object<upcxx::global_ptr<uint32_t>>(upcxx::new_array<uint32_t>(number_count));
         value = value_g->local();
