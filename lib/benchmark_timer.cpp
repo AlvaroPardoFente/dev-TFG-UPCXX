@@ -4,59 +4,83 @@
 #include <iostream>
 #include <numeric>
 
-benchmark_timer::benchmark_timer(BenchmarkSettings *p_settings)
+BenchmarkTimer::BenchmarkTimer(BenchmarkSettings *p_settings)
 {
     m_settings = p_settings;
+
+    m_times[TIMER_END] = std::vector<double>();
 }
-benchmark_timer::benchmark_timer(const int32_t p_size, BenchmarkSettings *p_settings)
+BenchmarkTimer::BenchmarkTimer(const int32_t p_size, BenchmarkSettings *p_settings)
+    : BenchmarkTimer(p_settings)
 {
-    m_times.reserve(p_size);
+    m_times.at(TIMER_END).reserve(p_size);
+}
+
+void BenchmarkTimer::set_settings(BenchmarkSettings *p_settings)
+{
     m_settings = p_settings;
 }
 
-void benchmark_timer::set_settings(BenchmarkSettings *p_settings)
+void BenchmarkTimer::add_time_point(const std::string &p_name)
 {
-    m_settings = p_settings;
+    m_times.insert(std::make_pair(p_name, std::vector<double>(m_times.at(TIMER_END).capacity())));
 }
 
-void benchmark_timer::reserve(const int32_t p_size)
+void BenchmarkTimer::reserve(const int32_t p_size)
 {
-    m_times.reserve(p_size);
+    for (auto &time_point : m_times)
+    {
+        time_point.second.reserve(p_size);
+    }
 }
 
 // Start the timer
-void benchmark_timer::start()
+void BenchmarkTimer::start()
 {
     m_start = std::chrono::high_resolution_clock::now();
 }
 
 // Stop the timer
-void benchmark_timer::stop()
+void BenchmarkTimer::stop()
 {
     m_end = std::chrono::high_resolution_clock::now();
 }
 
-void benchmark_timer::add_time()
+void BenchmarkTimer::add_time(std::string p_time_point)
 {
-    m_times.push_back(std::chrono::duration<double>(m_end - m_start).count());
+    double duration = std::chrono::duration<double>(m_end - m_start).count();
+
+    if (p_time_point.empty())
+    {
+        m_times.at(TIMER_END).push_back(duration);
+    }
+    else
+    {
+        m_times.at(p_time_point).push_back(duration);
+    }
 }
 
-void benchmark_timer::print_times()
+void BenchmarkTimer::print_times()
 {
     if (m_settings->o_mode == BenchmarkSettings::OutputMode::none)
     {
         if (m_settings->raw_value)
             std::cout << "Count: " << m_settings->raw_value.value() << std::endl;
-        std::cout << "Repetitions: " << m_times.size() << std::endl;
-        std::cout << "Average time: " << this->get_average_time() << std::endl;
+        std::cout << "Repetitions: " << m_settings->repetitions.value_or(1) << std::endl;
+        std::cout << "Average times: " << this->get_average_time() << std::endl;
         std::cout << "Min time: " << this->get_min_time() << std::endl;
         std::cout << "Times:" << std::endl;
         if (!m_times.empty())
         {
-            std::cout << m_times[0];
-            for (auto it = m_times.begin() + 1; it != m_times.end(); ++it)
+            for (auto time_point : m_times)
             {
-                std::cout << ", " << *it;
+                std::cout << time_point.first << ": " << std::endl
+                          << time_point.second.at(0);
+                for (auto it = time_point.second.begin() + 1; it != time_point.second.end(); ++it)
+                {
+                    std::cout << ", " << *it;
+                }
+                std::cout << std::endl;
             }
             std::cout << std::endl;
         }
@@ -65,49 +89,61 @@ void benchmark_timer::print_times()
     {
         if (!m_times.empty())
         {
-            for (auto it = m_times.begin(); it != m_times.end(); ++it)
+            for (auto time_point : m_times)
             {
-                std::cout << m_settings->raw_value.value() << ", " << std::distance(m_times.begin(), it) + 1 << ", " << *it << std::endl;
+                for (auto it = time_point.second.begin(); it != time_point.second.end(); ++it)
+                {
+                    std::cout << m_settings->raw_value.value_or("1K") << ", "
+                              << time_point.first << ", "
+                              << std::distance(time_point.second.begin(), it) + 1 << ", "
+                              << *it
+                              << std::endl;
+                }
             }
         }
     }
 }
 
-void benchmark_timer::reset_times()
+void BenchmarkTimer::reset_times()
 {
-    m_times.clear();
+    for (auto &time_point : m_times)
+    {
+        time_point.second.clear();
+    }
 }
 
-double benchmark_timer::get_average_time()
+double BenchmarkTimer::get_average_time(std::string p_time_point)
 {
-    return std::accumulate(m_times.begin(), m_times.end(), 0.0) / m_times.size();
+    std::vector<double> time_point = m_times.at(p_time_point);
+    return std::accumulate(time_point.begin(), time_point.end(), 0.0) / time_point.size();
 }
 
-double benchmark_timer::get_min_time()
+double BenchmarkTimer::get_min_time(std::string p_time_point)
 {
-    return *std::min_element(m_times.begin(), m_times.end());
+    std::vector<double> time_point = m_times.at(p_time_point);
+    return *std::min_element(time_point.begin(), time_point.end());
 }
 
 // Get the time in seconds
-double benchmark_timer::get_time()
+double BenchmarkTimer::get_time()
 {
     return std::chrono::duration<double>(m_end - m_start).count();
 }
 
 // Get the time in miliseconds
-double benchmark_timer::get_time_ms()
+double BenchmarkTimer::get_time_ms()
 {
     return std::chrono::duration<double, std::milli>(m_end - m_start).count();
 }
 
 // Get the time in microseconds
-double benchmark_timer::get_time_us()
+double BenchmarkTimer::get_time_us()
 {
     return std::chrono::duration<double, std::micro>(m_end - m_start).count();
 }
 
 // Get the time in nanoseconds
-double benchmark_timer::get_time_ns()
+double BenchmarkTimer::get_time_ns()
 {
     return std::chrono::duration<double, std::nano>(m_end - m_start).count();
 }
