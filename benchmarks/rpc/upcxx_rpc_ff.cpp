@@ -5,19 +5,11 @@
 class UpcxxRpcFf : public UpcxxBenchmarkScheme
 {
 public:
+    UpcxxRpcFf() : UpcxxBenchmarkScheme(2) {}
+
     void init(int argc, char *argv[]) override
     {
         UpcxxBenchmarkScheme::init(argc, argv);
-
-        if (world_size != 2)
-        {
-            if (world_rank == 0)
-            {
-                std::cerr << "This benchmark must be run with 2 processes" << std::endl;
-            }
-            upcxx::finalize();
-            std::exit(1);
-        }
     };
 
     void benchmark_body() override

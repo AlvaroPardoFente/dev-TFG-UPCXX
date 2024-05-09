@@ -10,19 +10,11 @@ class UpcxxRpcPromise : public UpcxxBenchmarkScheme
     std::vector<uint32_t> result;
 
 public:
+    UpcxxRpcPromise() : UpcxxBenchmarkScheme(2) {}
+
     void init(int argc, char *argv[]) override
     {
         UpcxxBenchmarkScheme::init(argc, argv);
-
-        if (world_size != 2)
-        {
-            if (world_rank == 0)
-            {
-                std::cerr << "This benchmark must be run with 2 processes" << std::endl;
-            }
-            upcxx::finalize();
-            std::exit(1);
-        }
 
         if (world_rank == 0)
         {
