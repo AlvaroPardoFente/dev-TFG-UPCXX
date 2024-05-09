@@ -66,9 +66,23 @@ void BenchmarkTimer::print_times()
     {
         if (m_settings->raw_value)
             std::cout << "Count: " << m_settings->raw_value.value() << std::endl;
-        std::cout << "Repetitions: " << m_settings->repetitions.value_or(1) << std::endl;
-        std::cout << "Average times: " << this->get_average_time() << std::endl;
-        std::cout << "Min time: " << this->get_min_time() << std::endl;
+
+        std::cout << "Repetitions: " << m_settings->repetitions.value_or(1)
+                  << std::endl
+                  << std::endl;
+
+        std::cout << "Average times: " << std::endl;
+        for (auto time_point : m_times)
+            std::cout << time_point.first << ": " << this->get_average_time(time_point.first) << std::endl;
+        std::cout << std::endl;
+
+        std::cout << "Min times: " << std::endl;
+        for (auto time_point : m_times)
+        {
+            std::cout << time_point.first << ": " << this->get_min_time(time_point.first) << std::endl;
+        }
+        std::cout << std::endl;
+
         std::cout << "Times:" << std::endl;
         if (!m_times.empty())
         {
