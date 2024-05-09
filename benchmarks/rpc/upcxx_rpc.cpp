@@ -4,6 +4,8 @@
 
 uint32_t count = 0;
 
+constexpr const char loop_end[] = "Loop_end";
+
 class UpcxxRpcPromise : public UpcxxBenchmarkScheme
 {
     std::vector<upcxx::future<uint32_t>> fut_vector;
@@ -15,6 +17,9 @@ public:
     void init(int argc, char *argv[]) override
     {
         UpcxxBenchmarkScheme::init(argc, argv);
+
+        timer.add_time_point(loop_end);
+        timer.reserve(reps);
 
         if (world_rank == 0)
         {
@@ -33,7 +38,8 @@ public:
                                                 { return ++count; }));
             }
 
-            // Record time!!!
+            timer.stop();
+            timer.add_time(loop_end);
 
             for (uint32_t i = 0; i < number_count; i++)
             {
