@@ -2,7 +2,7 @@
 #include <upcxx_benchmark_scheme.hpp>
 #include <iostream>
 
-class UpcxxRpcFf : public UpcxxBenchmarkScheme
+class UpcxxRpcPromise : public UpcxxBenchmarkScheme
 {
 public:
     void init(int argc, char *argv[]) override
@@ -24,10 +24,15 @@ public:
     {
         if (world_rank == 0)
         {
+            // Init promise
+            upcxx::promise<> p;
+
             for (uint32_t i = 0; i < number_count; i++)
             {
-                upcxx::rpc_ff(1, []() {});
+                upcxx::rpc(1, upcxx::operation_cx::as_promise(p), []() {});
             }
+
+            p.finalize().wait();
         }
         else
         {
@@ -46,7 +51,7 @@ public:
 
 int main(int argc, char *argv[])
 {
-    UpcxxRpcFf test;
+    UpcxxRpcPromise test;
     test.run(argc, argv);
     return 0;
 }

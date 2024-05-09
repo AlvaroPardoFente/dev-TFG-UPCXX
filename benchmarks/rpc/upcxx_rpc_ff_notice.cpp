@@ -24,7 +24,6 @@ public:
 
     void benchmark_body() override
     {
-        // Perform rput for every value
         if (world_rank == 0)
         {
             for (uint32_t i = 0; i < number_count; i++)
