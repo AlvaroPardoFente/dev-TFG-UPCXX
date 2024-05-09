@@ -8,6 +8,19 @@ BenchmarkScheme::~BenchmarkScheme()
 
 void BenchmarkScheme::init(int argc, char *argv[])
 {
+    if (processes_required > 0)
+    {
+        if (world_size != processes_required)
+        {
+            if (world_rank == 0)
+            {
+                std::cerr << "This benchmark requires " << processes_required << " processes" << std::endl;
+            }
+            finalize();
+            exit(1);
+        }
+    }
+
     settings->parse_settings(argc, const_cast<const char **>(argv));
     if (settings->value.has_value())
     {

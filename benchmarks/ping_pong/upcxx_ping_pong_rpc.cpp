@@ -16,23 +16,13 @@ public:
     uint32_t *ping_pong_values;
     upcxx::dist_object<uint32_t *> ping_pong_object;
 
-    UpcxxPingPongRpc() : UpcxxBenchmarkScheme(ping_pong_settings = new PingPongSettings()) {}
+    UpcxxPingPongRpc() : UpcxxBenchmarkScheme(ping_pong_settings = new PingPongSettings(), 2) {}
 
     void init(int argc, char *argv[]) override
     {
         UpcxxBenchmarkScheme::init(argc, argv);
 
         block_size = ping_pong_settings->block_size.has_value() ? ping_pong_settings->block_size.value() : 1;
-
-        if (world_size != 2)
-        {
-            if (world_rank == 0)
-            {
-                std::cerr << "This benchmark must be run with 2 processes" << std::endl;
-            }
-            upcxx::finalize();
-            std::exit(1);
-        }
 
         neighbor_rank = (world_rank + 1) % 2;
 

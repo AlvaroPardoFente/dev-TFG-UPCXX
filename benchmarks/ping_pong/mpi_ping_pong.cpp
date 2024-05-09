@@ -13,23 +13,13 @@ public:
     std::vector<uint32_t> ping_pong_values;
     int neighbor_rank;
 
-    MpiPingPong() : MpiBenchmarkScheme(ping_pong_settings = new PingPongSettings()) {}
+    MpiPingPong() : MpiBenchmarkScheme(ping_pong_settings = new PingPongSettings(), 2) {}
 
     void init(int argc, char *argv[]) override
     {
         MpiBenchmarkScheme::init(argc, argv);
 
         block_size = ping_pong_settings->block_size.has_value() ? ping_pong_settings->block_size.value() : 1;
-
-        if (world_size != 2)
-        {
-            if (world_rank == 0)
-            {
-                std::cerr << "This benchmark must be run with 2 processes" << std::endl;
-            }
-            MPI_Finalize();
-            std::exit(1);
-        }
 
         // Int block to increase
         ping_pong_values.resize(block_size, 0);
