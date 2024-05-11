@@ -17,7 +17,7 @@ void UpcxxBenchmarkScheme::join_results()
 
     for (auto time_point_pair : timer.m_times)
     {
-        std::vector<double> time_point = time_point_pair.second;
+        std::vector<double> &time_point = time_point_pair.second;
         upcxx::reduce_one(time_point.data(), time_point.data(), time_point.size(), upcxx::op_fast_max, 0).wait();
     }
 }
