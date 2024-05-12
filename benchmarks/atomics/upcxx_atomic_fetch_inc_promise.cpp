@@ -2,7 +2,7 @@
 #include <upcxx_benchmark_scheme.hpp>
 #include <iostream>
 
-class UpcxxAtomicInc : public UpcxxBenchmarkScheme
+class UpcxxAtomicFetchIncPromise : public UpcxxBenchmarkScheme
 {
 public:
     upcxx::global_ptr<uint64_t> value;
@@ -18,15 +18,15 @@ public:
 
         root_ptr = upcxx::broadcast(value, 0).wait();
 
-        inc64 = upcxx::atomic_domain<uint64_t>({upcxx::atomic_op::inc, upcxx::atomic_op::load});
+        inc64 = upcxx::atomic_domain<uint64_t>({upcxx::atomic_op::fetch_inc, upcxx::atomic_op::load});
     };
 
     void benchmark_body() override
     {
-        upcxx::promise<> p;
+        upcxx::promise<uint64_t> p;
         for (size_t i = 0; i < number_count; i++)
         {
-            inc64.inc(root_ptr, std::memory_order_relaxed, upcxx::operation_cx::as_promise(p));
+            inc64.fetch_inc(root_ptr, std::memory_order_relaxed, upcxx::operation_cx::as_promise(p));
         }
         p.finalize().wait();
 
@@ -51,7 +51,7 @@ public:
 
 int main(int argc, char *argv[])
 {
-    UpcxxAtomicInc test;
+    UpcxxAtomicFetchIncPromise test;
     test.run(argc, argv);
     return 0;
 }
