@@ -6,25 +6,21 @@
 // Count for remote completions
 int count = 0;
 
-class UpcxxRputRegular : public UpcxxNonContiguousScheme
+constexpr size_t dim = 2;
+
+class UpcxxRputStrided : public UpcxxNonContiguousScheme
 {
 public:
     std::vector<size_t> src_vector;
     upcxx::global_ptr<size_t> dst_vector_g;
     size_t dst_size;
 
-    // uint32_t block_size{0};
-
-    // int32_t nums_per_rank;
-    // upcxx::dist_object<upcxx::global_ptr<uint32_t>> value_g;
-    // uint32_t *value;
-
-    // Iterables for non-contiguous operations
-    std::vector<size_t *> srcs;
-    std::vector<upcxx::global_ptr<size_t>> dsts;
-
-    // Result vector
-    // upcxx::global_ptr<uint32_t> result;
+    // Variables for non-contiguous operations
+    size_t *src_base;
+    upcxx::global_ptr<size_t> dst_base;
+    ptrdiff_t *src_strides;
+    ptrdiff_t *dst_strides;
+    size_t *extents;
 
     upcxx::global_ptr<size_t> root_ptr;
 
@@ -46,21 +42,32 @@ public:
         // Broadcast root ptr to all processes
         root_ptr = upcxx::broadcast(dst_vector_g, 0).wait();
 
+        // Initialize variables for non-contiguous operations
+        const ptrdiff_t elem_sz = (ptrdiff_t)sizeof(size_t);
+        src_base = src_vector.data();
+        dst_base = root_ptr + world_rank * out_inter_rank_stride;
+        src_strides = new ptrdiff_t[2]{elem_sz, elem_sz * (ptrdiff_t)in_stride};
+        dst_strides = new ptrdiff_t[2]{elem_sz, elem_sz * (ptrdiff_t)out_inter_chunk_stride};
+        extents = new size_t[2]{chunk_size, nchunks_per_rank};
+
         // std::cout << "* Rank " << world_rank << " initializes:\n";
 
-        for (size_t i = 0; i < nchunks_per_rank; i++)
-        {
-            srcs.push_back(&(src_vector[i * in_stride]));
-            dsts.push_back(root_ptr + world_rank * out_inter_rank_stride + (i * out_inter_chunk_stride));
-            // std::cout << "  srcs[" << i << "] = " << i * in_stride << " : " << i * in_stride + chunk_size - 1 << " | ";
-            // std::cout << "dsts[" << i << "] = " << world_rank * out_inter_rank_stride + (i * out_inter_chunk_stride) << " : " << (world_rank * out_inter_rank_stride + (i * out_inter_chunk_stride) + chunk_size - 1) << std::endl;
-        }
+        // for (size_t i = 0; i < nchunks_per_rank; i++)
+        // {
+        // std::cout << "  srcs[" << i << "] = " << i * in_stride << " : " << i * in_stride + chunk_size - 1 << " | ";
+        // std::cout << "dsts[" << i << "] = " << world_rank * out_inter_rank_stride + (i * out_inter_chunk_stride) << " : " << (world_rank * out_inter_rank_stride + (i * out_inter_chunk_stride) + chunk_size - 1) << std::endl;
+        // }
     };
 
     void benchmark_body() override
     {
-        upcxx::rput_regular(srcs.begin(), srcs.end(), chunk_size, dsts.begin(), dsts.end(), chunk_size, upcxx::remote_cx::as_rpc([]()
-                                                                                                                                 { count++; }));
+        upcxx::rput_strided<dim>(src_base,
+                                 src_strides,
+                                 dst_base,
+                                 dst_strides,
+                                 extents,
+                                 upcxx::remote_cx::as_rpc([]()
+                                                          { count++; }));
 
         if (world_rank == 0)
         {
@@ -96,7 +103,7 @@ public:
 
 int main(int argc, char *argv[])
 {
-    UpcxxRputRegular test;
+    UpcxxRputStrided test;
     test.run(argc, argv);
     return 0;
 }
