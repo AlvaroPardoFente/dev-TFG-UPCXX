@@ -34,7 +34,6 @@ public:
         if (world_rank == 0)
         {
             dst_size = std::max(world_size * out_inter_rank_stride, nchunks_per_rank * out_inter_chunk_stride);
-            // std::cout << "dst_size = " << dst_size << std::endl;
             dst_vector_g = upcxx::new_array<size_t>(dst_size);
             std::fill(dst_vector_g.local(), dst_vector_g.local() + dst_size, 0);
         }
@@ -49,14 +48,6 @@ public:
         src_strides = new ptrdiff_t[2]{elem_sz, elem_sz * (ptrdiff_t)in_stride};
         dst_strides = new ptrdiff_t[2]{elem_sz, elem_sz * (ptrdiff_t)out_inter_chunk_stride};
         extents = new size_t[2]{chunk_size, nchunks_per_rank};
-
-        // std::cout << "* Rank " << world_rank << " initializes:\n";
-
-        // for (size_t i = 0; i < nchunks_per_rank; i++)
-        // {
-        // std::cout << "  srcs[" << i << "] = " << i * in_stride << " : " << i * in_stride + chunk_size - 1 << " | ";
-        // std::cout << "dsts[" << i << "] = " << world_rank * out_inter_rank_stride + (i * out_inter_chunk_stride) << " : " << (world_rank * out_inter_rank_stride + (i * out_inter_chunk_stride) + chunk_size - 1) << std::endl;
-        // }
     };
 
     void benchmark_body() override

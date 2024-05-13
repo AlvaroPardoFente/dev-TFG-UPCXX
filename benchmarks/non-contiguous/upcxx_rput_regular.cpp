@@ -13,18 +13,9 @@ public:
     upcxx::global_ptr<size_t> dst_vector_g;
     size_t dst_size;
 
-    // uint32_t block_size{0};
-
-    // int32_t nums_per_rank;
-    // upcxx::dist_object<upcxx::global_ptr<uint32_t>> value_g;
-    // uint32_t *value;
-
     // Iterables for non-contiguous operations
     std::vector<size_t *> srcs;
     std::vector<upcxx::global_ptr<size_t>> dsts;
-
-    // Result vector
-    // upcxx::global_ptr<uint32_t> result;
 
     upcxx::global_ptr<size_t> root_ptr;
 
@@ -38,7 +29,6 @@ public:
         if (world_rank == 0)
         {
             dst_size = std::max(world_size * out_inter_rank_stride, nchunks_per_rank * out_inter_chunk_stride);
-            // std::cout << "dst_size = " << dst_size << std::endl;
             dst_vector_g = upcxx::new_array<size_t>(dst_size);
             std::fill(dst_vector_g.local(), dst_vector_g.local() + dst_size, 0);
         }
