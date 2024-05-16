@@ -14,13 +14,18 @@ void MpiBenchmarkScheme::init(int argc, char *argv[])
 void MpiBenchmarkScheme::join_results()
 {
     barrier();
-    if (world_rank == 0)
+    for (auto time_point_pair : timer.m_times)
     {
-        MPI_Reduce(MPI_IN_PLACE, timer.m_times.data(), timer.m_times.size(), MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
-    }
-    else
-    {
-        MPI_Reduce(timer.m_times.data(), NULL, timer.m_times.size(), MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
+        std::vector<double> &time_point = time_point_pair.second;
+
+        if (world_rank == 0)
+        {
+            MPI_Reduce(MPI_IN_PLACE, time_point.data(), time_point.size(), MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
+        }
+        else
+        {
+            MPI_Reduce(time_point.data(), NULL, time_point.size(), MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
+        }
     }
 }
 

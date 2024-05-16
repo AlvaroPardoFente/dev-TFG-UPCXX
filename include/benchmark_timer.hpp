@@ -5,7 +5,9 @@
 #include <chrono>
 #include <vector>
 
-class benchmark_timer
+constexpr const char TIMER_END[] = "End";
+
+class BenchmarkTimer
 {
 private:
     // Start and end timepoints
@@ -14,12 +16,14 @@ private:
     BenchmarkSettings *m_settings;
 
 public:
-    std::vector<double> m_times;
+    std::unordered_map<std::string, std::vector<double>> m_times;
 
-    benchmark_timer(BenchmarkSettings *p_settings = nullptr);
-    benchmark_timer(const int32_t p_size, BenchmarkSettings *p_settings = nullptr);
+    BenchmarkTimer(BenchmarkSettings *p_settings = nullptr);
+    BenchmarkTimer(const int32_t p_size, BenchmarkSettings *p_settings = nullptr);
 
     void set_settings(BenchmarkSettings *p_settings);
+
+    void add_time_point(const std::string &p_name);
 
     void reserve(const int32_t p_size);
 
@@ -29,15 +33,15 @@ public:
     // Stop the timer
     void stop();
 
-    void add_time();
+    void add_time(std::string p_time_point = TIMER_END);
 
     void print_times();
 
     void reset_times();
 
-    double get_average_time();
+    double get_average_time(std::string p_time_point = TIMER_END);
 
-    double get_min_time();
+    double get_min_time(std::string p_time_point = TIMER_END);
 
     // Get the time in seconds
     double get_time();

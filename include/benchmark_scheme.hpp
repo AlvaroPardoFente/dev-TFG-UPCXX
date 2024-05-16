@@ -17,7 +17,7 @@ public:
     BenchmarkSettings *settings;
 
     // Timer wrapper with time measurements
-    benchmark_timer timer;
+    BenchmarkTimer timer;
 
     BenchmarkScheme() : settings(new BenchmarkSettings()){};
     BenchmarkScheme(BenchmarkSettings *settings) : settings(settings) {}
