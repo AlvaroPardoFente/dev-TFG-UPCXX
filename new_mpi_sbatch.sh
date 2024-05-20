@@ -50,7 +50,7 @@ echo JOBID=$SLURM_JOB_ID
 if [[ $IS_QUIET -eq 0 ]]; then
     echo Nodes=$nodes Procs=$procs TasksPerNode=$ntaskspernode ThreadsPerTask=$threads NREPS=$NREPS $*
 else
-    echo Size, Timepoint Index, Time
+    echo Size, Timepoint, Index, Time
 fi
 
 # ulimit -s unlimited
