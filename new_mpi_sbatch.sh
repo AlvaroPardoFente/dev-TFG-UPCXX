@@ -9,8 +9,6 @@
 
 NREPS=1
 IS_QUIET=0
-declare -A arg_files
-
 for i in "$@"; do
 	case $i in
     	-n=*|--nreps=*)
@@ -24,12 +22,6 @@ for i in "$@"; do
         -q|--quiet)
             IS_QUIET=1
             shift # past argument with no value
-            ;;
-        --*=*)
-            arg_name=${i%%=*}
-            file_name=${i#*=}
-            arg_files[$arg_name]=$file_name
-            shift # past argument=value
             ;;
     	*)
         	# unknown option
@@ -71,33 +63,16 @@ if [[ $IS_QUIET -eq 1 ]]; then
     args="$args -q"
 fi
 
-# Define a function to generate all combinations of arguments
-generate_combinations() {
-    local current_combination=$1
-    shift
-    local args=("$@")
-    if [ ${#args[@]} -eq 0 ]; then
-        echo $current_combination
-    else
-        local arg=${args[0]}
-        unset args[0]
-        args=("${args[@]}")
-        while IFS= read -r value
-        do
-            generate_combinations "$current_combination $arg=$value" "${args[@]}"
-        done < "${arg_files[$arg]}"
-    fi
-}
-
-# Generate all combinations of arguments and run the command with each combination
-if [[ ${#arg_files[@]} -gt 0 ]]; then
-    while IFS= read -r combination
+if [[ -n $SIZES_FILE ]]; then
+    for size in $(cat $SIZES_FILE);
     do
-        cmd="$args $combination"
+        # Add the --value $size argument
+        cmd="$args --value $size"
         for ((i=1; i<=$NREPS; i++)); do
+            # echo srun -N $nodes -n $procs --ntasks-per-node=$ntaskspernode $cmd
             srun -N $nodes -n $procs --ntasks-per-node=$ntaskspernode $cmd
         done
-    done < <(generate_combinations "" "${!arg_files[@]}")
+    done
 else
     for ((i=1; i<=$NREPS; i++)); do
         echo srun -N $nodes -n $procs --ntasks-per-node=$ntaskspernode $args
