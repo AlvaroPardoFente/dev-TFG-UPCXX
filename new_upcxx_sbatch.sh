@@ -74,36 +74,18 @@ if [[ $IS_QUIET -eq 1 ]]; then
     args="$args -q"
 fi
 
-# Define a function to generate all combinations of arguments
-generate_combinations() {
-    local current_combination=$1
-    shift
-    local args=("$@")
-    if [ ${#args[@]} -eq 0 ]; then
-        echo $current_combination
-    else
-        local arg=${args[0]}
-        unset args[0]
-        args=("${args[@]}")
-        while IFS= read -r value
-        do
-            generate_combinations "$current_combination $arg=$value" "${args[@]}"
-        done < "${arg_files[$arg]}"
-    fi
-}
-
-# Generate all combinations of arguments and run the command with each combination
 if [[ ${#arg_files[@]} -gt 0 ]]; then
     while IFS= read -r combination
     do
         cmd="$args $combination"
         for ((i=1; i<=$NREPS; i++)); do
-            srun -N $nodes -n $procs --ntasks-per-node=$ntaskspernode $cmd
+            # echo ${HOME}/new_upcxx_202403/bin/upcxx-run -N $nodes -n $procs $cmd
+            ${HOME}/new_upcxx_202403/bin/upcxx-run -N $nodes -n $procs $cmd
         done
     done < <(generate_combinations "" "${!arg_files[@]}")
 else
     for ((i=1; i<=$NREPS; i++)); do
-        echo srun -N $nodes -n $procs --ntasks-per-node=$ntaskspernode $args
-        srun -N $nodes -n $procs --ntasks-per-node=$ntaskspernode $args
+        echo ${HOME}/new_upcxx_202403/bin/upcxx-run -N $nodes -n $procs $args
+        ${HOME}/new_upcxx_202403/bin/upcxx-run -N $nodes -n $procs $args
     done
 fi
