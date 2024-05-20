@@ -107,7 +107,7 @@ void BenchmarkTimer::print_times()
             {
                 for (auto it = time_point.second.begin(); it != time_point.second.end(); ++it)
                 {
-                    std::cout << m_settings->raw_value.value_or("1K") << ", "
+                    std::cout << m_settings->value.value_or(1024) << ", "
                               << time_point.first << ", "
                               << std::distance(time_point.second.begin(), it) + 1 << ", "
                               << *it
