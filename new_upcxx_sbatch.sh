@@ -72,7 +72,7 @@ if [[ -n $SIZES_FILE ]]; then
         # Add the --value $size argument
         cmd="$args --value $size"
         for ((i=1; i<=$NREPS; i++)); do
-            # echo ${HOME}/new_upcxx_202403/bin/upcxx-run -N $nodes -n $procs $cmd
+            echo ${HOME}/new_upcxx_202403/bin/upcxx-run -N $nodes -n $procs $cmd
             ${HOME}/new_upcxx_202403/bin/upcxx-run -N $nodes -n $procs $cmd
         done
     done
