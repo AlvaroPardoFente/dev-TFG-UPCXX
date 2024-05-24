@@ -22,14 +22,14 @@ public:
     void benchmark_body() override
     {
         upcxx::broadcast(value.data(), number_count, 0).wait();
-
-        // Check result in debug mode
-        for (size_t i = 0; i < value.size(); i++)
-            UPCXX_ASSERT(value[i] == (int)i);
     }
 
     void reset_result() override
     {
+        // Check result in debug mode
+        for (size_t i = 0; i < value.size(); i++)
+            UPCXX_ASSERT(value[i] == (int)i);
+
         // Reset result
         if (world_rank != 0)
             std::fill(value.begin(), value.end(), 0);
