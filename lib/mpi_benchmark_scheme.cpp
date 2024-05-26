@@ -16,7 +16,7 @@ void MpiBenchmarkScheme::join_results()
     barrier();
     for (auto time_point_pair : timer.m_times)
     {
-        std::vector<double> time_point = time_point_pair.second;
+        std::vector<double> &time_point = time_point_pair.second;
 
         if (world_rank == 0)
         {
