@@ -105,6 +105,10 @@ void BenchmarkTimer::print_times(int world_rank)
     {
         if (!m_times.empty())
         {
+            if (world_rank == 0 && m_settings->show_headers)
+            {
+                std::cout << "Rank, Size, Timepoint, Index, Time" << std::endl;
+            }
             for (auto time_point : m_times)
             {
                 for (auto it = time_point.second.begin(); it != time_point.second.end(); ++it)

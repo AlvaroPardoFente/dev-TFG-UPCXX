@@ -93,6 +93,7 @@ public:
     bool warmup{true};
     std::optional<u_int32_t> warmup_repetitions;
     NodeMeasurementMode measurement_mode{NodeMeasurementMode::root};
+    bool show_headers{true};
 
     typedef std::function<void(BenchmarkSettings &)> NoArgHandle;
 // No argument flag behavior
@@ -112,7 +113,8 @@ public:
         S("--quiet", o_mode, BenchmarkSettings::OutputMode::quiet),
         S("-q", o_mode, BenchmarkSettings::OutputMode::quiet),
 
-        S("--no-warmup", warmup, false)};
+        S("--no-warmup", warmup, false),
+        S("--no-headers", show_headers, false)};
 #undef S
 
     typedef std::function<void(BenchmarkSettings &, const std::string &)> OneArgHandle;
