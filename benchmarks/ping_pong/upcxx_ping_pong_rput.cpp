@@ -17,15 +17,22 @@ public:
     uint32_t *ping_pong_values;
     upcxx::global_ptr<uint32_t> neighbor_ping_pong_ptr;
 
-    UpcxxPingPongRput() : UpcxxBenchmarkScheme(ping_pong_settings = new PingPongSettings(), 2) {}
+    UpcxxPingPongRput() : UpcxxBenchmarkScheme(ping_pong_settings = new PingPongSettings()) {}
 
     void init(int argc, char *argv[]) override
     {
         UpcxxBenchmarkScheme::init(argc, argv);
 
+        if (world_size % 2 != 0 && world_rank == 0)
+        {
+            std::cerr << "This benchmark requires an even number of processes" << std::endl;
+            finalize();
+            exit(1);
+        }
+
         block_size = ping_pong_settings->block_size.has_value() ? ping_pong_settings->block_size.value() : 1;
 
-        neighbor_rank = (world_rank + 1) % 2;
+        neighbor_rank = world_rank % 2 == 0 ? world_rank + 1 : world_rank - 1;
 
         global_ping_pong_object = upcxx::dist_object<upcxx::global_ptr<uint32_t>>(upcxx::new_array<uint32_t>(block_size));
         ping_pong_values = global_ping_pong_object->local();
@@ -36,7 +43,7 @@ public:
     {
         for (uint32_t i = 0; i < number_count; i++)
         {
-            if (world_rank == i % 2)
+            if (world_rank % 2 == i % 2)
             {
                 ping_pong_values[0]++;
                 upcxx::rput(ping_pong_values, neighbor_ping_pong_ptr, block_size, upcxx::remote_cx::as_rpc([]()
