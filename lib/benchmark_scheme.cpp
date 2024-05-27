@@ -44,7 +44,7 @@ void BenchmarkScheme::init(int argc, char *argv[])
         warmup_repetitions = settings->warmup_repetitions.value();
     }
 
-    if (world_rank == 0)
+    if (world_rank == 0 || settings->measurement_mode != BenchmarkSettings::NodeMeasurementMode::root)
     {
         timer.reserve(reps);
         timer.set_settings(settings);
@@ -59,7 +59,7 @@ void BenchmarkScheme::run_benchmark(bool use_barrier)
     }
 
     // Start clock
-    if (world_rank == 0 || settings->measurement_node != BenchmarkSettings::NodeMeasurementMode::root)
+    if (world_rank == 0 || settings->measurement_mode != BenchmarkSettings::NodeMeasurementMode::root)
     {
         timer.start();
     }
@@ -67,7 +67,7 @@ void BenchmarkScheme::run_benchmark(bool use_barrier)
     benchmark_body();
 
     // End clock
-    if (world_rank == 0 || settings->measurement_node != BenchmarkSettings::NodeMeasurementMode::root)
+    if (world_rank == 0 || settings->measurement_mode != BenchmarkSettings::NodeMeasurementMode::root)
     {
         timer.stop();
         timer.add_time();
@@ -78,9 +78,9 @@ void BenchmarkScheme::run_benchmark(bool use_barrier)
 
 void BenchmarkScheme::print_results()
 {
-    if (world_rank == 0)
+    if (world_rank == 0 || settings->measurement_mode == BenchmarkSettings::NodeMeasurementMode::all)
     {
-        timer.print_times();
+        timer.print_times(world_rank);
     }
 }
 
@@ -103,7 +103,8 @@ void BenchmarkScheme::run(int argc, char *argv[])
         run_benchmark();
     }
 
-    if (settings->measurement_node != BenchmarkSettings::NodeMeasurementMode::root)
+    if (settings->measurement_mode != BenchmarkSettings::NodeMeasurementMode::root &&
+        settings->measurement_mode != BenchmarkSettings::NodeMeasurementMode::all)
     {
         // if (world_rank)
         // {

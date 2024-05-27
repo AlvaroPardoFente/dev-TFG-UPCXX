@@ -60,10 +60,12 @@ void BenchmarkTimer::add_time(std::string p_time_point)
     }
 }
 
-void BenchmarkTimer::print_times()
+void BenchmarkTimer::print_times(int world_rank)
 {
     if (m_settings->o_mode == BenchmarkSettings::OutputMode::none)
     {
+        std::cout << "Rank: " << world_rank << std::endl;
+
         if (m_settings->raw_value)
             std::cout << "Count: " << m_settings->raw_value.value() << std::endl;
 
@@ -107,7 +109,9 @@ void BenchmarkTimer::print_times()
             {
                 for (auto it = time_point.second.begin(); it != time_point.second.end(); ++it)
                 {
-                    std::cout << m_settings->raw_value.value_or("1K") << ", "
+                    // rank, size, time_point, repetition, time
+                    std::cout << world_rank << ", "
+                              << m_settings->value.value_or(1024) << ", "
                               << time_point.first << ", "
                               << std::distance(time_point.second.begin(), it) + 1 << ", "
                               << *it

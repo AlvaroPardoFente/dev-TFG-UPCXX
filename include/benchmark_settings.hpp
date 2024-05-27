@@ -92,7 +92,7 @@ public:
     std::optional<u_int32_t> repetitions;
     bool warmup{true};
     std::optional<u_int32_t> warmup_repetitions;
-    NodeMeasurementMode measurement_node{NodeMeasurementMode::root};
+    NodeMeasurementMode measurement_mode{NodeMeasurementMode::root};
 
     typedef std::function<void(BenchmarkSettings &)> NoArgHandle;
 // No argument flag behavior
@@ -176,10 +176,10 @@ public:
 
         {"--measurement-mode", [](BenchmarkSettings &s, const std::string &arg)
          {
-             s.measurement_node = parseNodeMeasurementMode(arg);
+             s.measurement_mode = parseNodeMeasurementMode(arg);
          }},
         {"-m", [](BenchmarkSettings &s, const std::string &arg)
-         { s.measurement_node = parseNodeMeasurementMode(arg); }}};
+         { s.measurement_mode = parseNodeMeasurementMode(arg); }}};
 #undef S
 
     // Parse the command line arguments

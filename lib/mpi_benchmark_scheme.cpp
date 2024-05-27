@@ -17,23 +17,24 @@ void MpiBenchmarkScheme::join_results()
 
     MPI_Op op;
 
-    switch (settings->measurement_node)
+    if (settings->measurement_mode == BenchmarkSettings::NodeMeasurementMode::max)
     {
-    case BenchmarkSettings::NodeMeasurementMode::max:
         op = MPI_MAX;
-        break;
-    case BenchmarkSettings::NodeMeasurementMode::min:
+    }
+    else if (settings->measurement_mode == BenchmarkSettings::NodeMeasurementMode::min)
+    {
         op = MPI_MIN;
-        break;
-    case BenchmarkSettings::NodeMeasurementMode::avg:
+    }
+    else if (settings->measurement_mode == BenchmarkSettings::NodeMeasurementMode::avg)
+    {
         op = MPI_SUM;
-        break;
-    default:
+    }
+    else
+    {
         throw std::runtime_error("Invalid measurement mode");
-        break;
     }
 
-    for (auto time_point_pair : timer.m_times)
+    for (auto &time_point_pair : timer.m_times)
     {
         std::vector<double> &time_point = time_point_pair.second;
 
@@ -41,7 +42,7 @@ void MpiBenchmarkScheme::join_results()
         {
             MPI_Reduce(MPI_IN_PLACE, time_point.data(), time_point.size(), MPI_DOUBLE, op, 0, MPI_COMM_WORLD);
 
-            if (settings->measurement_node == BenchmarkSettings::NodeMeasurementMode::avg)
+            if (settings->measurement_mode == BenchmarkSettings::NodeMeasurementMode::avg)
             {
                 // Compute the average
                 for (double &value : time_point)
