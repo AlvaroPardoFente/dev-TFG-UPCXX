@@ -28,6 +28,10 @@ public:
 
         block_size = ping_pong_settings->block_size.has_value() ? ping_pong_settings->block_size.value() : 1;
 
+        print_columns.clear();
+        print_columns["Iterations"] = std::to_string(number_count);
+        print_columns["Block size"] = std::to_string(block_size);
+
         // Int block to increase
         ping_pong_values.resize(block_size, 0);
 
