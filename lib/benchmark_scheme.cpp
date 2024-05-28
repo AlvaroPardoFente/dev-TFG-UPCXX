@@ -49,6 +49,11 @@ void BenchmarkScheme::init(int argc, char *argv[])
         timer.reserve(reps);
         timer.set_settings(settings);
     }
+
+    if (world_rank == 0)
+    {
+        print_columns["Size"] = std::to_string(number_count);
+    }
 }
 
 void BenchmarkScheme::run_benchmark(bool use_barrier)
@@ -80,7 +85,7 @@ void BenchmarkScheme::print_results()
 {
     if (world_rank == 0 || settings->measurement_mode == BenchmarkSettings::NodeMeasurementMode::all)
     {
-        timer.print_times(world_rank);
+        timer.print_times(world_rank, print_columns);
     }
 }
 

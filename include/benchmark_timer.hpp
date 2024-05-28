@@ -35,7 +35,7 @@ public:
 
     void add_time(std::string p_time_point = TIMER_END);
 
-    void print_times(int world_rank = 0);
+    void print_times(int world_rank = 0, std::unordered_map<std::string, std::string> p_columns = {});
 
     void reset_times();
 
