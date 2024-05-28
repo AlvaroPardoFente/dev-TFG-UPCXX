@@ -57,7 +57,6 @@ ulimit -c 0
 args=$@
 first=0
 
-
 if [[ ${#files_for_args[@]} -eq 0 ]]; then
     for ((i=1; i<=$NREPS; i++)); do
         echo ${HOME}/new_upcxx_202403/bin/upcxx-run -N $nodes -n $procs $args
@@ -74,6 +73,7 @@ else
                     first=1
                 else
                     cmd="$cmd --no-headers"
+                fi
                 # echo ${HOME}/new_upcxx_202403/bin/upcxx-run -N $nodes -n $procs $cmd
                 ${HOME}/new_upcxx_202403/bin/upcxx-run -N $nodes -n $procs $cmd
             done
