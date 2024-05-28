@@ -85,7 +85,15 @@ void BenchmarkScheme::print_results()
 {
     if (world_rank == 0 || settings->measurement_mode == BenchmarkSettings::NodeMeasurementMode::all)
     {
-        timer.print_times(world_rank, print_columns);
+        for (int i = 0; i < world_size; i++)
+        {
+            if (world_rank == i)
+            {
+                timer.print_times(world_rank, print_columns);
+            }
+
+            barrier();
+        }
     }
 }
 
