@@ -36,10 +36,9 @@ public:
 
         ping_pong_object = upcxx::dist_object<uint32_t *>(new uint32_t[block_size]);
         ping_pong_values = *ping_pong_object;
-        for (size_t i = 0; i < block_size; i++)
-        {
-            ping_pong_values[i] = 0;
-        }
+
+        // Initialize values
+        std::fill(ping_pong_values, ping_pong_values + block_size, 0);
     };
 
     void benchmark_body() override

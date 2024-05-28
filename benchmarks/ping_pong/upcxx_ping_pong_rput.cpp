@@ -41,6 +41,9 @@ public:
         global_ping_pong_object = upcxx::dist_object<upcxx::global_ptr<uint32_t>>(upcxx::new_array<uint32_t>(block_size));
         ping_pong_values = global_ping_pong_object->local();
         neighbor_ping_pong_ptr = global_ping_pong_object.fetch(neighbor_rank).wait();
+
+        // Initialize values
+        std::fill(ping_pong_values, ping_pong_values + block_size, 0);
     };
 
     void benchmark_body() override
