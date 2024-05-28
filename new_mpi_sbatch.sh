@@ -8,14 +8,18 @@
 
 
 NREPS=1
+declare -A files_for_args
+
 for i in "$@"; do
 	case $i in
     	-n=*|--nreps=*)
     		NREPS="${i#*=}"
     		shift # past argument=value
     		;;
-		--sizes=*)
-            SIZES_FILE="${i#*=}"
+		--*=*)
+            arg="${i%%=*}"
+            file="${i#*=}"
+            files_for_args[$arg]="$file"
             shift # past argument=value
             ;;
     	*)
@@ -50,24 +54,26 @@ ulimit -c 0
 args=$@
 first=0
 
-if [[ -n $SIZES_FILE ]]; then
-    for size in $(cat $SIZES_FILE);
-    do
-        # Add the --value $size argument
-        cmd="$args --value $size"
-        for ((i=1; i<=$NREPS; i++)); do
-            if [[ $first -eq 0 ]]; then
-                first=1
-            else
-                cmd="$cmd --noheader"
-            # echo srun -N $nodes -n $procs --ntasks-per-node=$ntaskspernode $cmd
-            srun -N $nodes -n $procs --ntasks-per-node=$ntaskspernode $cmd
-        done
-    done
-else
+if [[ ${#files_for_args[@]} -eq 0 ]]; then
     for ((i=1; i<=$NREPS; i++)); do
         echo srun -N $nodes -n $procs --ntasks-per-node=$ntaskspernode $args
         srun -N $nodes -n $procs --ntasks-per-node=$ntaskspernode $args
     done
+else
+    for arg in "${!files_for_args[@]}"; do
+        file="${files_for_args[$arg]}"
+        mapfile -t lines < "$file"
+        for line in "${lines[@]}"; do
+            cmd="$args $arg $line"
+            for ((i=1; i<=$NREPS; i++)); do
+                if [[ $first -eq 0 ]]; then
+                    first=1
+                else
+                    cmd="$cmd --no-headers"
+                fi
+                # echo srun -N $nodes -n $procs --ntasks-per-node=$ntaskspernode $cmd
+                srun -N $nodes -n $procs --ntasks-per-node=$ntaskspernode $cmd
+            done
+        done
+    done
 fi
-
