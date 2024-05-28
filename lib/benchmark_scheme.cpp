@@ -83,7 +83,8 @@ void BenchmarkScheme::run_benchmark(bool use_barrier)
 
 void BenchmarkScheme::print_results()
 {
-    if (world_rank == 0 || settings->measurement_mode == BenchmarkSettings::NodeMeasurementMode::all)
+
+    if (settings->measurement_mode == BenchmarkSettings::NodeMeasurementMode::all)
     {
         for (int i = 0; i < world_size; i++)
         {
@@ -94,6 +95,10 @@ void BenchmarkScheme::print_results()
 
             barrier();
         }
+    }
+    else if (world_rank == 0)
+    {
+        timer.print_times(world_rank, print_columns);
     }
 }
 
