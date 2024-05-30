@@ -13,7 +13,7 @@ endif
 
 UPCXX_THREADMODE ?= seq
 export UPCXX_THREADMODE
-UPCXX_CODEMODE ?= debug
+UPCXX_CODEMODE ?= opt
 export UPCXX_CODEMODE
 
 # MPI compiler
@@ -40,7 +40,13 @@ OPT = -O3
 DEPFLAGS= -MP -MMD -MF $(OBJ_DIR)/$*.Td
 
 # Compiler flags
-CXXFLAGS = -std=c++17 -I$(INC_DIR) $(OPT) $(DEPFLAGS)
+CXXFLAGS = -std=c++17 -I$(INC_DIR)
+ifeq ($(UPCXX_CODEMODE),debug)
+CXXFLAGS += -g
+else
+CXXFLAGS += $(OPT)
+endif
+CXXFLAGS += $(DEPFLAGS)
 
 # Find all .cpp files in the source directory
 SOURCES := $(shell find $(SRC_DIR) -name '*.cpp')

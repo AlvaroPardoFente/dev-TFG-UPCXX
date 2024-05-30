@@ -43,6 +43,46 @@ public:
         quiet
     };
 
+    // Which nodes will measure time and how
+    enum class NodeMeasurementMode
+    {
+        root,
+        all,
+        max,
+        min,
+        avg
+    };
+
+private:
+    static NodeMeasurementMode parseNodeMeasurementMode(const std::string &arg)
+    {
+        if (arg == "root")
+        {
+            return NodeMeasurementMode::root;
+        }
+        else if (arg == "all")
+        {
+            return NodeMeasurementMode::all;
+        }
+        else if (arg == "max")
+        {
+            return NodeMeasurementMode::max;
+        }
+        else if (arg == "min")
+        {
+            return NodeMeasurementMode::min;
+        }
+        else if (arg == "avg")
+        {
+            return NodeMeasurementMode::avg;
+        }
+        else
+        {
+            throw std::runtime_error{"measurement-mode must be one of root, all, max, min, avg"};
+        }
+    }
+
+public:
     // bool help{false};
     // bool verbose{false};
     OutputMode o_mode{OutputMode::none};
@@ -52,7 +92,8 @@ public:
     std::optional<u_int32_t> repetitions;
     bool warmup{true};
     std::optional<u_int32_t> warmup_repetitions;
-    bool measure_max_time{false};
+    NodeMeasurementMode measurement_mode{NodeMeasurementMode::root};
+    bool show_headers{true};
 
     typedef std::function<void(BenchmarkSettings &)> NoArgHandle;
 // No argument flag behavior
@@ -73,8 +114,7 @@ public:
         S("-q", o_mode, BenchmarkSettings::OutputMode::quiet),
 
         S("--no-warmup", warmup, false),
-        S("--max-time", measure_max_time, true),
-    };
+        S("--no-headers", show_headers, false)};
 #undef S
 
     typedef std::function<void(BenchmarkSettings &, const std::string &)> OneArgHandle;
@@ -135,7 +175,13 @@ public:
                  throw std::runtime_error{"repetitions must be a positive integer"};
              }
          }},
-    };
+
+        {"--measurement-mode", [](BenchmarkSettings &s, const std::string &arg)
+         {
+             s.measurement_mode = parseNodeMeasurementMode(arg);
+         }},
+        {"-m", [](BenchmarkSettings &s, const std::string &arg)
+         { s.measurement_mode = parseNodeMeasurementMode(arg); }}};
 #undef S
 
     // Parse the command line arguments

@@ -9,6 +9,7 @@ public:
     uint32_t number_count = 1024;
     uint32_t reps = 1;
     uint32_t warmup_repetitions = 10;
+    u_int32_t processes_required;
 
     // MPI and UPCXX world size and rank
     int world_size, world_rank;
@@ -17,10 +18,13 @@ public:
     BenchmarkSettings *settings;
 
     // Timer wrapper with time measurements
-    benchmark_timer timer;
+    BenchmarkTimer timer;
 
-    BenchmarkScheme() : settings(new BenchmarkSettings()){};
-    BenchmarkScheme(BenchmarkSettings *settings) : settings(settings) {}
+    // Additional printing columns (constants)
+    std::unordered_map<std::string, std::string> print_columns;
+
+    BenchmarkScheme(uint32_t processes = 0) : settings(new BenchmarkSettings()), processes_required(processes){};
+    BenchmarkScheme(BenchmarkSettings *settings, uint32_t processes = 0) : settings(settings), processes_required(processes) {}
     virtual ~BenchmarkScheme();
 
     // Initialize all data needed

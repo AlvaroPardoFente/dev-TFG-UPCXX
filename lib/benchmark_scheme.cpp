@@ -8,6 +8,19 @@ BenchmarkScheme::~BenchmarkScheme()
 
 void BenchmarkScheme::init(int argc, char *argv[])
 {
+    if (processes_required > 0)
+    {
+        if (world_size != processes_required)
+        {
+            if (world_rank == 0)
+            {
+                std::cerr << "This benchmark requires " << processes_required << " processes" << std::endl;
+            }
+            finalize();
+            exit(1);
+        }
+    }
+
     settings->parse_settings(argc, const_cast<const char **>(argv));
     if (settings->value.has_value())
     {
@@ -31,10 +44,15 @@ void BenchmarkScheme::init(int argc, char *argv[])
         warmup_repetitions = settings->warmup_repetitions.value();
     }
 
-    if (world_rank == 0)
+    if (world_rank == 0 || settings->measurement_mode != BenchmarkSettings::NodeMeasurementMode::root)
     {
         timer.reserve(reps);
         timer.set_settings(settings);
+    }
+
+    if (world_rank == 0)
+    {
+        print_columns["Size"] = std::to_string(number_count);
     }
 }
 
@@ -46,7 +64,7 @@ void BenchmarkScheme::run_benchmark(bool use_barrier)
     }
 
     // Start clock
-    if (world_rank == 0 || settings->measure_max_time)
+    if (world_rank == 0 || settings->measurement_mode != BenchmarkSettings::NodeMeasurementMode::root)
     {
         timer.start();
     }
@@ -54,7 +72,7 @@ void BenchmarkScheme::run_benchmark(bool use_barrier)
     benchmark_body();
 
     // End clock
-    if (world_rank == 0 || settings->measure_max_time)
+    if (world_rank == 0 || settings->measurement_mode != BenchmarkSettings::NodeMeasurementMode::root)
     {
         timer.stop();
         timer.add_time();
@@ -65,9 +83,22 @@ void BenchmarkScheme::run_benchmark(bool use_barrier)
 
 void BenchmarkScheme::print_results()
 {
-    if (world_rank == 0)
+
+    if (settings->measurement_mode == BenchmarkSettings::NodeMeasurementMode::all)
     {
-        timer.print_times();
+        for (int i = 0; i < world_size; i++)
+        {
+            if (world_rank == i)
+            {
+                timer.print_times(world_rank, print_columns);
+            }
+
+            barrier();
+        }
+    }
+    else if (world_rank == 0)
+    {
+        timer.print_times(world_rank, print_columns);
     }
 }
 
@@ -90,7 +121,8 @@ void BenchmarkScheme::run(int argc, char *argv[])
         run_benchmark();
     }
 
-    if (settings->measure_max_time)
+    if (settings->measurement_mode != BenchmarkSettings::NodeMeasurementMode::root &&
+        settings->measurement_mode != BenchmarkSettings::NodeMeasurementMode::all)
     {
         // if (world_rank)
         // {
