@@ -3,7 +3,7 @@
 #include <ping_pong_settings.hpp>
 #include <iostream>
 
-class UpcxxPingPongRputNoFlag : public UpcxxBenchmarkScheme
+class UpcxxPingPongRput : public UpcxxBenchmarkScheme
 {
 public:
     PingPongSettings *ping_pong_settings;
@@ -15,7 +15,11 @@ public:
     uint32_t *ping_pong_values;
     upcxx::global_ptr<uint32_t> neighbor_ping_pong_ptr;
 
-    UpcxxPingPongRputNoFlag() : UpcxxBenchmarkScheme(ping_pong_settings = new PingPongSettings()) {}
+    upcxx::dist_object<upcxx::global_ptr<bool>> global_received_flag;
+    bool *received_flag;
+    upcxx::global_ptr<bool> neighbor_received_flag;
+
+    UpcxxPingPongRput() : UpcxxBenchmarkScheme(ping_pong_settings = new PingPongSettings()) {}
 
     void init(int argc, char *argv[]) override
     {
@@ -35,28 +39,32 @@ public:
         global_ping_pong_object = upcxx::dist_object<upcxx::global_ptr<uint32_t>>(upcxx::new_array<uint32_t>(block_size));
         ping_pong_values = global_ping_pong_object->local();
         neighbor_ping_pong_ptr = global_ping_pong_object.fetch(neighbor_rank).wait();
+
+        global_received_flag = upcxx::dist_object<upcxx::global_ptr<bool>>(upcxx::new_array<bool>(false));
+        received_flag = global_received_flag->local();
+        neighbor_received_flag = global_received_flag.fetch(neighbor_rank).wait();
     };
 
     void benchmark_body() override
     {
-        uint32_t expected_count = 0;
-
         for (uint32_t i = 0; i < number_count; i++)
         {
-            expected_count++;
-
             if (world_rank % 2 == i % 2)
             {
                 ping_pong_values[0]++;
-                upcxx::rput(ping_pong_values, neighbor_ping_pong_ptr, block_size).wait();
+                upcxx::promise<> p;
+                upcxx::rput(ping_pong_values, neighbor_ping_pong_ptr, block_size).then([=]()
+                                                                                       { upcxx::rput(true, neighbor_received_flag, upcxx::operation_cx::as_promise(p)); });
+                p.finalize().wait();
             }
             else
             {
-                while (expected_count != (ping_pong_values[0]))
+                while (!received_flag)
                 {
                     upcxx::progress();
                 }
-                // std::cout << "Rank " << world_rank << " expected: " << expected_count << " object:" << *ping_pong_value << std::endl;
+                // std::cout << "Rank " << world_rank << " object:" << *ping_pong_value << std::endl;
+                *received_flag = false;
             }
         }
     }
@@ -76,7 +84,7 @@ public:
 
 int main(int argc, char *argv[])
 {
-    UpcxxPingPongRputNoFlag test;
+    UpcxxPingPongRput test;
     test.run(argc, argv);
     return 0;
 }

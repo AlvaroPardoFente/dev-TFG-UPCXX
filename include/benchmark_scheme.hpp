@@ -20,6 +20,9 @@ public:
     // Timer wrapper with time measurements
     BenchmarkTimer timer;
 
+    // Additional printing columns (constants)
+    std::unordered_map<std::string, std::string> print_columns;
+
     BenchmarkScheme(uint32_t processes = 0) : settings(new BenchmarkSettings()), processes_required(processes){};
     BenchmarkScheme(BenchmarkSettings *settings, uint32_t processes = 0) : settings(settings), processes_required(processes) {}
     virtual ~BenchmarkScheme();

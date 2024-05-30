@@ -60,14 +60,16 @@ void BenchmarkTimer::add_time(std::string p_time_point)
     }
 }
 
-void BenchmarkTimer::print_times(int world_rank)
+void BenchmarkTimer::print_times(int world_rank, std::unordered_map<std::string, std::string> p_columns)
 {
     if (m_settings->o_mode == BenchmarkSettings::OutputMode::none)
     {
         std::cout << "Rank: " << world_rank << std::endl;
 
-        if (m_settings->raw_value)
-            std::cout << "Count: " << m_settings->raw_value.value() << std::endl;
+        for (auto column : p_columns)
+        {
+            std::cout << column.first << ": " << column.second << std::endl;
+        }
 
         std::cout << "Repetitions: " << m_settings->repetitions.value_or(1)
                   << std::endl
@@ -107,16 +109,24 @@ void BenchmarkTimer::print_times(int world_rank)
         {
             if (world_rank == 0 && m_settings->show_headers)
             {
-                std::cout << "Rank, Size, Timepoint, Index, Time" << std::endl;
+                std::cout << "Rank, ";
+                for (auto column : p_columns)
+                {
+                    std::cout << column.first << ", ";
+                }
+                std::cout << "Timepoint, Index, Time" << std::endl;
             }
             for (auto time_point : m_times)
             {
                 for (auto it = time_point.second.begin(); it != time_point.second.end(); ++it)
                 {
                     // rank, size, time_point, repetition, time
-                    std::cout << world_rank << ", "
-                              << m_settings->value.value_or(1024) << ", "
-                              << time_point.first << ", "
+                    std::cout << world_rank << ", ";
+                    for (auto column : p_columns)
+                    {
+                        std::cout << column.second << ", ";
+                    }
+                    std::cout << time_point.first << ", "
                               << std::distance(time_point.second.begin(), it) + 1 << ", "
                               << *it
                               << std::endl;
