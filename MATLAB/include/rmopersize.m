@@ -2,7 +2,7 @@ function [output_table] = rmopersize(input_table)
 %ROMPERSIZE Removes time outliers grouped by size
 %   A table with Size and Time columns is passed. The function divides
 %   the data based on Size and removes outliers based on Time
-cleaned_data = table([], [], [], [], 'VariableNames', {'Size', 'Timepoint', 'Index', 'Time'});
+cleaned_data = table([], [], [], [], [], 'VariableNames', {'Rank', 'Size', 'Timepoint', 'Index', 'Time'});
 
 % Get unique sizes and timepoints
 unique_sizes = unique(input_table.Size);
