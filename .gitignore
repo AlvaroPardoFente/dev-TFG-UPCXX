@@ -49,3 +49,6 @@
 # Build
 build/
 obj/
+
+# Matlab autosave
+*.asv
