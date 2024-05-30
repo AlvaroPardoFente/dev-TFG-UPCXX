@@ -1,49 +1,131 @@
 %% Add common functions to the path
 
+clearvars;
 addpath("../include/")
+
+%% ----------------------PRINTING----------------------
+
+do_print = false;
 
 %% Import and process data
 
+int_size = 4;
+
 figure_position = [680 458 480 240];
 
-mpi_2n = importtable("mpi_broadcast_array_2n.csv");
-upcxx_2n = importtable("upcxx_broadcast_array_2n.csv");
+data = struct();
+clean_data = struct();
 
-mpi_4n = importtable("mpi_broadcast_array_4n.csv");
-upcxx_4n = importtable("upcxx_broadcast_array_4n.csv");
+base_path = "../../results/broadcast/"
 
-mpi_6n = importtable("mpi_broadcast_array_6n.csv");
-upcxx_6n = importtable("upcxx_broadcast_array_6n.csv");
+data.mpi_1N_2n = importtable(base_path + "mpi_broadcast_array_1N_2n");
+data.mpi_2N_4n = importtable(base_path + "mpi_broadcast_array_2N_4n");
+data.mpi_4N_8n = importtable(base_path + "mpi_broadcast_array_4N_8n");
+data.mpi_6N_12n = importtable(base_path + "mpi_broadcast_array_6N_12n");
+data.mpi_8N_16n = importtable(base_path + "mpi_broadcast_array_8N_16n");
+data.mpi_10N_20n = importtable(base_path + "mpi_broadcast_array_10N_20n");
+data.mpi_12N_24n = importtable(base_path + "mpi_broadcast_array_12N_24n");
 
-mpi_8n = importtable("mpi_broadcast_array_8n.csv");
-upcxx_8n = importtable("upcxx_broadcast_array_8n.csv");
+data.upcxx_1N_2n = importtable(base_path + "upcxx_broadcast_array_1N_2n");
+data.upcxx_2N_4n = importtable(base_path + "upcxx_broadcast_array_2N_4n");
+data.upcxx_4N_8n = importtable(base_path + "upcxx_broadcast_array_4N_8n");
+data.upcxx_6N_12n = importtable(base_path + "upcxx_broadcast_array_6N_12n");
+data.upcxx_8N_16n = importtable(base_path + "upcxx_broadcast_array_8N_16n");
+data.upcxx_10N_20n = importtable(base_path + "upcxx_broadcast_array_10N_20n");
+data.upcxx_12N_24n = importtable(base_path + "upcxx_broadcast_array_12N_24n");
 
-mpi_10n = importtable("mpi_broadcast_array_10n.csv");
-upcxx_10n = importtable("upcxx_broadcast_array_10n.csv");
-
-mpi_12n = importtable("mpi_broadcast_array_12n.csv");
-upcxx_12n = importtable("upcxx_broadcast_array_12n.csv");
-
-unique_sizes = unique(mpi_8n.Size);
+unique_sizes = unique(data.mpi_1N_2n.Size);
+unique_sizes_bytes = unique_sizes .* 4;
 unique_sizes_categorical = categorical(unique_sizes);
 
-mpi_2n_clean_data = rmopersize(mpi_2n);
-upcxx_2n_clean_data = rmopersize(upcxx_2n);
+num_processes = [2; 4; 8; 12; 16; 20; 24];
 
-mpi_4n_clean_data = rmopersize(mpi_4n);
-upcxx_4n_clean_data = rmopersize(upcxx_4n);
+% Get field names
+fields = fieldnames(data);
 
-mpi_6n_clean_data = rmopersize(mpi_6n);
-upcxx_6n_clean_data = rmopersize(upcxx_6n);
+% Apply function to each field
+for i = 1:numel(fields)
+    clean_data.(fields{i}) = rmopersize(data.(fields{i}));
+end
 
-mpi_8n_clean_data = rmopersize(mpi_8n);
-upcxx_8n_clean_data = rmopersize(upcxx_8n);
+%% Bandwidth means
 
-mpi_10n_clean_data = rmopersize(mpi_10n);
-upcxx_10n_clean_data = rmopersize(upcxx_10n);
+bandwidth_data = struct();
+bandwidth_mean = struct();
+data_mean = struct();
 
-mpi_12n_clean_data = rmopersize(mpi_12n);
-upcxx_12n_clean_data = rmopersize(upcxx_12n);
+for i = 1:numel(fields)
+    bandwidth_data.(fields{i}) = (clean_data.(fields{i}).Size .* int_size) ./ clean_data.(fields{i}).Time;
+    bandwidth_mean.(fields{i}) = arrayfun(@(size) ...
+        mean(bandwidth_data.(fields{i})(clean_data.(fields{i}).Size == size)), ...
+        unique_sizes);
+    data_mean.(fields{i}) = arrayfun(@(size) ...
+        mean(clean_data.(fields{i}).Time(clean_data.(fields{i}).Size == size)), ...
+        unique_sizes);
+end
+
+%% Plot utilities
+
+markers = ["o"; "+"; "x";"square"; "diamond"];
+formatted_fields = regexprep(fields, "_", "\\_");
+
+%% SURF TEST
+
+% Initialize empty structs for MPI and UPC++
+mpi_bandwidth_mean = struct();
+upcxx_bandwidth_mean = struct();
+
+% Separate MPI and UPC++ data
+for i = 1:numel(fields)
+    if contains(fields{i}, 'mpi')
+        mpi_bandwidth_mean.(fields{i}) = bandwidth_mean.(fields{i});
+    elseif contains(fields{i}, 'upcxx')
+        upcxx_bandwidth_mean.(fields{i}) = bandwidth_mean.(fields{i});
+    end
+end
+
+% Initialize matrices
+[X, Y] = meshgrid(num_processes, unique_sizes_bytes);
+
+Z_mpi = zeros(length(unique_sizes_bytes), length(num_processes));
+Z_upcxx = zeros(length(unique_sizes_bytes), length(num_processes));
+
+% Fill Z matrices with MPI data
+mpi_fields = fieldnames(mpi_bandwidth_mean);
+for i = 1:length(mpi_fields)
+    Z_mpi(:, i) = mpi_bandwidth_mean.(mpi_fields{i});
+end
+
+% Fill Z matrices with UPC++ data
+upcxx_fields = fieldnames(upcxx_bandwidth_mean);
+for i = 1:length(upcxx_fields)
+    Z_upcxx(:, i) = upcxx_bandwidth_mean.(upcxx_fields{i});
+end
+
+% Plot both MPI and UPC++ data together
+figure;
+
+% Plot MPI data
+surf(X, Y, Z_mpi, 'FaceAlpha', 0.5, 'EdgeColor', 'none', 'FaceColor', [1 0 0]);
+hold on;
+
+% Plot UPC++ data
+surf(X, Y, Z_upcxx, 'FaceAlpha', 0.5, 'EdgeColor', 'none', 'FaceColor', [0 0 1]);
+
+% Customize plot appearance
+xlabel('Number of Processes');
+ylabel('Size(Bytes)');
+zlabel('Bandwidth(B/s)');
+title('3D Surface Plot of Mean Bandwidth (MPI and UPCXX)');
+legend('MPI', 'UPCXX');
+colormap jet;
+colorbar;
+
+% Set logarithmic scales
+set(gca, 'XScale', 'log');
+set(gca, 'YScale', 'log');
+
+hold off;
 
 %% 8 nodes: Times in different sizes
 

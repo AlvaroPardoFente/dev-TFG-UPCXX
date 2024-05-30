@@ -19,19 +19,19 @@ function output_table = importtable(filename, dataLines)
 
 % If dataLines is not specified, define defaults
 if nargin < 2
-    dataLines = [3, Inf];
+    dataLines = [4, Inf];
 end
 
 %% Set up the Import Options and import the data
-opts = delimitedTextImportOptions("NumVariables", 4);
+opts = delimitedTextImportOptions("NumVariables", 5);
 
 % Specify range and delimiter
 opts.DataLines = dataLines;
 opts.Delimiter = ",";
 
 % Specify column names and types
-opts.VariableNames = ["Size", "Timepoint", "Index", "Time"];
-opts.VariableTypes = ["double", "categorical", "double", "double"];
+opts.VariableNames = ["Rank", "Size", "Timepoint", "Index", "Time"];
+opts.VariableTypes = ["double", "double", "categorical", "double", "double"];
 
 % Specify file level properties
 opts.ExtraColumnsRule = "ignore";
