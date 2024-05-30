@@ -15,10 +15,45 @@ void UpcxxBenchmarkScheme::join_results()
 {
     barrier();
 
-    for (auto time_point_pair : timer.m_times)
+    switch (settings->measurement_mode)
     {
-        std::vector<double> &time_point = time_point_pair.second;
-        upcxx::reduce_one(time_point.data(), time_point.data(), time_point.size(), upcxx::op_fast_max, 0).wait();
+    case BenchmarkSettings::NodeMeasurementMode::max:
+        for (auto &time_point_pair : timer.m_times)
+        {
+            std::vector<double> &time_point = time_point_pair.second;
+            upcxx::reduce_one(time_point.data(), time_point.data(), time_point.size(), upcxx::op_fast_max, 0).wait();
+        }
+        break;
+    case BenchmarkSettings::NodeMeasurementMode::min:
+        for (auto &time_point_pair : timer.m_times)
+        {
+            std::vector<double> &time_point = time_point_pair.second;
+            upcxx::reduce_one(time_point.data(), time_point.data(), time_point.size(), upcxx::op_fast_min, 0).wait();
+        }
+        break;
+    case BenchmarkSettings::NodeMeasurementMode::avg:
+        for (auto &time_point_pair : timer.m_times)
+        {
+            std::vector<double> &time_point = time_point_pair.second;
+            std::vector<double> time_point_aux(time_point.size());
+            upcxx::reduce_one(time_point.data(), time_point_aux.data(), time_point.size(), upcxx::op_fast_add, 0).wait();
+
+            if (world_rank == 0)
+            {
+                time_point = time_point_aux;
+
+                if (settings->measurement_mode == BenchmarkSettings::NodeMeasurementMode::avg)
+                    // Compute the average
+                    for (double &value : time_point)
+                    {
+                        value /= world_size;
+                    }
+            }
+        }
+        break;
+    default:
+        throw std::runtime_error("Invalid measurement mode");
+        break;
     }
 }
 

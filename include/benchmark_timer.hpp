@@ -35,7 +35,7 @@ public:
 
     void add_time(std::string p_time_point = TIMER_END);
 
-    void print_times();
+    void print_times(int world_rank = 0);
 
     void reset_times();
 
