@@ -44,11 +44,11 @@ public:
                 // std::transform(ping_pong_values.begin(), ping_pong_values.end(), ping_pong_values.begin(), [](int n)
                 //                { return n + 1; });
                 ping_pong_values[0]++;
-                MPI_Send(ping_pong_values.data(), ping_pong_values.size(), MPI_INT, neighbor_rank, 0, MPI_COMM_WORLD);
+                MPI_Send(ping_pong_values.data(), ping_pong_values.size(), MPI_UINT32_T, neighbor_rank, 0, MPI_COMM_WORLD);
             }
             else
             {
-                MPI_Recv(ping_pong_values.data(), ping_pong_values.size(), MPI_INT, neighbor_rank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+                MPI_Recv(ping_pong_values.data(), ping_pong_values.size(), MPI_UINT32_T, neighbor_rank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
             }
         }
     }

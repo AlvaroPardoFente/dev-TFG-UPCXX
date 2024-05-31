@@ -32,7 +32,7 @@ public:
 
     void benchmark_body() override
     {
-        MPI_Reduce(value.data(), result.data(), nums_per_rank, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
+        MPI_Reduce(value.data(), result.data(), nums_per_rank, MPI_UINT32_T, MPI_SUM, 0, MPI_COMM_WORLD);
     }
 
     void reset_result() override
