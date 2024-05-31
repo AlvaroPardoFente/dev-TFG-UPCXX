@@ -26,7 +26,6 @@ public:
     void benchmark_body() override
     {
         MPI_Allgather(value.data(), number_count / world_size, MPI_INT, result.data(), number_count / world_size, MPI_INT, MPI_COMM_WORLD);
-        std::cout << "Rank " << world_rank << " received: ";
     }
 
     void reset_result() override

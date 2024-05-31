@@ -88,14 +88,14 @@ public:
 
     void reset_result() override
     {
-        if (world_rank == 0)
-        {
-            for (auto num : result)
-            {
-                std::cout << num << " ";
-            }
-            std::cout << std::endl;
-        }
+        // if (world_rank == 0)
+        // {
+        //     for (auto num : result)
+        //     {
+        //         std::cout << num << " ";
+        //     }
+        //     std::cout << std::endl;
+        // }
 
         if (gather_settings->measure_fetch && world_rank == 0)
         {

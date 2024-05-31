@@ -47,8 +47,16 @@ public:
     {
         for (int i = 0; i < world_size; i++)
         {
-            upcxx::rput(value, result_ptrs.at(i) + world_rank * nums_per_rank, nums_per_rank, upcxx::remote_cx::as_rpc([]()
-                                                                                                                       { count++; }));
+            if (world_rank != i)
+            {
+                upcxx::rput(value, result_ptrs.at(i) + world_rank * nums_per_rank, nums_per_rank, upcxx::remote_cx::as_rpc([]()
+                                                                                                                           { count++; }));
+            }
+            else
+            {
+                std::copy(value, value + nums_per_rank, result->local() + world_rank * nums_per_rank);
+                count++;
+            }
         }
 
         // Check for completion
