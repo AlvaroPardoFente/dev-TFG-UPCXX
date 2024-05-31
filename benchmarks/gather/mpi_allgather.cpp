@@ -29,7 +29,7 @@ public:
 
     void benchmark_body() override
     {
-        MPI_Allgather(value.data(), nums_per_rank, MPI_INT, result.data(), nums_per_rank, MPI_INT, MPI_COMM_WORLD);
+        MPI_Allgather(value.data(), nums_per_rank, MPI_UINT32_T, result.data(), nums_per_rank, MPI_UINT32_T, MPI_COMM_WORLD);
     }
 
     void reset_result() override
