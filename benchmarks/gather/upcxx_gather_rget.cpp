@@ -24,7 +24,7 @@ public:
         UpcxxBenchmarkScheme::init(argc, argv);
 
         // Vector initialization
-        nums_per_rank = number_count / world_size;
+        nums_per_rank = number_count;
         value_g = upcxx::dist_object<upcxx::global_ptr<uint32_t>>(upcxx::new_array<uint32_t>(nums_per_rank));
         value = value_g->local();
 
@@ -35,7 +35,7 @@ public:
 
         if (world_rank == 0)
         {
-            result.resize(number_count);
+            result.resize(nums_per_rank * world_size);
         }
 
         // Fetch pointers for all processes

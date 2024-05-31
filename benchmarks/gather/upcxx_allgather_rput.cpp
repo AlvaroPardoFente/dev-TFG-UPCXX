@@ -23,7 +23,7 @@ public:
         UpcxxBenchmarkScheme::init(argc, argv);
 
         // Vector initialization
-        nums_per_rank = number_count / world_size;
+        nums_per_rank = number_count;
         value_g = upcxx::dist_object<upcxx::global_ptr<uint32_t>>(upcxx::new_array<uint32_t>(nums_per_rank));
         value = value_g->local();
 
@@ -33,7 +33,7 @@ public:
         }
 
         // Result vector
-        result = upcxx::dist_object<upcxx::global_ptr<uint32_t>>(upcxx::new_array<uint32_t>(number_count));
+        result = upcxx::dist_object<upcxx::global_ptr<uint32_t>>(upcxx::new_array<uint32_t>(nums_per_rank * world_size));
 
         // Global ptr vector
         result_ptrs.resize(world_size);
@@ -68,8 +68,8 @@ public:
 
     void reset_result() override
     {
-        // // Print result
-        // for (int i = 0; i < number_count; i++)
+        // Print result
+        // for (int i = 0; i < nums_per_rank * world_size; i++)
         // {
         //     std::cout << result->local()[i] << " ";
         // }
@@ -77,10 +77,7 @@ public:
         // Reset result
         count = 0;
         auto *result_l = result->local();
-        for (uint32_t i = 0; i < nums_per_rank; i++)
-        {
-            result_l[i] = 0;
-        }
+        std::fill(result_l, result_l + nums_per_rank * world_size, 0);
     }
 };
 

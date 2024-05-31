@@ -8,24 +8,28 @@ public:
     std::vector<uint32_t> value;
     std::vector<uint32_t> result;
 
+    uint32_t nums_per_rank;
+
     void init(int argc, char *argv[]) override
     {
         MpiBenchmarkScheme::init(argc, argv);
 
+        nums_per_rank = number_count;
+
         // Vector initialization
-        value.resize(number_count / world_size);
-        for (uint32_t i = 0; i < number_count / world_size; i++)
+        value.resize(nums_per_rank);
+        for (uint32_t i = 0; i < nums_per_rank; i++)
         {
-            value.at(i) = i + world_rank * (number_count / world_size);
+            value.at(i) = i + world_rank * (nums_per_rank);
         }
 
         // Result vector
-        result.resize(number_count);
+        result.resize(nums_per_rank * world_size);
     };
 
     void benchmark_body() override
     {
-        MPI_Allgather(value.data(), number_count / world_size, MPI_INT, result.data(), number_count / world_size, MPI_INT, MPI_COMM_WORLD);
+        MPI_Allgather(value.data(), nums_per_rank, MPI_INT, result.data(), nums_per_rank, MPI_INT, MPI_COMM_WORLD);
     }
 
     void reset_result() override
