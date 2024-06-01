@@ -32,11 +32,18 @@ public:
 
         block_size = ping_pong_settings->block_size.has_value() ? ping_pong_settings->block_size.value() : 1;
 
+        print_columns.clear();
+        print_columns["Iterations"] = std::to_string(number_count);
+        print_columns["Block size"] = std::to_string(block_size);
+
         neighbor_rank = world_rank % 2 == 0 ? world_rank + 1 : world_rank - 1;
 
         global_ping_pong_object = upcxx::dist_object<upcxx::global_ptr<uint32_t>>(upcxx::new_array<uint32_t>(block_size));
         ping_pong_values = global_ping_pong_object->local();
         neighbor_ping_pong_ptr = global_ping_pong_object.fetch(neighbor_rank).wait();
+
+        // Initialize values
+        std::fill(ping_pong_values, ping_pong_values + block_size, 0);
     };
 
     void benchmark_body() override
