@@ -1,7 +1,0 @@
-JOBID=27961
-Nodes=4 Procs=8 TasksPerNode=2 ThreadsPerTask=1 NREPS=1 /home/alvaro.pardo/dev-TFG-UPCXX/build/gather/mpi_gather --value 100M --repetitions 10
-srun -N 4 -n 8 --ntasks-per-node=2 /home/alvaro.pardo/dev-TFG-UPCXX/build/gather/mpi_gather --value 100M --repetitions 10
-Number count: 104857600
-Repetitions: 10
-Average time: 0.0493517
-Times: 0.0519953, 0.0490399, 0.0490489, 0.0491523, 0.0490465, 0.0490514, 0.0490651, 0.0490395, 0.0490478, 0.0490307

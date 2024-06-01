@@ -1,7 +1,0 @@
-JOBID=27970
-Nodes=2 Procs=2 TasksPerNode=1 ThreadsPerTask=1 NREPS=1 /home/alvaro.pardo/dev-TFG-UPCXX/build/remote_completion/upcxx_no_rpc --value 10M --repetitions 10
-/home/alvaro.pardo/new_upcxx_202403/bin/upcxx-run -N 2 -n 2 /home/alvaro.pardo/dev-TFG-UPCXX/build/remote_completion/upcxx_no_rpc --value 10M --repetitions 10
-Number count: 10485760
-Repetitions: 10
-Average time: 2.9763
-Times: 2.98017, 2.97554, 2.97459, 2.9795, 2.97591, 2.97371, 2.975, 2.97837, 2.97368, 2.97655

@@ -1,7 +1,0 @@
-JOBID=27787
-Nodes=4 Procs=4 TasksPerNode=1 ThreadsPerTask=1 NREPS=1 /home/alvaro.pardo/dev-TFG-UPCXX/benchmarks/broadcast/mpi_broadcast_array --value 100M --repetitions 10
-srun -N 4 -n 4 --ntasks-per-node=1 /home/alvaro.pardo/dev-TFG-UPCXX/benchmarks/broadcast/mpi_broadcast_array --value 100M --repetitions 10
-Number count: 104857600
-Repetitions: 10
-Average time: 0.0862471
-Times: 0.0859163, 0.0857652, 0.0858557, 0.0870116, 0.0858463, 0.0859126, 0.0867397, 0.0872369, 0.0861535, 0.0860336
