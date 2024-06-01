@@ -1,0 +1,1374 @@
+JOBID=29002
+Nodes=6 Procs=12 TasksPerNode=2 ThreadsPerTask=1 NREPS=1 /home/alvaro.pardo/dev-TFG-UPCXX/build/gather/upcxx_gather_rget_binomial --repetitions 100 -m max -q
+Rank, Size, Timepoint, Index, Time
+0, 1, End, 1, 2.2092e-05
+0, 1, End, 2, 2.1907e-05
+0, 1, End, 3, 2.2433e-05
+0, 1, End, 4, 3.0917e-05
+0, 1, End, 5, 2.7777e-05
+0, 1, End, 6, 2.9492e-05
+0, 1, End, 7, 2.1929e-05
+0, 1, End, 8, 2.069e-05
+0, 1, End, 9, 3.8149e-05
+0, 1, End, 10, 2.1475e-05
+0, 1, End, 11, 2.0683e-05
+0, 1, End, 12, 2.391e-05
+0, 1, End, 13, 2.1117e-05
+0, 1, End, 14, 2.2069e-05
+0, 1, End, 15, 2.2706e-05
+0, 1, End, 16, 2.3032e-05
+0, 1, End, 17, 2.393e-05
+0, 1, End, 18, 2.0997e-05
+0, 1, End, 19, 2.1177e-05
+0, 1, End, 20, 2.5362e-05
+0, 1, End, 21, 2.1756e-05
+0, 1, End, 22, 2.2024e-05
+0, 1, End, 23, 2.101e-05
+0, 1, End, 24, 3.573e-05
+0, 1, End, 25, 2.0747e-05
+0, 1, End, 26, 3.0139e-05
+0, 1, End, 27, 2.2208e-05
+0, 1, End, 28, 2.0812e-05
+0, 1, End, 29, 3.3869e-05
+0, 1, End, 30, 2.3013e-05
+0, 1, End, 31, 2.8849e-05
+0, 1, End, 32, 2.2158e-05
+0, 1, End, 33, 2.2109e-05
+0, 1, End, 34, 2.1336e-05
+0, 1, End, 35, 2.1116e-05
+0, 1, End, 36, 2.1316e-05
+0, 1, End, 37, 2.1584e-05
+0, 1, End, 38, 2.1453e-05
+0, 1, End, 39, 2.2958e-05
+0, 1, End, 40, 3.2279e-05
+0, 1, End, 41, 2.2409e-05
+0, 1, End, 42, 2.9637e-05
+0, 1, End, 43, 2.1794e-05
+0, 1, End, 44, 2.2894e-05
+0, 1, End, 45, 2.6078e-05
+0, 1, End, 46, 2.276e-05
+0, 1, End, 47, 2.3015e-05
+0, 1, End, 48, 2.1642e-05
+0, 1, End, 49, 2.2122e-05
+0, 1, End, 50, 2.091e-05
+0, 1, End, 51, 2.1829e-05
+0, 1, End, 52, 2.1565e-05
+0, 1, End, 53, 2.1578e-05
+0, 1, End, 54, 2.1052e-05
+0, 1, End, 55, 2.2118e-05
+0, 1, End, 56, 2.4492e-05
+0, 1, End, 57, 2.2467e-05
+0, 1, End, 58, 2.2571e-05
+0, 1, End, 59, 2.1448e-05
+0, 1, End, 60, 4.2688e-05
+0, 1, End, 61, 3.7627e-05
+0, 1, End, 62, 2.3775e-05
+0, 1, End, 63, 2.2e-05
+0, 1, End, 64, 2.0804e-05
+0, 1, End, 65, 3.4502e-05
+0, 1, End, 66, 2.1154e-05
+0, 1, End, 67, 3.0713e-05
+0, 1, End, 68, 2.1451e-05
+0, 1, End, 69, 1.9795e-05
+0, 1, End, 70, 2.2466e-05
+0, 1, End, 71, 2.1309e-05
+0, 1, End, 72, 2.2096e-05
+0, 1, End, 73, 2.1553e-05
+0, 1, End, 74, 2.1494e-05
+0, 1, End, 75, 2.2875e-05
+0, 1, End, 76, 3.2715e-05
+0, 1, End, 77, 2.299e-05
+0, 1, End, 78, 2.2453e-05
+0, 1, End, 79, 2.1667e-05
+0, 1, End, 80, 2.1772e-05
+0, 1, End, 81, 2.6387e-05
+0, 1, End, 82, 2.1125e-05
+0, 1, End, 83, 2.1853e-05
+0, 1, End, 84, 2.1742e-05
+0, 1, End, 85, 2.1672e-05
+0, 1, End, 86, 2.1995e-05
+0, 1, End, 87, 3.2676e-05
+0, 1, End, 88, 2.3217e-05
+0, 1, End, 89, 2.9045e-05
+0, 1, End, 90, 2.2435e-05
+0, 1, End, 91, 3.4173e-05
+0, 1, End, 92, 2.1786e-05
+0, 1, End, 93, 2.2163e-05
+0, 1, End, 94, 4.076e-05
+0, 1, End, 95, 3.1212e-05
+0, 1, End, 96, 3.2257e-05
+0, 1, End, 97, 2.1915e-05
+0, 1, End, 98, 2.173e-05
+0, 1, End, 99, 3.5389e-05
+0, 1, End, 100, 2.0638e-05
+0, 4, End, 1, 2.4558e-05
+0, 4, End, 2, 1.9262e-05
+0, 4, End, 3, 1.9828e-05
+0, 4, End, 4, 1.9991e-05
+0, 4, End, 5, 2.0853e-05
+0, 4, End, 6, 1.9751e-05
+0, 4, End, 7, 1.9665e-05
+0, 4, End, 8, 2.0953e-05
+0, 4, End, 9, 2.418e-05
+0, 4, End, 10, 2.0145e-05
+0, 4, End, 11, 2.0016e-05
+0, 4, End, 12, 2.0005e-05
+0, 4, End, 13, 2.2058e-05
+0, 4, End, 14, 2.0161e-05
+0, 4, End, 15, 2.0497e-05
+0, 4, End, 16, 1.9787e-05
+0, 4, End, 17, 2.3619e-05
+0, 4, End, 18, 1.9841e-05
+0, 4, End, 19, 2.0415e-05
+0, 4, End, 20, 2.0407e-05
+0, 4, End, 21, 2.0087e-05
+0, 4, End, 22, 2.0247e-05
+0, 4, End, 23, 2.0784e-05
+0, 4, End, 24, 2.2038e-05
+0, 4, End, 25, 1.9958e-05
+0, 4, End, 26, 1.9891e-05
+0, 4, End, 27, 2.0265e-05
+0, 4, End, 28, 1.9775e-05
+0, 4, End, 29, 1.9926e-05
+0, 4, End, 30, 2.0327e-05
+0, 4, End, 31, 2.065e-05
+0, 4, End, 32, 1.9806e-05
+0, 4, End, 33, 2.0043e-05
+0, 4, End, 34, 1.9609e-05
+0, 4, End, 35, 1.9861e-05
+0, 4, End, 36, 1.9806e-05
+0, 4, End, 37, 2.4201e-05
+0, 4, End, 38, 2.102e-05
+0, 4, End, 39, 2.0637e-05
+0, 4, End, 40, 1.9955e-05
+0, 4, End, 41, 1.959e-05
+0, 4, End, 42, 1.9996e-05
+0, 4, End, 43, 2.2535e-05
+0, 4, End, 44, 1.9529e-05
+0, 4, End, 45, 1.9803e-05
+0, 4, End, 46, 2.1114e-05
+0, 4, End, 47, 2.0655e-05
+0, 4, End, 48, 2.005e-05
+0, 4, End, 49, 2.0362e-05
+0, 4, End, 50, 2.2005e-05
+0, 4, End, 51, 2.0863e-05
+0, 4, End, 52, 1.998e-05
+0, 4, End, 53, 2.0109e-05
+0, 4, End, 54, 2.0789e-05
+0, 4, End, 55, 2.2813e-05
+0, 4, End, 56, 2.0838e-05
+0, 4, End, 57, 2.0048e-05
+0, 4, End, 58, 1.9671e-05
+0, 4, End, 59, 2.2432e-05
+0, 4, End, 60, 2.1299e-05
+0, 4, End, 61, 2.0387e-05
+0, 4, End, 62, 1.9727e-05
+0, 4, End, 63, 1.9733e-05
+0, 4, End, 64, 2.0052e-05
+0, 4, End, 65, 1.9456e-05
+0, 4, End, 66, 2.0715e-05
+0, 4, End, 67, 2.0469e-05
+0, 4, End, 68, 1.975e-05
+0, 4, End, 69, 1.9997e-05
+0, 4, End, 70, 1.9613e-05
+0, 4, End, 71, 1.9475e-05
+0, 4, End, 72, 2.1075e-05
+0, 4, End, 73, 2.0591e-05
+0, 4, End, 74, 1.9955e-05
+0, 4, End, 75, 2.0376e-05
+0, 4, End, 76, 1.9706e-05
+0, 4, End, 77, 2.1148e-05
+0, 4, End, 78, 2.0057e-05
+0, 4, End, 79, 2.1822e-05
+0, 4, End, 80, 2.0306e-05
+0, 4, End, 81, 2.0165e-05
+0, 4, End, 82, 2.1482e-05
+0, 4, End, 83, 1.9625e-05
+0, 4, End, 84, 1.9944e-05
+0, 4, End, 85, 2.2733e-05
+0, 4, End, 86, 2.0112e-05
+0, 4, End, 87, 1.961e-05
+0, 4, End, 88, 1.9442e-05
+0, 4, End, 89, 2.0154e-05
+0, 4, End, 90, 2.8354e-05
+0, 4, End, 91, 2.0652e-05
+0, 4, End, 92, 2.3075e-05
+0, 4, End, 93, 2.0506e-05
+0, 4, End, 94, 1.9912e-05
+0, 4, End, 95, 2.116e-05
+0, 4, End, 96, 3.1147e-05
+0, 4, End, 97, 2.079e-05
+0, 4, End, 98, 2.9202e-05
+0, 4, End, 99, 1.9646e-05
+0, 4, End, 100, 2.8692e-05
+0, 16, End, 1, 2.3913e-05
+0, 16, End, 2, 2.2693e-05
+0, 16, End, 3, 2.5336e-05
+0, 16, End, 4, 2.4678e-05
+0, 16, End, 5, 2.4415e-05
+0, 16, End, 6, 2.2899e-05
+0, 16, End, 7, 2.4079e-05
+0, 16, End, 8, 2.2277e-05
+0, 16, End, 9, 2.2841e-05
+0, 16, End, 10, 2.4017e-05
+0, 16, End, 11, 2.4139e-05
+0, 16, End, 12, 2.4048e-05
+0, 16, End, 13, 2.392e-05
+0, 16, End, 14, 2.5126e-05
+0, 16, End, 15, 2.4278e-05
+0, 16, End, 16, 2.4134e-05
+0, 16, End, 17, 2.2773e-05
+0, 16, End, 18, 2.3271e-05
+0, 16, End, 19, 2.5685e-05
+0, 16, End, 20, 2.2314e-05
+0, 16, End, 21, 2.3758e-05
+0, 16, End, 22, 2.2611e-05
+0, 16, End, 23, 2.4961e-05
+0, 16, End, 24, 2.5062e-05
+0, 16, End, 25, 2.3607e-05
+0, 16, End, 26, 2.3855e-05
+0, 16, End, 27, 2.578e-05
+0, 16, End, 28, 2.2176e-05
+0, 16, End, 29, 2.5443e-05
+0, 16, End, 30, 2.3835e-05
+0, 16, End, 31, 2.4914e-05
+0, 16, End, 32, 2.2715e-05
+0, 16, End, 33, 2.578e-05
+0, 16, End, 34, 2.3718e-05
+0, 16, End, 35, 2.4288e-05
+0, 16, End, 36, 2.4197e-05
+0, 16, End, 37, 2.3658e-05
+0, 16, End, 38, 2.3319e-05
+0, 16, End, 39, 2.358e-05
+0, 16, End, 40, 2.32e-05
+0, 16, End, 41, 2.3546e-05
+0, 16, End, 42, 2.29e-05
+0, 16, End, 43, 2.2953e-05
+0, 16, End, 44, 2.431e-05
+0, 16, End, 45, 2.3056e-05
+0, 16, End, 46, 2.4327e-05
+0, 16, End, 47, 2.3359e-05
+0, 16, End, 48, 2.3536e-05
+0, 16, End, 49, 2.67e-05
+0, 16, End, 50, 2.524e-05
+0, 16, End, 51, 2.205e-05
+0, 16, End, 52, 2.3057e-05
+0, 16, End, 53, 2.3999e-05
+0, 16, End, 54, 2.361e-05
+0, 16, End, 55, 2.4165e-05
+0, 16, End, 56, 2.3175e-05
+0, 16, End, 57, 2.3747e-05
+0, 16, End, 58, 2.3424e-05
+0, 16, End, 59, 2.2528e-05
+0, 16, End, 60, 2.3092e-05
+0, 16, End, 61, 2.3619e-05
+0, 16, End, 62, 2.3087e-05
+0, 16, End, 63, 2.3596e-05
+0, 16, End, 64, 2.4725e-05
+0, 16, End, 65, 2.5768e-05
+0, 16, End, 66, 2.4819e-05
+0, 16, End, 67, 2.486e-05
+0, 16, End, 68, 2.6848e-05
+0, 16, End, 69, 2.4282e-05
+0, 16, End, 70, 2.3181e-05
+0, 16, End, 71, 2.3986e-05
+0, 16, End, 72, 2.3908e-05
+0, 16, End, 73, 2.3858e-05
+0, 16, End, 74, 2.5785e-05
+0, 16, End, 75, 2.6851e-05
+0, 16, End, 76, 2.2825e-05
+0, 16, End, 77, 2.2162e-05
+0, 16, End, 78, 2.3388e-05
+0, 16, End, 79, 2.4055e-05
+0, 16, End, 80, 2.4087e-05
+0, 16, End, 81, 2.4231e-05
+0, 16, End, 82, 2.3421e-05
+0, 16, End, 83, 2.374e-05
+0, 16, End, 84, 2.3833e-05
+0, 16, End, 85, 2.3833e-05
+0, 16, End, 86, 2.3486e-05
+0, 16, End, 87, 2.368e-05
+0, 16, End, 88, 2.4996e-05
+0, 16, End, 89, 2.4451e-05
+0, 16, End, 90, 2.5614e-05
+0, 16, End, 91, 2.3159e-05
+0, 16, End, 92, 2.5428e-05
+0, 16, End, 93, 2.2215e-05
+0, 16, End, 94, 2.4049e-05
+0, 16, End, 95, 2.3626e-05
+0, 16, End, 96, 2.5336e-05
+0, 16, End, 97, 2.5179e-05
+0, 16, End, 98, 2.2959e-05
+0, 16, End, 99, 2.2157e-05
+0, 16, End, 100, 2.3279e-05
+*** Caught a fatal signal (proc 0): SIGABRT(6)
+*** NOTICE (proc 0): Before reporting bugs, run with GASNET_BACKTRACE=1 in the environment to generate a backtrace.
+*** NOTICE (proc 0): We recommend linking the debug version of GASNet to assist you in resolving this application issue.
+srun: error: compute-0-1: task 0: Aborted
+srun: Terminating job step 29002.2
+*** Caught a signal (proc 2): SIGTERM(15)
+*** Caught a signal (proc 3): SIGTERM(15)
+*** Caught a signal (proc 8): SIGTERM(15)
+*** Caught a signal (proc 6): SIGTERM(15)
+*** Caught a signal (proc 7): SIGTERM(15)
+slurmstepd: error: *** STEP 29002.2 ON compute-0-1 CANCELLED AT 2024-06-01T12:00:47 ***
+*** Caught a signal (proc 9): SIGTERM(15)
+*** Caught a signal (proc 10): SIGTERM(15)
+*** Caught a signal (proc 11): SIGTERM(15)
+*** Caught a signal (proc 1): SIGTERM(15)
+*** Caught a signal (proc 4): SIGTERM(15)
+*** Caught a signal (proc 5): SIGTERM(15)
+gasnet_exit(): WARNING: timeout during exit... goodbye.  [exitcode reduction: wait for parent]
+--------------------------------------------------------------------------
+MPI_ABORT was invoked on rank 3 in communicator MPI COMMUNICATOR 3 CREATE FROM 0
+with errorcode 1.
+
+NOTE: invoking MPI_ABORT causes Open MPI to kill all MPI processes.
+You may or may not see output from other processes, depending on
+exactly when Open MPI kills them.
+--------------------------------------------------------------------------
+gasnet_exit(): WARNING: timeout during exit... goodbye.  [exitcode reduction: wait for parent]
+--------------------------------------------------------------------------
+MPI_ABORT was invoked on rank 9 in communicator MPI COMMUNICATOR 3 CREATE FROM 0
+with errorcode 1.
+
+NOTE: invoking MPI_ABORT causes Open MPI to kill all MPI processes.
+You may or may not see output from other processes, depending on
+exactly when Open MPI kills them.
+--------------------------------------------------------------------------
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: error: compute-0-14: task 9: Exited with exit code 1
+srun: error: compute-0-2: task 3: Exited with exit code 1
+--------------------------------------------------------------------------
+MPI_ABORT was invoked on rank 2 in communicator MPI COMMUNICATOR 3 CREATE FROM 0
+with errorcode 1.
+
+NOTE: invoking MPI_ABORT causes Open MPI to kill all MPI processes.
+You may or may not see output from other processes, depending on
+exactly when Open MPI kills them.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+MPI_ABORT was invoked on rank 8 in communicator MPI COMMUNICATOR 3 CREATE FROM 0
+with errorcode 1.
+
+NOTE: invoking MPI_ABORT causes Open MPI to kill all MPI processes.
+You may or may not see output from other processes, depending on
+exactly when Open MPI kills them.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+MPI_ABORT was invoked on rank 7 in communicator MPI COMMUNICATOR 3 CREATE FROM 0
+with errorcode 1.
+
+NOTE: invoking MPI_ABORT causes Open MPI to kill all MPI processes.
+You may or may not see output from other processes, depending on
+exactly when Open MPI kills them.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+MPI_ABORT was invoked on rank 10 in communicator MPI COMMUNICATOR 3 CREATE FROM 0
+with errorcode 1.
+
+NOTE: invoking MPI_ABORT causes Open MPI to kill all MPI processes.
+You may or may not see output from other processes, depending on
+exactly when Open MPI kills them.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+MPI_ABORT was invoked on rank 11 in communicator MPI COMMUNICATOR 3 CREATE FROM 0
+with errorcode 1.
+
+NOTE: invoking MPI_ABORT causes Open MPI to kill all MPI processes.
+You may or may not see output from other processes, depending on
+exactly when Open MPI kills them.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+MPI_ABORT was invoked on rank 6 in communicator MPI COMMUNICATOR 3 CREATE FROM 0
+with errorcode 1.
+
+NOTE: invoking MPI_ABORT causes Open MPI to kill all MPI processes.
+You may or may not see output from other processes, depending on
+exactly when Open MPI kills them.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+MPI_ABORT was invoked on rank 4 in communicator MPI COMMUNICATOR 3 CREATE FROM 0
+with errorcode 1.
+
+NOTE: invoking MPI_ABORT causes Open MPI to kill all MPI processes.
+You may or may not see output from other processes, depending on
+exactly when Open MPI kills them.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+MPI_ABORT was invoked on rank 5 in communicator MPI COMMUNICATOR 3 CREATE FROM 0
+with errorcode 1.
+
+NOTE: invoking MPI_ABORT causes Open MPI to kill all MPI processes.
+You may or may not see output from other processes, depending on
+exactly when Open MPI kills them.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+MPI_ABORT was invoked on rank 1 in communicator MPI COMMUNICATOR 3 CREATE FROM 0
+with errorcode 1.
+
+NOTE: invoking MPI_ABORT causes Open MPI to kill all MPI processes.
+You may or may not see output from other processes, depending on
+exactly when Open MPI kills them.
+--------------------------------------------------------------------------
+srun: error: compute-0-15: task 10: Exited with exit code 1
+srun: error: compute-0-6: task 6: Exited with exit code 1
+srun: error: compute-0-3: task 4: Exited with exit code 1
+srun: error: compute-0-14: task 8: Exited with exit code 1
+srun: error: compute-0-2: task 2: Exited with exit code 1
+srun: error: compute-0-1: task 1: Exited with exit code 1
+srun: error: compute-0-15: task 11: Exited with exit code 1
+srun: error: compute-0-3: task 5: Exited with exit code 1
+srun: error: compute-0-6: task 7: Exited with exit code 1
+0, 64, End, 1, 2.7179e-05
+0, 64, End, 2, 2.4073e-05
+0, 64, End, 3, 2.3501e-05
+0, 64, End, 4, 2.2556e-05
+0, 64, End, 5, 3.0315e-05
+0, 64, End, 6, 2.4116e-05
+0, 64, End, 7, 2.249e-05
+0, 64, End, 8, 2.1613e-05
+0, 64, End, 9, 2.3455e-05
+0, 64, End, 10, 2.2322e-05
+0, 64, End, 11, 2.3597e-05
+0, 64, End, 12, 2.2224e-05
+0, 64, End, 13, 2.3698e-05
+0, 64, End, 14, 2.3708e-05
+0, 64, End, 15, 2.537e-05
+0, 64, End, 16, 2.2314e-05
+0, 64, End, 17, 2.2497e-05
+0, 64, End, 18, 2.4263e-05
+0, 64, End, 19, 2.3273e-05
+0, 64, End, 20, 2.3316e-05
+0, 64, End, 21, 2.1972e-05
+0, 64, End, 22, 2.3157e-05
+0, 64, End, 23, 2.2017e-05
+0, 64, End, 24, 2.1329e-05
+0, 64, End, 25, 2.4092e-05
+0, 64, End, 26, 2.4705e-05
+0, 64, End, 27, 2.3255e-05
+0, 64, End, 28, 2.1874e-05
+0, 64, End, 29, 2.1377e-05
+0, 64, End, 30, 2.3738e-05
+0, 64, End, 31, 2.2584e-05
+0, 64, End, 32, 2.2295e-05
+0, 64, End, 33, 2.1928e-05
+0, 64, End, 34, 2.1979e-05
+0, 64, End, 35, 2.2291e-05
+0, 64, End, 36, 2.2618e-05
+0, 64, End, 37, 2.3101e-05
+0, 64, End, 38, 2.2625e-05
+0, 64, End, 39, 2.3576e-05
+0, 64, End, 40, 2.2662e-05
+0, 64, End, 41, 2.1992e-05
+0, 64, End, 42, 2.3702e-05
+0, 64, End, 43, 2.2435e-05
+0, 64, End, 44, 2.2712e-05
+0, 64, End, 45, 2.2917e-05
+0, 64, End, 46, 2.5822e-05
+0, 64, End, 47, 2.3758e-05
+0, 64, End, 48, 2.1886e-05
+0, 64, End, 49, 2.2772e-05
+0, 64, End, 50, 2.2659e-05
+0, 64, End, 51, 2.3596e-05
+0, 64, End, 52, 2.6565e-05
+0, 64, End, 53, 2.2644e-05
+0, 64, End, 54, 2.2646e-05
+0, 64, End, 55, 2.3484e-05
+0, 64, End, 56, 2.339e-05
+0, 64, End, 57, 2.2815e-05
+0, 64, End, 58, 2.3327e-05
+0, 64, End, 59, 2.4277e-05
+0, 64, End, 60, 2.2176e-05
+0, 64, End, 61, 2.2533e-05
+0, 64, End, 62, 2.2812e-05
+0, 64, End, 63, 2.232e-05
+0, 64, End, 64, 2.3281e-05
+0, 64, End, 65, 2.2043e-05
+0, 64, End, 66, 2.3994e-05
+0, 64, End, 67, 2.2842e-05
+0, 64, End, 68, 2.3084e-05
+0, 64, End, 69, 2.3356e-05
+0, 64, End, 70, 2.3157e-05
+0, 64, End, 71, 2.2403e-05
+0, 64, End, 72, 2.2133e-05
+0, 64, End, 73, 2.2604e-05
+0, 64, End, 74, 2.2427e-05
+0, 64, End, 75, 2.4249e-05
+0, 64, End, 76, 2.4697e-05
+0, 64, End, 77, 2.1517e-05
+0, 64, End, 78, 2.2654e-05
+0, 64, End, 79, 2.3024e-05
+0, 64, End, 80, 2.1756e-05
+0, 64, End, 81, 2.2808e-05
+0, 64, End, 82, 2.2926e-05
+0, 64, End, 83, 2.591e-05
+0, 64, End, 84, 2.331e-05
+0, 64, End, 85, 2.348e-05
+0, 64, End, 86, 2.4143e-05
+0, 64, End, 87, 2.2148e-05
+0, 64, End, 88, 2.2771e-05
+0, 64, End, 89, 2.3804e-05
+0, 64, End, 90, 2.3097e-05
+0, 64, End, 91, 2.3043e-05
+0, 64, End, 92, 2.2091e-05
+0, 64, End, 93, 2.3518e-05
+0, 64, End, 94, 2.3093e-05
+0, 64, End, 95, 2.2805e-05
+0, 64, End, 96, 2.3054e-05
+0, 64, End, 97, 2.241e-05
+0, 64, End, 98, 2.3048e-05
+0, 64, End, 99, 2.2774e-05
+0, 64, End, 100, 2.661e-05
+*** Caught a fatal signal (proc 2): SIGABRT(6)
+*** NOTICE (proc 2): Before reporting bugs, run with GASNET_BACKTRACE=1 in the environment to generate a backtrace.
+*** NOTICE (proc 2): We recommend linking the debug version of GASNet to assist you in resolving this application issue.
+*** Caught a fatal signal (proc 8): SIGABRT(6)
+*** NOTICE (proc 8): Before reporting bugs, run with GASNET_BACKTRACE=1 in the environment to generate a backtrace.
+*** NOTICE (proc 8): We recommend linking the debug version of GASNet to assist you in resolving this application issue.
+*** Caught a fatal signal (proc 4): SIGABRT(6)
+*** NOTICE (proc 4): Before reporting bugs, run with GASNET_BACKTRACE=1 in the environment to generate a backtrace.
+*** NOTICE (proc 4): We recommend linking the debug version of GASNet to assist you in resolving this application issue.
+*** Caught a fatal signal (proc 10): SIGABRT(6)
+*** NOTICE (proc 10): Before reporting bugs, run with GASNET_BACKTRACE=1 in the environment to generate a backtrace.
+*** NOTICE (proc 10): We recommend linking the debug version of GASNet to assist you in resolving this application issue.
+srun: error: compute-0-14: task 8: Aborted
+srun: Terminating job step 29002.3
+*** Caught a signal (proc 3): SIGTERM(15)
+slurmstepd: error: *** STEP 29002.3 ON compute-0-1 CANCELLED AT 2024-06-01T12:00:59 ***
+*** Caught a signal (proc 6): SIGTERM(15)
+*** Caught a signal (proc 7): SIGTERM(15)
+*** Caught a signal (proc 0): SIGTERM(15)
+*** Caught a signal (proc 1): SIGTERM(15)
+*** Caught a signal (proc 9): SIGTERM(15)
+*** Caught a signal (proc 11): SIGTERM(15)
+srun: error: compute-0-2: task 2: Aborted
+srun: error: compute-0-3: task 4: Aborted
+*** Caught a signal (proc 5): SIGTERM(15)
+srun: error: compute-0-15: task 10: Aborted
+gasnet_exit(): WARNING: timeout during exit... goodbye.  [exitcode reduction: wait for parent]
+--------------------------------------------------------------------------
+MPI_ABORT was invoked on rank 11 in communicator MPI COMMUNICATOR 3 CREATE FROM 0
+with errorcode 1.
+
+NOTE: invoking MPI_ABORT causes Open MPI to kill all MPI processes.
+You may or may not see output from other processes, depending on
+exactly when Open MPI kills them.
+--------------------------------------------------------------------------
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: error: compute-0-15: task 11: Exited with exit code 1
+--------------------------------------------------------------------------
+MPI_ABORT was invoked on rank 3 in communicator MPI COMMUNICATOR 3 CREATE FROM 0
+with errorcode 1.
+
+NOTE: invoking MPI_ABORT causes Open MPI to kill all MPI processes.
+You may or may not see output from other processes, depending on
+exactly when Open MPI kills them.
+--------------------------------------------------------------------------
+srun: error: compute-0-2: task 3: Exited with exit code 1
+srun: error: compute-0-6: task 6: Killed
+srun: error: compute-0-1: task 1: Killed
+srun: error: compute-0-3: task 5: Killed
+srun: error: compute-0-14: task 9: Killed
+srun: error: compute-0-6: task 7: Killed
+srun: error: compute-0-1: task 0: Killed
+0, 128, End, 1, 2.611e-05
+0, 128, End, 2, 2.5421e-05
+0, 128, End, 3, 2.5467e-05
+0, 128, End, 4, 2.5724e-05
+0, 128, End, 5, 2.594e-05
+0, 128, End, 6, 2.5388e-05
+0, 128, End, 7, 2.5057e-05
+0, 128, End, 8, 2.5073e-05
+0, 128, End, 9, 2.5342e-05
+0, 128, End, 10, 2.4113e-05
+0, 128, End, 11, 2.4544e-05
+0, 128, End, 12, 2.4878e-05
+0, 128, End, 13, 2.5845e-05
+0, 128, End, 14, 2.5307e-05
+0, 128, End, 15, 2.747e-05
+0, 128, End, 16, 2.4872e-05
+0, 128, End, 17, 2.3443e-05
+0, 128, End, 18, 2.4164e-05
+0, 128, End, 19, 2.4534e-05
+0, 128, End, 20, 2.8159e-05
+0, 128, End, 21, 2.4129e-05
+0, 128, End, 22, 2.4026e-05
+0, 128, End, 23, 2.613e-05
+0, 128, End, 24, 2.5767e-05
+0, 128, End, 25, 2.4883e-05
+0, 128, End, 26, 2.7106e-05
+0, 128, End, 27, 2.444e-05
+0, 128, End, 28, 2.4852e-05
+0, 128, End, 29, 2.8733e-05
+0, 128, End, 30, 2.4603e-05
+0, 128, End, 31, 2.4041e-05
+0, 128, End, 32, 2.4264e-05
+0, 128, End, 33, 2.4261e-05
+0, 128, End, 34, 2.5316e-05
+0, 128, End, 35, 2.4813e-05
+0, 128, End, 36, 2.4941e-05
+0, 128, End, 37, 2.4827e-05
+0, 128, End, 38, 2.5985e-05
+0, 128, End, 39, 2.5612e-05
+0, 128, End, 40, 2.5806e-05
+0, 128, End, 41, 2.5574e-05
+0, 128, End, 42, 2.5287e-05
+0, 128, End, 43, 2.556e-05
+0, 128, End, 44, 2.3583e-05
+0, 128, End, 45, 2.3791e-05
+0, 128, End, 46, 2.4627e-05
+0, 128, End, 47, 2.4248e-05
+0, 128, End, 48, 2.4401e-05
+0, 128, End, 49, 2.5218e-05
+0, 128, End, 50, 2.5383e-05
+0, 128, End, 51, 2.522e-05
+0, 128, End, 52, 2.4852e-05
+0, 128, End, 53, 2.4587e-05
+0, 128, End, 54, 2.5217e-05
+0, 128, End, 55, 2.5225e-05
+0, 128, End, 56, 2.3941e-05
+0, 128, End, 57, 2.505e-05
+0, 128, End, 58, 2.484e-05
+0, 128, End, 59, 2.4681e-05
+0, 128, End, 60, 2.5041e-05
+0, 128, End, 61, 2.4841e-05
+0, 128, End, 62, 2.4493e-05
+0, 128, End, 63, 2.509e-05
+0, 128, End, 64, 2.5342e-05
+0, 128, End, 65, 2.5122e-05
+0, 128, End, 66, 2.5648e-05
+0, 128, End, 67, 2.3935e-05
+0, 128, End, 68, 2.3878e-05
+0, 128, End, 69, 2.5093e-05
+0, 128, End, 70, 2.5506e-05
+0, 128, End, 71, 2.4064e-05
+0, 128, End, 72, 2.5634e-05
+0, 128, End, 73, 2.5987e-05
+0, 128, End, 74, 2.4683e-05
+0, 128, End, 75, 2.6735e-05
+0, 128, End, 76, 2.5104e-05
+0, 128, End, 77, 2.5744e-05
+0, 128, End, 78, 2.5811e-05
+0, 128, End, 79, 2.5181e-05
+0, 128, End, 80, 2.5231e-05
+0, 128, End, 81, 2.4059e-05
+0, 128, End, 82, 2.4974e-05
+0, 128, End, 83, 2.6557e-05
+0, 128, End, 84, 2.6861e-05
+0, 128, End, 85, 2.4847e-05
+0, 128, End, 86, 2.5856e-05
+0, 128, End, 87, 2.4661e-05
+0, 128, End, 88, 2.5424e-05
+0, 128, End, 89, 2.4515e-05
+0, 128, End, 90, 2.563e-05
+0, 128, End, 91, 2.4279e-05
+0, 128, End, 92, 2.4758e-05
+0, 128, End, 93, 2.5264e-05
+0, 128, End, 94, 2.5103e-05
+0, 128, End, 95, 2.4465e-05
+0, 128, End, 96, 2.3689e-05
+0, 128, End, 97, 2.5005e-05
+0, 128, End, 98, 2.7489e-05
+0, 128, End, 99, 2.4244e-05
+0, 128, End, 100, 2.7407e-05
+*** Caught a fatal signal (proc 8): SIGABRT(6)
+*** NOTICE (proc 8): Before reporting bugs, run with GASNET_BACKTRACE=1 in the environment to generate a backtrace.
+*** NOTICE (proc 8): We recommend linking the debug version of GASNet to assist you in resolving this application issue.
+*** Caught a fatal signal (proc 4): SIGABRT(6)
+*** NOTICE (proc 4): Before reporting bugs, run with GASNET_BACKTRACE=1 in the environment to generate a backtrace.
+*** NOTICE (proc 4): We recommend linking the debug version of GASNet to assist you in resolving this application issue.
+*** Caught a fatal signal (proc 2): SIGABRT(6)
+*** NOTICE (proc 2): Before reporting bugs, run with GASNET_BACKTRACE=1 in the environment to generate a backtrace.
+*** NOTICE (proc 2): We recommend linking the debug version of GASNet to assist you in resolving this application issue.
+*** Caught a fatal signal (proc 10): SIGABRT(6)
+*** NOTICE (proc 10): Before reporting bugs, run with GASNET_BACKTRACE=1 in the environment to generate a backtrace.
+*** NOTICE (proc 10): We recommend linking the debug version of GASNet to assist you in resolving this application issue.
+srun: error: compute-0-15: task 10: Aborted
+srun: Terminating job step 29002.4
+srun: error: compute-0-2: task 2: Aborted
+srun: error: compute-0-3: task 4: Aborted
+srun: error: compute-0-14: task 8: Aborted
+*** Caught a signal (proc 3): SIGTERM(15)
+*** Caught a signal (proc 6): SIGTERM(15)
+*** Caught a signal (proc 7): SIGTERM(15)
+*** Caught a signal (proc 11): SIGTERM(15)
+slurmstepd: error: *** STEP 29002.4 ON compute-0-1 CANCELLED AT 2024-06-01T12:01:32 ***
+*** Caught a signal (proc 0): SIGTERM(15)
+*** Caught a signal (proc 1): SIGTERM(15)
+*** Caught a signal (proc 9): SIGTERM(15)
+*** Caught a signal (proc 5): SIGTERM(15)
+gasnet_exit(): WARNING: timeout during exit... goodbye.  [exitcode reduction: send to parent]
+--------------------------------------------------------------------------
+MPI_ABORT was invoked on rank 7 in communicator MPI COMMUNICATOR 3 CREATE FROM 0
+with errorcode 1.
+
+NOTE: invoking MPI_ABORT causes Open MPI to kill all MPI processes.
+You may or may not see output from other processes, depending on
+exactly when Open MPI kills them.
+--------------------------------------------------------------------------
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: error: compute-0-6: task 7: Exited with exit code 1
+--------------------------------------------------------------------------
+MPI_ABORT was invoked on rank 3 in communicator MPI COMMUNICATOR 3 CREATE FROM 0
+with errorcode 1.
+
+NOTE: invoking MPI_ABORT causes Open MPI to kill all MPI processes.
+You may or may not see output from other processes, depending on
+exactly when Open MPI kills them.
+--------------------------------------------------------------------------
+srun: error: compute-0-2: task 3: Exited with exit code 1
+srun: error: compute-0-1: task 0: Killed
+srun: error: compute-0-3: task 5: Killed
+srun: error: compute-0-14: task 9: Killed
+srun: error: compute-0-6: task 6: Killed
+srun: error: compute-0-15: task 11: Killed
+srun: error: compute-0-1: task 1: Killed
+0, 256, End, 1, 2.6375e-05
+0, 256, End, 2, 2.623e-05
+0, 256, End, 3, 2.6438e-05
+0, 256, End, 4, 2.4672e-05
+0, 256, End, 5, 3.0689e-05
+0, 256, End, 6, 2.6147e-05
+0, 256, End, 7, 2.5438e-05
+0, 256, End, 8, 2.6503e-05
+0, 256, End, 9, 2.5813e-05
+0, 256, End, 10, 2.6667e-05
+0, 256, End, 11, 2.6522e-05
+0, 256, End, 12, 2.4967e-05
+0, 256, End, 13, 2.5547e-05
+0, 256, End, 14, 2.5677e-05
+0, 256, End, 15, 2.6298e-05
+0, 256, End, 16, 2.564e-05
+0, 256, End, 17, 2.5981e-05
+0, 256, End, 18, 2.5964e-05
+0, 256, End, 19, 2.5853e-05
+0, 256, End, 20, 2.8437e-05
+0, 256, End, 21, 2.6071e-05
+0, 256, End, 22, 2.6096e-05
+0, 256, End, 23, 2.5718e-05
+0, 256, End, 24, 2.6206e-05
+0, 256, End, 25, 2.5746e-05
+0, 256, End, 26, 2.7992e-05
+0, 256, End, 27, 2.5905e-05
+0, 256, End, 28, 2.5805e-05
+0, 256, End, 29, 2.5638e-05
+0, 256, End, 30, 2.5174e-05
+0, 256, End, 31, 2.5954e-05
+0, 256, End, 32, 2.583e-05
+0, 256, End, 33, 2.5725e-05
+0, 256, End, 34, 2.6859e-05
+0, 256, End, 35, 2.5783e-05
+0, 256, End, 36, 2.583e-05
+0, 256, End, 37, 2.667e-05
+0, 256, End, 38, 2.6462e-05
+0, 256, End, 39, 2.6126e-05
+0, 256, End, 40, 2.5915e-05
+0, 256, End, 41, 2.6086e-05
+0, 256, End, 42, 2.718e-05
+0, 256, End, 43, 2.6489e-05
+0, 256, End, 44, 2.4644e-05
+0, 256, End, 45, 2.5967e-05
+0, 256, End, 46, 2.5648e-05
+0, 256, End, 47, 2.6094e-05
+0, 256, End, 48, 2.5111e-05
+0, 256, End, 49, 2.5601e-05
+0, 256, End, 50, 2.62e-05
+0, 256, End, 51, 2.5765e-05
+0, 256, End, 52, 2.5575e-05
+0, 256, End, 53, 2.8772e-05
+0, 256, End, 54, 2.6139e-05
+0, 256, End, 55, 2.6032e-05
+0, 256, End, 56, 2.5596e-05
+0, 256, End, 57, 2.5805e-05
+0, 256, End, 58, 2.5934e-05
+0, 256, End, 59, 2.8975e-05
+0, 256, End, 60, 2.4952e-05
+0, 256, End, 61, 2.5321e-05
+0, 256, End, 62, 2.7948e-05
+0, 256, End, 63, 2.6391e-05
+0, 256, End, 64, 2.5628e-05
+0, 256, End, 65, 2.6339e-05
+0, 256, End, 66, 2.7066e-05
+0, 256, End, 67, 2.5767e-05
+0, 256, End, 68, 2.5904e-05
+0, 256, End, 69, 2.5863e-05
+0, 256, End, 70, 2.5661e-05
+0, 256, End, 71, 2.8319e-05
+0, 256, End, 72, 2.5953e-05
+0, 256, End, 73, 2.5583e-05
+0, 256, End, 74, 2.6356e-05
+0, 256, End, 75, 2.5557e-05
+0, 256, End, 76, 2.5023e-05
+0, 256, End, 77, 2.5448e-05
+0, 256, End, 78, 2.5563e-05
+0, 256, End, 79, 2.6523e-05
+0, 256, End, 80, 2.5426e-05
+0, 256, End, 81, 2.59e-05
+0, 256, End, 82, 2.6929e-05
+0, 256, End, 83, 2.6507e-05
+0, 256, End, 84, 2.661e-05
+0, 256, End, 85, 2.6006e-05
+0, 256, End, 86, 2.894e-05
+0, 256, End, 87, 2.5523e-05
+0, 256, End, 88, 2.5899e-05
+0, 256, End, 89, 2.5657e-05
+0, 256, End, 90, 2.615e-05
+0, 256, End, 91, 2.504e-05
+0, 256, End, 92, 2.7145e-05
+0, 256, End, 93, 2.5341e-05
+0, 256, End, 94, 2.5316e-05
+0, 256, End, 95, 2.8084e-05
+0, 256, End, 96, 2.565e-05
+0, 256, End, 97, 2.6618e-05
+0, 256, End, 98, 2.6601e-05
+0, 256, End, 99, 2.6062e-05
+0, 256, End, 100, 2.5534e-05
+*** Caught a fatal signal (proc 2): SIGABRT(6)
+*** NOTICE (proc 2): Before reporting bugs, run with GASNET_BACKTRACE=1 in the environment to generate a backtrace.
+*** NOTICE (proc 2): We recommend linking the debug version of GASNet to assist you in resolving this application issue.
+*** Caught a fatal signal (proc 10): SIGABRT(6)
+*** NOTICE (proc 10): Before reporting bugs, run with GASNET_BACKTRACE=1 in the environment to generate a backtrace.
+*** NOTICE (proc 10): We recommend linking the debug version of GASNet to assist you in resolving this application issue.
+srun: error: compute-0-2: task 2: Aborted
+srun: Terminating job step 29002.5
+srun: error: compute-0-15: task 10: Aborted
+*** Caught a signal (proc 3): SIGTERM(15)
+*** Caught a signal (proc 8): SIGTERM(15)
+slurmstepd: error: *** STEP 29002.5 ON compute-0-1 CANCELLED AT 2024-06-01T12:02:04 ***
+*** Caught a signal (proc 9): SIGTERM(15)
+*** Caught a signal (proc 11): SIGTERM(15)
+*** Caught a signal (proc 6): SIGTERM(15)
+*** Caught a signal (proc 7): SIGTERM(15)
+*** Caught a signal (proc 0): SIGTERM(15)
+*** Caught a signal (proc 1): SIGTERM(15)
+*** Caught a signal (proc 4): SIGTERM(15)
+*** Caught a signal (proc 5): SIGTERM(15)
+gasnet_exit(): WARNING: timeout during exit... goodbye.  [exitcode reduction: send to parent]
+--------------------------------------------------------------------------
+MPI_ABORT was invoked on rank 11 in communicator MPI COMMUNICATOR 3 CREATE FROM 0
+with errorcode 1.
+
+NOTE: invoking MPI_ABORT causes Open MPI to kill all MPI processes.
+You may or may not see output from other processes, depending on
+exactly when Open MPI kills them.
+--------------------------------------------------------------------------
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+srun: error: compute-0-15: task 11: Exited with exit code 1
+--------------------------------------------------------------------------
+MPI_ABORT was invoked on rank 3 in communicator MPI COMMUNICATOR 3 CREATE FROM 0
+with errorcode 1.
+
+NOTE: invoking MPI_ABORT causes Open MPI to kill all MPI processes.
+You may or may not see output from other processes, depending on
+exactly when Open MPI kills them.
+--------------------------------------------------------------------------
+srun: error: compute-0-2: task 3: Exited with exit code 1
+srun: error: compute-0-14: task 9: Killed
+srun: error: compute-0-6: task 7: Killed
+srun: error: compute-0-3: task 4: Killed
+srun: error: compute-0-1: task 1: Killed
+srun: error: compute-0-3: task 5: Killed
+srun: error: compute-0-14: task 8: Killed
+srun: error: compute-0-6: task 6: Killed
+srun: error: compute-0-1: task 0: Killed
+0, 1024, End, 1, 3.6831e-05
+0, 1024, End, 2, 3.5552e-05
+0, 1024, End, 3, 3.5721e-05
+0, 1024, End, 4, 3.3835e-05
+0, 1024, End, 5, 3.4736e-05
+0, 1024, End, 6, 3.446e-05
+0, 1024, End, 7, 3.4719e-05
+0, 1024, End, 8, 3.5583e-05
+0, 1024, End, 9, 3.5199e-05
+0, 1024, End, 10, 3.5659e-05
+0, 1024, End, 11, 3.9522e-05
+0, 1024, End, 12, 3.5377e-05
+0, 1024, End, 13, 3.4342e-05
+0, 1024, End, 14, 3.4946e-05
+0, 1024, End, 15, 3.6103e-05
+0, 1024, End, 16, 3.7267e-05
+0, 1024, End, 17, 3.4418e-05
+0, 1024, End, 18, 3.5951e-05
+0, 1024, End, 19, 3.3618e-05
+0, 1024, End, 20, 3.4707e-05
+0, 1024, End, 21, 3.5204e-05
+0, 1024, End, 22, 3.5887e-05
+0, 1024, End, 23, 3.5911e-05
+0, 1024, End, 24, 3.4571e-05
+0, 1024, End, 25, 3.4864e-05
+0, 1024, End, 26, 3.5504e-05
+0, 1024, End, 27, 3.3726e-05
+0, 1024, End, 28, 3.6031e-05
+0, 1024, End, 29, 3.4471e-05
+0, 1024, End, 30, 3.5126e-05
+0, 1024, End, 31, 3.4646e-05
+0, 1024, End, 32, 3.4482e-05
+0, 1024, End, 33, 3.465e-05
+0, 1024, End, 34, 3.621e-05
+0, 1024, End, 35, 3.9954e-05
+0, 1024, End, 36, 3.4767e-05
+0, 1024, End, 37, 3.4394e-05
+0, 1024, End, 38, 3.5203e-05
+0, 1024, End, 39, 3.4592e-05
+0, 1024, End, 40, 3.4127e-05
+0, 1024, End, 41, 3.5712e-05
+0, 1024, End, 42, 3.551e-05
+0, 1024, End, 43, 3.4967e-05
+0, 1024, End, 44, 3.5362e-05
+0, 1024, End, 45, 3.4896e-05
+0, 1024, End, 46, 3.4658e-05
+0, 1024, End, 47, 3.4429e-05
+0, 1024, End, 48, 3.6289e-05
+0, 1024, End, 49, 3.4405e-05
+0, 1024, End, 50, 3.493e-05
+0, 1024, End, 51, 3.5672e-05
+0, 1024, End, 52, 3.4655e-05
+0, 1024, End, 53, 3.3768e-05
+0, 1024, End, 54, 3.5208e-05
+0, 1024, End, 55, 3.5238e-05
+0, 1024, End, 56, 3.7558e-05
+0, 1024, End, 57, 3.4987e-05
+0, 1024, End, 58, 3.5343e-05
+0, 1024, End, 59, 3.5849e-05
+0, 1024, End, 60, 3.4891e-05
+0, 1024, End, 61, 3.4832e-05
+0, 1024, End, 62, 3.5143e-05
+0, 1024, End, 63, 3.5695e-05
+0, 1024, End, 64, 3.4682e-05
+0, 1024, End, 65, 3.5679e-05
+0, 1024, End, 66, 3.8435e-05
+0, 1024, End, 67, 3.4922e-05
+0, 1024, End, 68, 3.9157e-05
+0, 1024, End, 69, 3.6365e-05
+0, 1024, End, 70, 3.5786e-05
+0, 1024, End, 71, 3.5401e-05
+0, 1024, End, 72, 3.5168e-05
+0, 1024, End, 73, 3.4778e-05
+0, 1024, End, 74, 3.4783e-05
+0, 1024, End, 75, 3.4758e-05
+0, 1024, End, 76, 3.4984e-05
+0, 1024, End, 77, 3.5543e-05
+0, 1024, End, 78, 3.578e-05
+0, 1024, End, 79, 3.5387e-05
+0, 1024, End, 80, 3.5079e-05
+0, 1024, End, 81, 3.5133e-05
+0, 1024, End, 82, 3.4382e-05
+0, 1024, End, 83, 3.8645e-05
+0, 1024, End, 84, 3.4964e-05
+0, 1024, End, 85, 3.5578e-05
+0, 1024, End, 86, 3.6133e-05
+0, 1024, End, 87, 3.7796e-05
+0, 1024, End, 88, 3.4495e-05
+0, 1024, End, 89, 3.4787e-05
+0, 1024, End, 90, 3.5549e-05
+0, 1024, End, 91, 3.5563e-05
+0, 1024, End, 92, 3.4572e-05
+0, 1024, End, 93, 3.5402e-05
+0, 1024, End, 94, 3.5303e-05
+0, 1024, End, 95, 3.6527e-05
+0, 1024, End, 96, 3.4376e-05
+0, 1024, End, 97, 3.5059e-05
+0, 1024, End, 98, 3.5717e-05
+0, 1024, End, 99, 3.4161e-05
+0, 1024, End, 100, 3.4569e-05
+0, 4096, End, 1, 6.9862e-05
+0, 4096, End, 2, 6.6755e-05
+0, 4096, End, 3, 6.686e-05
+0, 4096, End, 4, 6.7963e-05
+0, 4096, End, 5, 6.8106e-05
+0, 4096, End, 6, 6.6572e-05
+0, 4096, End, 7, 6.7643e-05
+0, 4096, End, 8, 6.6697e-05
+0, 4096, End, 9, 6.8368e-05
+0, 4096, End, 10, 6.7931e-05
+0, 4096, End, 11, 6.5812e-05
+0, 4096, End, 12, 6.5876e-05
+0, 4096, End, 13, 6.8144e-05
+0, 4096, End, 14, 6.7159e-05
+0, 4096, End, 15, 6.7335e-05
+0, 4096, End, 16, 6.7957e-05
+0, 4096, End, 17, 6.8841e-05
+0, 4096, End, 18, 6.6126e-05
+0, 4096, End, 19, 6.8154e-05
+0, 4096, End, 20, 6.6945e-05
+0, 4096, End, 21, 6.6401e-05
+0, 4096, End, 22, 6.8127e-05
+0, 4096, End, 23, 6.8866e-05
+0, 4096, End, 24, 6.7241e-05
+0, 4096, End, 25, 6.7737e-05
+0, 4096, End, 26, 6.8789e-05
+0, 4096, End, 27, 6.6365e-05
+0, 4096, End, 28, 0.000378652
+0, 4096, End, 29, 7.427e-05
+0, 4096, End, 30, 6.8647e-05
+0, 4096, End, 31, 7.1213e-05
+0, 4096, End, 32, 6.6269e-05
+0, 4096, End, 33, 6.7247e-05
+0, 4096, End, 34, 6.9427e-05
+0, 4096, End, 35, 6.8224e-05
+0, 4096, End, 36, 6.7282e-05
+0, 4096, End, 37, 6.6807e-05
+0, 4096, End, 38, 6.7384e-05
+0, 4096, End, 39, 6.6289e-05
+0, 4096, End, 40, 6.7789e-05
+0, 4096, End, 41, 6.6055e-05
+0, 4096, End, 42, 6.5776e-05
+0, 4096, End, 43, 6.514e-05
+0, 4096, End, 44, 6.7023e-05
+0, 4096, End, 45, 6.6671e-05
+0, 4096, End, 46, 6.5265e-05
+0, 4096, End, 47, 6.6346e-05
+0, 4096, End, 48, 6.8343e-05
+0, 4096, End, 49, 6.6652e-05
+0, 4096, End, 50, 6.7049e-05
+0, 4096, End, 51, 6.6608e-05
+0, 4096, End, 52, 6.7819e-05
+0, 4096, End, 53, 6.8007e-05
+0, 4096, End, 54, 6.6821e-05
+0, 4096, End, 55, 6.9728e-05
+0, 4096, End, 56, 6.6917e-05
+0, 4096, End, 57, 6.7562e-05
+0, 4096, End, 58, 6.8522e-05
+0, 4096, End, 59, 6.6936e-05
+0, 4096, End, 60, 6.7726e-05
+0, 4096, End, 61, 6.7547e-05
+0, 4096, End, 62, 6.6732e-05
+0, 4096, End, 63, 6.8274e-05
+0, 4096, End, 64, 6.7601e-05
+0, 4096, End, 65, 6.7937e-05
+0, 4096, End, 66, 7.9183e-05
+0, 4096, End, 67, 7.5415e-05
+0, 4096, End, 68, 6.7937e-05
+0, 4096, End, 69, 6.6999e-05
+0, 4096, End, 70, 6.7231e-05
+0, 4096, End, 71, 6.7364e-05
+0, 4096, End, 72, 6.9312e-05
+0, 4096, End, 73, 6.7298e-05
+0, 4096, End, 74, 6.7055e-05
+0, 4096, End, 75, 6.8197e-05
+0, 4096, End, 76, 6.7184e-05
+0, 4096, End, 77, 6.8629e-05
+0, 4096, End, 78, 6.8647e-05
+0, 4096, End, 79, 6.9628e-05
+0, 4096, End, 80, 6.7932e-05
+0, 4096, End, 81, 6.783e-05
+0, 4096, End, 82, 6.9892e-05
+0, 4096, End, 83, 6.6905e-05
+0, 4096, End, 84, 6.7594e-05
+0, 4096, End, 85, 6.8783e-05
+0, 4096, End, 86, 6.5871e-05
+0, 4096, End, 87, 6.633e-05
+0, 4096, End, 88, 6.718e-05
+0, 4096, End, 89, 6.6243e-05
+0, 4096, End, 90, 6.5998e-05
+0, 4096, End, 91, 6.8652e-05
+0, 4096, End, 92, 6.7584e-05
+0, 4096, End, 93, 6.9876e-05
+0, 4096, End, 94, 6.8032e-05
+0, 4096, End, 95, 6.847e-05
+0, 4096, End, 96, 6.7096e-05
+0, 4096, End, 97, 6.8443e-05
+0, 4096, End, 98, 6.4553e-05
+0, 4096, End, 99, 6.7485e-05
+0, 4096, End, 100, 6.7125e-05
+0, 16384, End, 1, 0.000191186
+0, 16384, End, 2, 0.000188717
+0, 16384, End, 3, 0.000186722
+0, 16384, End, 4, 0.000186334
+0, 16384, End, 5, 0.000186576
+0, 16384, End, 6, 0.000185819
+0, 16384, End, 7, 0.000186096
+0, 16384, End, 8, 0.000186347
+0, 16384, End, 9, 0.000185904
+0, 16384, End, 10, 0.00018622
+0, 16384, End, 11, 0.000184554
+0, 16384, End, 12, 0.000187654
+0, 16384, End, 13, 0.000187349
+0, 16384, End, 14, 0.000186769
+0, 16384, End, 15, 0.000185906
+0, 16384, End, 16, 0.000185531
+0, 16384, End, 17, 0.000186364
+0, 16384, End, 18, 0.000184706
+0, 16384, End, 19, 0.000184979
+0, 16384, End, 20, 0.000184623
+0, 16384, End, 21, 0.000405677
+0, 16384, End, 22, 0.000188787
+0, 16384, End, 23, 0.000190543
+0, 16384, End, 24, 0.000185952
+0, 16384, End, 25, 0.000187239
+0, 16384, End, 26, 0.000188149
+0, 16384, End, 27, 0.000185479
+0, 16384, End, 28, 0.000188217
+0, 16384, End, 29, 0.000186366
+0, 16384, End, 30, 0.000203221
+0, 16384, End, 31, 0.000191468
+0, 16384, End, 32, 0.00018578
+0, 16384, End, 33, 0.000185272
+0, 16384, End, 34, 0.000185891
+0, 16384, End, 35, 0.000186076
+0, 16384, End, 36, 0.00018573
+0, 16384, End, 37, 0.000185796
+0, 16384, End, 38, 0.000193971
+0, 16384, End, 39, 0.00018569
+0, 16384, End, 40, 0.000185251
+0, 16384, End, 41, 0.000186188
+0, 16384, End, 42, 0.000190481
+0, 16384, End, 43, 0.000185892
+0, 16384, End, 44, 0.000185651
+0, 16384, End, 45, 0.000186145
+0, 16384, End, 46, 0.00020027
+0, 16384, End, 47, 0.000187175
+0, 16384, End, 48, 0.000185591
+0, 16384, End, 49, 0.000185788
+0, 16384, End, 50, 0.000186616
+0, 16384, End, 51, 0.000186281
+0, 16384, End, 52, 0.000185468
+0, 16384, End, 53, 0.000186057
+0, 16384, End, 54, 0.00018562
+0, 16384, End, 55, 0.000189122
+0, 16384, End, 56, 0.000185369
+0, 16384, End, 57, 0.000186576
+0, 16384, End, 58, 0.000200498
+0, 16384, End, 59, 0.000185428
+0, 16384, End, 60, 0.000185382
+0, 16384, End, 61, 0.000185674
+0, 16384, End, 62, 0.000196558
+0, 16384, End, 63, 0.000192645
+0, 16384, End, 64, 0.000186383
+0, 16384, End, 65, 0.000185469
+0, 16384, End, 66, 0.000186278
+0, 16384, End, 67, 0.000186692
+0, 16384, End, 68, 0.000188061
+0, 16384, End, 69, 0.000184745
+0, 16384, End, 70, 0.000186642
+0, 16384, End, 71, 0.000188633
+0, 16384, End, 72, 0.000186419
+0, 16384, End, 73, 0.000185589
+0, 16384, End, 74, 0.000186954
+0, 16384, End, 75, 0.000186827
+0, 16384, End, 76, 0.000186357
+0, 16384, End, 77, 0.000185519
+0, 16384, End, 78, 0.00018712
+0, 16384, End, 79, 0.000194636
+0, 16384, End, 80, 0.000184886
+0, 16384, End, 81, 0.000185882
+0, 16384, End, 82, 0.000187661
+0, 16384, End, 83, 0.000186556
+0, 16384, End, 84, 0.000185248
+0, 16384, End, 85, 0.000185571
+0, 16384, End, 86, 0.000186556
+0, 16384, End, 87, 0.00018737
+0, 16384, End, 88, 0.000185334
+0, 16384, End, 89, 0.00018577
+0, 16384, End, 90, 0.000186582
+0, 16384, End, 91, 0.000187938
+0, 16384, End, 92, 0.000187112
+0, 16384, End, 93, 0.000185936
+0, 16384, End, 94, 0.000185862
+0, 16384, End, 95, 0.000186061
+0, 16384, End, 96, 0.000189334
+0, 16384, End, 97, 0.000185599
+0, 16384, End, 98, 0.000185689
+0, 16384, End, 99, 0.000186309
+0, 16384, End, 100, 0.000185368
+0, 65536, End, 1, 0.000671854
+0, 65536, End, 2, 0.000673389
+0, 65536, End, 3, 0.000678062
+0, 65536, End, 4, 0.000676112
+0, 65536, End, 5, 0.000676052
+0, 65536, End, 6, 0.000673686
+0, 65536, End, 7, 0.00100144
+0, 65536, End, 8, 0.000678098
+0, 65536, End, 9, 0.000671231
+0, 65536, End, 10, 0.000670728
+0, 65536, End, 11, 0.000672169
+0, 65536, End, 12, 0.000670941
+0, 65536, End, 13, 0.00067355
+0, 65536, End, 14, 0.000674278
+0, 65536, End, 15, 0.000671249
+0, 65536, End, 16, 0.000672742
+0, 65536, End, 17, 0.000674118
+0, 65536, End, 18, 0.000673383
+0, 65536, End, 19, 0.000683084
+0, 65536, End, 20, 0.000686942
+0, 65536, End, 21, 0.000671382
+0, 65536, End, 22, 0.000676909
+0, 65536, End, 23, 0.000672581
+0, 65536, End, 24, 0.000674542
+0, 65536, End, 25, 0.000671474
+0, 65536, End, 26, 0.000671536
+0, 65536, End, 27, 0.000671956
+0, 65536, End, 28, 0.000673995
+0, 65536, End, 29, 0.000673294
+0, 65536, End, 30, 0.000672206
+0, 65536, End, 31, 0.000673326
+0, 65536, End, 32, 0.000674326
+0, 65536, End, 33, 0.000672267
+0, 65536, End, 34, 0.000673464
+0, 65536, End, 35, 0.000689576
+0, 65536, End, 36, 0.0006723
+0, 65536, End, 37, 0.000673089
+0, 65536, End, 38, 0.000675577
+0, 65536, End, 39, 0.000672122
+0, 65536, End, 40, 0.000681538
+0, 65536, End, 41, 0.000672439
+0, 65536, End, 42, 0.000673634
+0, 65536, End, 43, 0.000671858
+0, 65536, End, 44, 0.000679645
+0, 65536, End, 45, 0.000673912
+0, 65536, End, 46, 0.000670133
+0, 65536, End, 47, 0.000672167
+0, 65536, End, 48, 0.000671537
+0, 65536, End, 49, 0.000672959
+0, 65536, End, 50, 0.000671446
+0, 65536, End, 51, 0.000990166
+0, 65536, End, 52, 0.000671375
+0, 65536, End, 53, 0.000670911
+0, 65536, End, 54, 0.000676391
+0, 65536, End, 55, 0.000672044
+0, 65536, End, 56, 0.000687458
+0, 65536, End, 57, 0.000672886
+0, 65536, End, 58, 0.000673248
+0, 65536, End, 59, 0.000671198
+0, 65536, End, 60, 0.000676409
+0, 65536, End, 61, 0.000673445
+0, 65536, End, 62, 0.00067203
+0, 65536, End, 63, 0.000671407
+0, 65536, End, 64, 0.00067322
+0, 65536, End, 65, 0.000672991
+0, 65536, End, 66, 0.000674577
+0, 65536, End, 67, 0.000958186
+0, 65536, End, 68, 0.000672022
+0, 65536, End, 69, 0.000672766
+0, 65536, End, 70, 0.000671505
+0, 65536, End, 71, 0.000672643
+0, 65536, End, 72, 0.000685088
+0, 65536, End, 73, 0.000677385
+0, 65536, End, 74, 0.000671923
+0, 65536, End, 75, 0.00067206
+0, 65536, End, 76, 0.000670689
+0, 65536, End, 77, 0.000678912
+0, 65536, End, 78, 0.000672852
+0, 65536, End, 79, 0.000672443
+0, 65536, End, 80, 0.000671364
+0, 65536, End, 81, 0.00087787
+0, 65536, End, 82, 0.000677597
+0, 65536, End, 83, 0.000673725
+0, 65536, End, 84, 0.000672649
+0, 65536, End, 85, 0.000670945
+0, 65536, End, 86, 0.000670502
+0, 65536, End, 87, 0.000672195
+0, 65536, End, 88, 0.000675646
+0, 65536, End, 89, 0.000671315
+0, 65536, End, 90, 0.000672016
+0, 65536, End, 91, 0.000671203
+0, 65536, End, 92, 0.00067412
+0, 65536, End, 93, 0.000675575
+0, 65536, End, 94, 0.000671302
+0, 65536, End, 95, 0.000677545
+0, 65536, End, 96, 0.000671635
+0, 65536, End, 97, 0.000676847
+0, 65536, End, 98, 0.000671861
+0, 65536, End, 99, 0.000674313
+0, 65536, End, 100, 0.000670658
+0, 131072, End, 1, 0.00131742
+0, 131072, End, 2, 0.00131472
+0, 131072, End, 3, 0.00131998
+0, 131072, End, 4, 0.00131767
+0, 131072, End, 5, 0.00131652
+0, 131072, End, 6, 0.00132473
+0, 131072, End, 7, 0.00131679
+0, 131072, End, 8, 0.00132038
+0, 131072, End, 9, 0.00131536
+0, 131072, End, 10, 0.00131559
+0, 131072, End, 11, 0.00131405
+0, 131072, End, 12, 0.00131538
+0, 131072, End, 13, 0.00131431
+0, 131072, End, 14, 0.00132472
+0, 131072, End, 15, 0.00131974
+0, 131072, End, 16, 0.00131346
+0, 131072, End, 17, 0.00158669
+0, 131072, End, 18, 0.00131697
+0, 131072, End, 19, 0.00131447
+0, 131072, End, 20, 0.00131976
+0, 131072, End, 21, 0.00131767
+0, 131072, End, 22, 0.00131477
+0, 131072, End, 23, 0.0013154
+0, 131072, End, 24, 0.00131706
+0, 131072, End, 25, 0.00134112
+0, 131072, End, 26, 0.00131524
+0, 131072, End, 27, 0.00131444
+0, 131072, End, 28, 0.00131952
+0, 131072, End, 29, 0.00131682
+0, 131072, End, 30, 0.0013177
+0, 131072, End, 31, 0.00132245
+0, 131072, End, 32, 0.00148986
+0, 131072, End, 33, 0.00131963
+0, 131072, End, 34, 0.00132672
+0, 131072, End, 35, 0.00131292
+0, 131072, End, 36, 0.00133875
+0, 131072, End, 37, 0.00131221
+0, 131072, End, 38, 0.00131887
+0, 131072, End, 39, 0.00131516
+0, 131072, End, 40, 0.00131569
+0, 131072, End, 41, 0.0013155
+0, 131072, End, 42, 0.0013149
+0, 131072, End, 43, 0.00131389
+0, 131072, End, 44, 0.00132262
+0, 131072, End, 45, 0.00141114
+0, 131072, End, 46, 0.00131672
+0, 131072, End, 47, 0.00131602
+0, 131072, End, 48, 0.00131813
+0, 131072, End, 49, 0.0013188
+0, 131072, End, 50, 0.00131755
+0, 131072, End, 51, 0.00131057
+0, 131072, End, 52, 0.00132708
+0, 131072, End, 53, 0.00131379
+0, 131072, End, 54, 0.00131281
+0, 131072, End, 55, 0.00131279
+0, 131072, End, 56, 0.00131352
+0, 131072, End, 57, 0.00131577
+0, 131072, End, 58, 0.0013296
+0, 131072, End, 59, 0.00131702
+0, 131072, End, 60, 0.00131591
+0, 131072, End, 61, 0.00131795
+0, 131072, End, 62, 0.00132865
+0, 131072, End, 63, 0.00132501
+0, 131072, End, 64, 0.00156038
+0, 131072, End, 65, 0.00131376
+0, 131072, End, 66, 0.00131371
+0, 131072, End, 67, 0.00131066
+0, 131072, End, 68, 0.00131443
+0, 131072, End, 69, 0.00131322
+0, 131072, End, 70, 0.0013307
+0, 131072, End, 71, 0.00131228
+0, 131072, End, 72, 0.00131262
+0, 131072, End, 73, 0.00131524
+0, 131072, End, 74, 0.00131109
+0, 131072, End, 75, 0.00131481
+0, 131072, End, 76, 0.00131465
+0, 131072, End, 77, 0.00131129
+0, 131072, End, 78, 0.00131175
+0, 131072, End, 79, 0.0013118
+0, 131072, End, 80, 0.00131413
+0, 131072, End, 81, 0.00131122
+0, 131072, End, 82, 0.00131617
+0, 131072, End, 83, 0.00131877
+0, 131072, End, 84, 0.00131281
+0, 131072, End, 85, 0.00131178
+0, 131072, End, 86, 0.00132497
+0, 131072, End, 87, 0.0013227
+0, 131072, End, 88, 0.00131438
+0, 131072, End, 89, 0.00131883
+0, 131072, End, 90, 0.00132142
+0, 131072, End, 91, 0.00131028
+0, 131072, End, 92, 0.00131234
+0, 131072, End, 93, 0.00131387
+0, 131072, End, 94, 0.0013127
+0, 131072, End, 95, 0.00159589
+0, 131072, End, 96, 0.00131263
+0, 131072, End, 97, 0.00131801
+0, 131072, End, 98, 0.00137853
+0, 131072, End, 99, 0.001317
+0, 131072, End, 100, 0.0013232
