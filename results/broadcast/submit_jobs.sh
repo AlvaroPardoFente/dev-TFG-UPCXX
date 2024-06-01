@@ -42,10 +42,10 @@ for i in "${!NODE_VALUES[@]}"; do
     # Determine which sbatch script to use based on the program name prefix
     if [[ $PROGRAM == mpi* ]]; then
       SBATCH_SCRIPT="new_mpi_sbatch.sh"
-      sbatch --exclusive -N "$NODES" -n "$NTASKS" --ntasks-per-node=2 -c 1 -t 00:05:00 -p compute0 -o "$OUTPUT_FILE" ~/dev-TFG-UPCXX/"$SBATCH_SCRIPT" --value=sizes.txt "$PROGRAM_PATH""$PROGRAM" --repetitions 100 -m "$MEASUREMENT_MODE" -q --warmup-repetitions 100
+      sbatch --exclusive -N "$NODES" -n "$NTASKS" --ntasks-per-node=2 -c 1 -t 00:05:00 -p compute0 -o "$OUTPUT_FILE" ~/dev-TFG-UPCXX/"$SBATCH_SCRIPT" --value=sizes.txt "$PROGRAM_PATH""$PROGRAM" --repetitions 1000 -m "$MEASUREMENT_MODE" -q --warmup-repetitions 100
     elif [[ $PROGRAM == upcxx* ]]; then
       SBATCH_SCRIPT="new_upcxx_sbatch.sh"
-      UPCXX_SHARED_HEAP_SIZE=2G sbatch --exclusive -N "$NODES" -n "$NTASKS" --ntasks-per-node=2 -c 1 -t 00:05:00 -p compute0 -o "$OUTPUT_FILE" ~/dev-TFG-UPCXX/"$SBATCH_SCRIPT" --value=sizes.txt "$PROGRAM_PATH""$PROGRAM" --repetitions 100 -m "$MEASUREMENT_MODE" -q --warmup-repetitions 100
+      UPCXX_SHARED_HEAP_SIZE=2G sbatch --exclusive -N "$NODES" -n "$NTASKS" --ntasks-per-node=2 -c 1 -t 00:05:00 -p compute0 -o "$OUTPUT_FILE" ~/dev-TFG-UPCXX/"$SBATCH_SCRIPT" --value=sizes.txt "$PROGRAM_PATH""$PROGRAM" --repetitions 1000 -m "$MEASUREMENT_MODE" -q --warmup-repetitions 100
     else
       echo "Unknown program prefix for $PROGRAM"
       continue
