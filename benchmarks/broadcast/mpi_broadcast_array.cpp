@@ -21,7 +21,7 @@ public:
 
     void benchmark_body() override
     {
-        MPI_Bcast(value.data(), number_count, MPI_INT, 0, MPI_COMM_WORLD);
+        MPI_Bcast(value.data(), number_count, MPI_UINT32_T, 0, MPI_COMM_WORLD);
 
         // if (world_rank)
         // {

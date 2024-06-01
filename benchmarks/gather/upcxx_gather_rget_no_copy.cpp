@@ -3,6 +3,8 @@
 #include <gather_settings.hpp>
 #include <iostream>
 
+int count = 0;
+
 class UpcxxGatherRget : public UpcxxBenchmarkScheme
 {
 public:
@@ -55,32 +57,28 @@ public:
         {
             if (gather_settings->measure_fetch)
             {
-                upcxx::future<> fut_all = upcxx::make_future();
                 // Measure fetch time
-                for (int i = 1; i < world_size; i++)
+                for (int i = 0; i < world_size; i++)
                 {
-                    fut_all = upcxx::when_all(fut_all,
-                                              value_g.fetch(i).then([=](upcxx::global_ptr<uint32_t> gptr)
-                                                                    { return upcxx::rget(gptr,
-                                                                                         &result.data()[i * nums_per_rank],
-                                                                                         nums_per_rank); }));
+                    value_g.fetch(i).then([=](upcxx::global_ptr<uint32_t> gptr)
+                                          { upcxx::rget(gptr, &result.data()[i * nums_per_rank], nums_per_rank).then([]()
+                                                                                                                     { count++; }); });
                 }
 
-                std::copy(value, value + nums_per_rank, result.begin());
-
-                fut_all.wait();
+                while (count < world_size)
+                {
+                    upcxx::progress();
+                }
             }
             else
             {
                 // Init promise
                 upcxx::promise<> p;
 
-                for (int i = 1; i < world_size; i++)
+                for (int i = 0; i < world_size; i++)
                 {
                     upcxx::rget(global_ptrs.at(i), &result.data()[i * nums_per_rank], nums_per_rank, upcxx::operation_cx::as_promise(p));
                 }
-
-                std::copy(value, value + nums_per_rank, result.begin());
 
                 // Wait for all operations to finish
                 p.finalize().wait();
@@ -98,6 +96,11 @@ public:
         //     }
         //     std::cout << std::endl;
         // }
+
+        if (gather_settings->measure_fetch && world_rank == 0)
+        {
+            count = 0;
+        }
 
         // Reset result
         std::fill(result.begin(), result.end(), 0);
