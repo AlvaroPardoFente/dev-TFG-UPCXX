@@ -16,7 +16,7 @@ figure_position = [680 458 480 240];
 data = struct();
 clean_data = struct();
 
-base_path = "../../results/broadcast/"
+base_path = "../../results/broadcast/";
 
 data.mpi_1N_2n = importtable(base_path + "mpi_broadcast_array_1N_2n");
 data.mpi_2N_4n = importtable(base_path + "mpi_broadcast_array_2N_4n");
@@ -110,7 +110,7 @@ surf(X, Y, Z_mpi, 'FaceAlpha', 0.5, 'EdgeColor', 'none', 'FaceColor', [1 0 0]);
 hold on;
 
 % Plot UPC++ data
-surf(X, Y, Z_upcxx, 'FaceAlpha', 0.5, 'EdgeColor', 'none', 'FaceColor', [0 0 1]);
+surf(X, Y, Z_upcxx, 'FaceAlpha', 1);
 
 % Customize plot appearance
 xlabel('Number of Processes');
@@ -122,10 +122,31 @@ colormap jet;
 colorbar;
 
 % Set logarithmic scales
-set(gca, 'XScale', 'log');
 set(gca, 'YScale', 'log');
+set(gca, 'ZScale', 'log');
 
 hold off;
+
+%% 2 processes
+
+sizes_figure_2n = figure("Position", figure_position);
+
+%nexttile
+plot(unique_sizes_bytes, bandwidth_mean.mpi_1N_2n, "--o")
+hold on
+plot(unique_sizes_bytes, bandwidth_mean.upcxx_1N_2n, "--x")
+set(gca, "XScale", "log")
+set(gca, "YScale", "log")
+xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
+legend("mpi", "upcxx");
+xlabel('Size');
+ylabel('Bandwidth(4B/s)');
+title('Mean bandwidth per size on 2 processes (1 node)');
+grid on;
+
+%% 4 processes
+
+%% 8 processes
 
 %% 8 nodes: Times in different sizes
 
