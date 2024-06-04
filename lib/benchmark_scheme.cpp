@@ -141,6 +141,4 @@ void BenchmarkScheme::run(int argc, char *argv[])
     }
 
     print_results();
-
-    finalize();
 }
