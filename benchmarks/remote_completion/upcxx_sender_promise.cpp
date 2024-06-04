@@ -65,8 +65,10 @@ public:
                 upcxx::rput(value[i], root_ptr + i, upcxx::operation_cx::as_promise(p));
             }
 
-            p.finalize().then([this]()
-                              { upcxx::rput(true, root_flag_ptr).wait(); });
+            upcxx::promise<> then_p;
+            p.finalize().then([=]()
+                              { upcxx::rput(true, root_flag_ptr, upcxx::operation_cx::as_promise(then_p)); });
+            then_p.finalize().wait();
         }
 
         // Check for completion
