@@ -50,7 +50,7 @@ void BenchmarkScheme::init(int argc, char *argv[])
         timer.set_settings(settings);
     }
 
-    if (world_rank == 0)
+    if (world_rank == 0 || settings->measurement_mode != BenchmarkSettings::NodeMeasurementMode::root)
     {
         print_columns["Size"] = std::to_string(number_count);
     }
