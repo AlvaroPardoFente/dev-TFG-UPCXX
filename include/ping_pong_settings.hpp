@@ -1,3 +1,5 @@
+#pragma once
+
 #include <benchmark_settings.hpp>
 
 class PingPongSettings : public BenchmarkSettings
