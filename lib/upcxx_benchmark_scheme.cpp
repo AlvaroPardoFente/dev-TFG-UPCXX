@@ -1,6 +1,11 @@
 #include <upcxx/upcxx.hpp>
 #include <upcxx_benchmark_scheme.hpp>
 
+UpcxxBenchmarkScheme::~UpcxxBenchmarkScheme()
+{
+    upcxx::finalize();
+}
+
 void UpcxxBenchmarkScheme::init(int argc, char *argv[])
 {
     // UPC++ initialization

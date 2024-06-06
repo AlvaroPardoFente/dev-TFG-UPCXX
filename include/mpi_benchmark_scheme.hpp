@@ -7,7 +7,7 @@ class MpiBenchmarkScheme : public BenchmarkScheme
 public:
     MpiBenchmarkScheme(uint32_t processes = 0) : BenchmarkScheme(processes){};
     MpiBenchmarkScheme(BenchmarkSettings *settings, uint32_t processes = 0) : BenchmarkScheme(settings, processes){};
-    virtual ~MpiBenchmarkScheme() = default;
+    virtual ~MpiBenchmarkScheme();
 
     virtual void init(int argc, char *argv[]) override;
     virtual void join_results() override;
