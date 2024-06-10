@@ -175,7 +175,7 @@ xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 legend("mpi", "upcxx");
 xlabel('Size');
 ylabel('Bandwidth(B/s)');
-title('Mean bandwidth per size on 4 processes (2 nodes)');
+title('Mean bandwidth per size on 8 processes (4 nodes)');
 grid on;
 
 % %% 8 nodes: Times in different sizes
