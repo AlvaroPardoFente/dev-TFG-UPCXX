@@ -27,12 +27,12 @@ public:
 
     void benchmark_body() override
     {
+        MPI_Win_fence(0, win);
         for (size_t i = 0; i < number_count; i++)
         {
             MPI_Accumulate(&src_value, 1, MPI_UINT64_T, 0, 0, 1, MPI_UINT64_T, MPI_SUM, win);
         }
-
-        MPI_Win_flush(0, win);
+        MPI_Win_fence(0, win);
 
         if (world_rank == 0)
         {
