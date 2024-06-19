@@ -5,7 +5,7 @@ addpath("../include/")
 
 %% ----------------------PRINTING----------------------
 
-do_print = false;
+do_print = true;
 
 %% Import and process data
 
@@ -16,23 +16,23 @@ figure_position = [680 458 480 240];
 data = struct();
 clean_data = struct();
 
-base_path = "../../results/broadcast/";
+base_path = "../../results/reduce/";
 
-data.mpi_1N_2n = importtable(base_path + "mpi_broadcast_array_1N_2n");
-data.mpi_2N_4n = importtable(base_path + "mpi_broadcast_array_2N_4n");
-data.mpi_4N_8n = importtable(base_path + "mpi_broadcast_array_4N_8n");
-data.mpi_6N_12n = importtable(base_path + "mpi_broadcast_array_6N_12n");
-data.mpi_8N_16n = importtable(base_path + "mpi_broadcast_array_8N_16n");
-data.mpi_10N_20n = importtable(base_path + "mpi_broadcast_array_10N_20n");
-data.mpi_12N_24n = importtable(base_path + "mpi_broadcast_array_12N_24n");
+data.mpi_1N_2n = importtable(base_path + "mpi_reduce_one_1N_2n");
+data.mpi_2N_4n = importtable(base_path + "mpi_reduce_one_2N_4n");
+data.mpi_4N_8n = importtable(base_path + "mpi_reduce_one_4N_8n");
+data.mpi_6N_12n = importtable(base_path + "mpi_reduce_one_6N_12n");
+data.mpi_8N_16n = importtable(base_path + "mpi_reduce_one_8N_16n");
+data.mpi_10N_20n = importtable(base_path + "mpi_reduce_one_10N_20n");
+data.mpi_12N_24n = importtable(base_path + "mpi_reduce_one_12N_24n");
 
-data.upcxx_1N_2n = importtable(base_path + "upcxx_broadcast_array_1N_2n");
-data.upcxx_2N_4n = importtable(base_path + "upcxx_broadcast_array_2N_4n");
-data.upcxx_4N_8n = importtable(base_path + "upcxx_broadcast_array_4N_8n");
-data.upcxx_6N_12n = importtable(base_path + "upcxx_broadcast_array_6N_12n");
-data.upcxx_8N_16n = importtable(base_path + "upcxx_broadcast_array_8N_16n");
-data.upcxx_10N_20n = importtable(base_path + "upcxx_broadcast_array_10N_20n");
-data.upcxx_12N_24n = importtable(base_path + "upcxx_broadcast_array_12N_24n");
+data.upcxx_1N_2n = importtable(base_path + "upcxx_reduce_one_1N_2n");
+data.upcxx_2N_4n = importtable(base_path + "upcxx_reduce_one_2N_4n");
+data.upcxx_4N_8n = importtable(base_path + "upcxx_reduce_one_4N_8n");
+data.upcxx_6N_12n = importtable(base_path + "upcxx_reduce_one_6N_12n");
+data.upcxx_8N_16n = importtable(base_path + "upcxx_reduce_one_8N_16n");
+data.upcxx_10N_20n = importtable(base_path + "upcxx_reduce_one_10N_20n");
+data.upcxx_12N_24n = importtable(base_path + "upcxx_reduce_one_12N_24n");
 
 unique_sizes = unique(data.mpi_1N_2n.Size);
 unique_sizes_bytes = unique_sizes .* 4;
@@ -129,7 +129,7 @@ set(gca, 'YScale', 'log');
 set(gca, 'ZScale', 'log');
 
 if (do_print)
-    print("upcxx_broadcast_3D", "-dpng");
+    print("upcxx_reduce_one_3D", "-dpng");
 end
 
 hold off;
@@ -162,7 +162,7 @@ end
 grid on;
 
 if (do_print)
-    print("broadcast_1N_2n", "-dpng");
+    print("reduce_one_1N_2n", "-dpng");
 end
 
 %% 4 processes
@@ -193,7 +193,7 @@ end
 grid on;
 
 if (do_print)
-    print("broadcast_2N_4n", "-dpng");
+    print("reduce_one_2N_4n", "-dpng");
 end
 
 %% 8 processes
@@ -224,7 +224,7 @@ end
 grid on;
 
 if (do_print)
-    print("broadcast_4N_8n", "-dpng");
+    print("reduce_one_4N_8n", "-dpng");
 end
 
 %% 64B: all processes
@@ -248,9 +248,9 @@ end
 % Plot bandwidth for 64 bytes against number of processes
 figure('Position', figure_position);
 
-plot(num_processes, mpi_bandwidth_64B, '--o', 'DisplayName', 'MPI')
+plot(num_processes, mpi_bandwidth_64B, '--o', 'DisplayName', 'mpi')
 hold on
-plot(num_processes, upcxx_bandwidth_64B, '--x', 'DisplayName', 'UPCXX')
+plot(num_processes, upcxx_bandwidth_64B, '--x', 'DisplayName', 'upcxx')
 set(gca, 'YScale', 'log')
 
 remove_m_ticks();
@@ -264,7 +264,7 @@ end
 grid on;
 
 if (do_print)
-    print("broadcast_64B_all", "-dpng");
+    print("reduce_one_64B_all", "-dpng");
 end
 
 %% Extract bandwidth for 16 KB
@@ -286,9 +286,9 @@ end
 %% Plot bandwidth for 16 KB against number of processes
 figure('Position', figure_position);
 
-plot(num_processes, mpi_bandwidth_16KB, '--o', 'DisplayName', 'MPI')
+plot(num_processes, mpi_bandwidth_16KB, '--o', 'DisplayName', 'mpi')
 hold on
-plot(num_processes, upcxx_bandwidth_16KB, '--x', 'DisplayName', 'UPCXX')
+plot(num_processes, upcxx_bandwidth_16KB, '--x', 'DisplayName', 'upcxx')
 set(gca, 'YScale', 'log')
 remove_m_ticks();
 xlim([min(num_processes) max(num_processes)])
@@ -301,120 +301,5 @@ end
 grid on;
 
 if (do_print)
-    print("broadcast_16KB_all", "-dpng");
+    print("reduce_one_16KB_all", "-dpng");
 end
-
-
-
-% %% 8 nodes: Times in different sizes
-% 
-% mpi_bandwidth = mpi_8n_clean_data.Size ./ mpi_8n_clean_data.Time;
-% mpi_mean_bandwidth = arrayfun(@(size) mean(mpi_bandwidth(mpi_8n_clean_data.Size == size)), unique_sizes);
-% upcxx_bandwidth = upcxx_8n_clean_data.Size ./ upcxx_8n_clean_data.Time;
-% upcxx_mean_bandwidth = arrayfun(@(size) mean(upcxx_bandwidth(upcxx_8n_clean_data.Size == size)), unique_sizes);
-% 
-% mpi_mean_times = arrayfun(@(size) mean(mpi_8n_clean_data.Time(mpi_8n_clean_data.Size == size)), unique_sizes);
-% upcxx_mean_times = arrayfun(@(size) mean(upcxx_8n_clean_data.Time(upcxx_8n_clean_data.Size == size)), unique_sizes);
-% 
-% sizes_figure = figure("Position", figure_position);
-% 
-% %tiledlayout("flow");
-% 
-% %nexttile
-% %loglog(unique_sizes, mpi_mean_times, "-o", "DisplayName", "mpi mean")
-% %hold on
-% %loglog(unique_sizes, upcxx_mean_times, "-o", "DisplayName", "upcxx mean")
-% 
-% %legend("mpi", "upcxx");
-% %xlabel('Size');
-% %ylabel('Time (s)');
-% %title('Mean times without outliers');
-% %grid on;
-% 
-% %nexttile
-% plot(unique_sizes, mpi_mean_bandwidth, "--o")
-% hold on
-% plot(unique_sizes, upcxx_mean_bandwidth, "--o")
-% set(gca, "XScale", "log")
-% xlim([min(unique_sizes) max(unique_sizes)])
-% legend("mpi", "upcxx");
-% xlabel('Size');
-% ylabel('Bandwidth(4B/s)');
-% title('Mean bandwidth per size on 8 processes');
-% grid on;
-% 
-% % Calculate the directional relative difference for each size
-% directional_diff = (mpi_mean_bandwidth - upcxx_mean_bandwidth) ./ ((mpi_mean_bandwidth + upcxx_mean_bandwidth) / 2) * 100;
-% 
-% % Calculate the average percentage difference
-% average_directional_diff = mean(directional_diff);
-% 
-% % Display the average percentage difference
-% disp(['Average Percentage Difference in Bandwidth: ', num2str(average_directional_diff), '%']);
-% 
-% %nexttile
-% %bar(unique_sizes_categorical, [mpi_mean_bandwidth, upcxx_mean_bandwidth])
-% %legend("mpi", "upcxx");
-% %xlabel('Size');
-% %ylabel('Bandwidth(4B/s)');
-% %title('Mean bandwidth per size');
-% %grid on;
-% 
-% % print("broadcast_sizes", "-dpng")
-% 
-% %% 4MB: Times in different number of nodes
-% 
-% num_nodes = [2, 4, 6, 8, 10, 12];
-% size = 4 * 1024 * 1024;
-% 
-% mpi_2n_4M = mpi_2n_clean_data(mpi_2n_clean_data.Size == size, :);
-% mpi_4n_4M = mpi_4n_clean_data(mpi_4n_clean_data.Size == size, :);
-% mpi_6n_4M = mpi_6n_clean_data(mpi_6n_clean_data.Size == size, :);
-% mpi_8n_4M = mpi_8n_clean_data(mpi_8n_clean_data.Size == size, :);
-% mpi_10n_4M = mpi_10n_clean_data(mpi_10n_clean_data.Size == size, :);
-% mpi_12n_4M = mpi_12n_clean_data(mpi_12n_clean_data.Size == size, :);
-% 
-% upcxx_2n_4M = upcxx_2n_clean_data(upcxx_2n_clean_data.Size == size, :);
-% upcxx_4n_4M = upcxx_4n_clean_data(upcxx_4n_clean_data.Size == size, :);
-% upcxx_6n_4M = upcxx_6n_clean_data(upcxx_6n_clean_data.Size == size, :);
-% upcxx_8n_4M = upcxx_8n_clean_data(upcxx_8n_clean_data.Size == size, :);
-% upcxx_10n_4M = upcxx_10n_clean_data(upcxx_10n_clean_data.Size == size, :);
-% upcxx_12n_4M = upcxx_12n_clean_data(upcxx_12n_clean_data.Size == size, :);
-% 
-% mpi_mean_times_4M = [
-%     mean(mpi_2n_4M.Time);
-%     mean(mpi_4n_4M.Time);
-%     mean(mpi_6n_4M.Time);
-%     mean(mpi_8n_4M.Time);
-%     mean(mpi_10n_4M.Time);
-%     mean(mpi_12n_4M.Time)
-% ];
-% 
-% upcxx_mean_times_4M = [
-%     mean(upcxx_2n_4M.Time);
-%     mean(upcxx_4n_4M.Time);
-%     mean(upcxx_6n_4M.Time);
-%     mean(upcxx_8n_4M.Time);
-%     mean(upcxx_10n_4M.Time);
-%     mean(upcxx_12n_4M.Time)
-% ];
-% 
-% % Calculate the directional relative difference for each node count
-% directional_diff = (mpi_mean_times_4M - upcxx_mean_times_4M) ./ ((mpi_mean_times_4M + upcxx_mean_times_4M) / 2) * 100;
-% 
-% % Calculate the average percentage difference
-% average_directional_diff = mean(directional_diff);
-% 
-% % Display the average percentage difference
-% disp(['Average Percentage Difference in Mean Times: ', num2str(average_directional_diff), '%']);
-% 
-% nodes_figure = figure("Position", figure_position);
-% bar(num_nodes, [mpi_mean_times_4M, upcxx_mean_times_4M]);
-% hold on;
-% xlabel('Number of Nodes');
-% ylabel('Mean Time (s)');
-% title('Mean Times for Size = 4M Across Different Node Counts');
-% legend("mpi", "upcxx", "Location","northwest");
-% grid on;
-% 
-% % print("broadcast_nodes", "-dpng")
