@@ -5,7 +5,7 @@ addpath("../include/")
 
 %% ----------------------PRINTING----------------------
 
-do_print = false;
+do_print = true;
 
 %% Import and process data
 
@@ -37,8 +37,8 @@ unique_sizes_bytes = unique_sizes .* 4;
 
 % Get field names
 fields = fieldnames(data);
-fields_8N_8n = (1:5);
-fields_4N_8n = (8:12);
+fields_8N_8n = (2:5);
+fields_4N_8n = (9:12);
 fields_rpc_8N_8n = (6:7);
 fields_rpc_4N_8n = (13:14);
 
@@ -67,6 +67,8 @@ end
 
 markers = ["o"; "+"; "x";"square"; "diamond"];
 formatted_fields = regexprep(fields, "_", "\\_");
+size_tick_labels = {"4", "16", "64", "256", "1K", "4K", "16K", "64K", "256K", "512K"};
+legend_names = {"rput\_as\_rpc", "rput\_no\_flag", "rput\_then", "rput\_wait"};
 
 %% Plot 8N
 
@@ -84,8 +86,15 @@ end
 
 set(gca, "XScale", "log");
 set(gca, "YScale", "log");
+ax = gca;
+ax.XTick = unique_sizes_bytes;
+ax.XTickLabel = size_tick_labels;
+[min_bandwidth, max_bandwidth] = get_min_max(bandwidth_mean, fields(fields_8N_8n));
+ax.YTick = get_ytick_range(min_bandwidth, max_bandwidth);
+remove_m_ticks();
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
-legend("show", "Location","southeast");
+lgd = legend(legend_names, "Location","southeast");
+%lgd.FontSize = 7;
 xlabel('Size(Bytes)');
 ylabel('Bandwidth(B/s)');
 if (~do_print)
@@ -129,8 +138,15 @@ end
 
 set(gca, "XScale", "log")
 set(gca, "YScale", "log")
+ax = gca;
+ax.XTick = unique_sizes_bytes;
+ax.XTickLabel = size_tick_labels;
+[min_bandwidth, max_bandwidth] = get_min_max(bandwidth_mean, fields(fields_4N_8n));
+ax.YTick = get_ytick_range(min_bandwidth, max_bandwidth);
+remove_m_ticks();
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
-legend("show", "Location","southeast");
+lgd = legend(legend_names, "Location","southeast");
+%lgd.FontSize = 7;
 xlabel('Size(Bytes)');
 ylabel('Bandwidth(B/s)');
 if (~do_print)
@@ -187,7 +203,8 @@ end
 set(gca, "XScale", "log")
 set(gca, "YScale", "log")
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
-legend("show", "Location","southeast");
+lgd = legend("show", "Location","southeast");
+lgd.FontSize = 7;
 xlabel('Size(Bytes)');
 ylabel('Bandwidth(B/s)');
 if (~do_print)
@@ -214,3 +231,54 @@ diff = ((rpc_mean_8N - then_mean_8N) / then_mean_8N) * 100;
 disp(['(8N) rpc is ', int2str(diff), '% slower than then']);
 diff = ((rpc_mean_4N - wait_mean_4N) / wait_mean_4N) * 100;
 disp(['(4N) rpc is ', int2str(diff), '% slower than wait']);
+
+%% Plot best upcxx against mpi
+
+mpi_plot = figure("Position", figure_position);
+plot_objects = gobjects(numel(fields), 1);
+
+hold on
+
+marker_i = 1;
+
+marker = markers(marker_i);
+marker_i = marker_i + 1;
+mpi_8N_plot = plot(unique_sizes_bytes, bandwidth_mean.mpi_8N_8n, "--", "Marker", marker, 'DisplayName', formatted_fields{1});
+
+marker = markers(marker_i);
+marker_i = marker_i + 1;
+upcxx_best_8N_plot = plot(unique_sizes_bytes, bandwidth_mean.upcxx_rput_then_8N_8n, "--", "Marker", marker, 'DisplayName', formatted_fields{4});
+
+marker = markers(marker_i);
+marker_i = marker_i + 1;
+mpi_4N_plot = plot(unique_sizes_bytes, bandwidth_mean.mpi_4N_8n, "--", "Marker", marker, 'DisplayName', formatted_fields{8});
+
+marker = markers(marker_i);
+marker_i = marker_i + 1;
+upcxx_best_4N_plot = plot(unique_sizes_bytes, bandwidth_mean.upcxx_rput_wait_4N_8n, "--", "Marker", marker, 'DisplayName', formatted_fields{12});
+
+set(gca, "XScale", "log");
+set(gca, "YScale", "log");
+ax = gca;
+ax.XTick = unique_sizes_bytes;
+ax.XTickLabel = size_tick_labels;
+ax.YTick = 10.^(0:10);
+remove_m_ticks();
+xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
+legend_names = {"mpi\_8N", "upcxx\_8N", "mpi\_4N", "upcxx\_4N"};
+lgd = legend(legend_names, "Location","southeast");
+%lgd.FontSize = 7;
+xlabel('Size(Bytes)');
+ylabel('Bandwidth(B/s)');
+if (~do_print)
+    title('Mean bandwidth in best upcxx and mpi');
+end
+grid on;
+
+% Create a data cursor object and update its properties
+dcm = datacursormode(gcf);
+set(dcm, 'UpdateFcn', @updatedcm)
+
+if (do_print)
+    print("ping_pong_best", "-dpng");
+end
