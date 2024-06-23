@@ -5,7 +5,7 @@ addpath("../include/")
 
 %% ----------------------PRINTING----------------------
 
-do_print = true;
+do_print = false;
 
 %% Import and process data
 
@@ -68,7 +68,7 @@ end
 
 markers = ["o"; "+"; "x";"square"; "diamond"];
 formatted_fields = regexprep(fields, "_", "\\_");
-size_tick_labels = {"4", "16", "64", "256", "512", "1K", "4K", "16K", "64K", "256K", "512K"}
+size_tick_labels = {"4", "16", "64", "256", "1K", "4K", "16K", "64K", "256K", "512K"}
 
 %% SURF TEST
 
