@@ -13,6 +13,11 @@ public:
     std::vector<upcxx::future<uint64_t>> fetch_futures;
     std::vector<uint64_t> fetch_results;
 
+    ~UpcxxAtomicFetchInc()
+    {
+        inc64.destroy();
+    }
+
     void init(int argc, char *argv[]) override
     {
         UpcxxBenchmarkScheme::init(argc, argv);
