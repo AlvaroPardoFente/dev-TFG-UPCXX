@@ -51,4 +51,4 @@ build/
 obj/
 
 # MATLAB generated
-MATLAB/**.png
+MATLAB/**/*.png
