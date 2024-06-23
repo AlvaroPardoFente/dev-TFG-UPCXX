@@ -10,6 +10,11 @@ public:
 
     upcxx::global_ptr<uint64_t> root_ptr;
 
+    ~UpcxxAtomicFetchIncPromise()
+    {
+        inc64.destroy();
+    }
+
     void init(int argc, char *argv[]) override
     {
         UpcxxBenchmarkScheme::init(argc, argv);

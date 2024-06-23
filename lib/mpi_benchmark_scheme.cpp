@@ -1,6 +1,11 @@
 #include <mpi.h>
 #include <mpi_benchmark_scheme.hpp>
 
+MpiBenchmarkScheme::~MpiBenchmarkScheme()
+{
+    MPI_Finalize();
+}
+
 void MpiBenchmarkScheme::init(int argc, char *argv[])
 {
     // MPI initialization

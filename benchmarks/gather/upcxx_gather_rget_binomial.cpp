@@ -18,7 +18,7 @@ public:
         UpcxxBenchmarkScheme::init(argc, argv);
 
         // Vector initialization
-        nums_per_rank = number_count / world_size;
+        nums_per_rank = number_count;
         final_size = nums_per_rank;
 
         for (int world_iter = world_size; world_iter > 1; world_iter /= 2)
@@ -82,10 +82,7 @@ public:
         //     std::cout << std::endl;
         // }
         // Reset result
-        for (uint32_t i = 0; i < final_size; i++)
-        {
-            value[i] = 0;
-        }
+        std::fill(value, value + final_size, 0);
         for (uint32_t i = 0; i < nums_per_rank; i++)
         {
             value[i] = i + world_rank * nums_per_rank;
