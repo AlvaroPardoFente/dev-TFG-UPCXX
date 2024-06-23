@@ -49,3 +49,6 @@
 # Build
 build/
 obj/
+
+# MATLAB generated
+MATLAB/**.png
