@@ -8,26 +8,32 @@ public:
     upcxx::dist_object<upcxx::global_ptr<uint32_t>> value_g;
     uint32_t *value;
 
+    uint32_t dest;
+
     // Counter as a dist object
     upcxx::dist_object<uint32_t> count;
 
     // Root pointer
     upcxx::global_ptr<uint32_t> root_ptr;
 
-    UpcxxRpcDistObject() : UpcxxBenchmarkScheme(2) {}
+    UpcxxRpcDistObject() : UpcxxBenchmarkScheme() {}
 
     void init(int argc, char *argv[]) override
     {
         UpcxxBenchmarkScheme::init(argc, argv);
 
-        value_g = upcxx::dist_object<upcxx::global_ptr<uint32_t>>(upcxx::new_array<uint32_t>(number_count));
+        dest = (world_rank - 1) * number_count;
+
+        value_g = upcxx::dist_object<upcxx::global_ptr<uint32_t>>(
+            upcxx::new_array<uint32_t>(
+                world_rank ? number_count : (world_size - 1) * number_count));
         value = value_g->local();
 
-        if (world_rank == 1)
+        if (world_rank)
         {
             for (uint32_t i = 0; i < number_count; i++)
             {
-                value[i] = i + 1;
+                value[i] = dest + i;
             }
         }
         else if (world_rank == 0)
@@ -47,19 +53,20 @@ public:
     void benchmark_body() override
     {
         // Perform rput for every value, increasing counter with rpc
-        if (world_rank == 1)
+        if (world_rank)
         {
             for (uint32_t i = 0; i < number_count; i++)
             {
-                upcxx::rput(value[i], root_ptr + i, upcxx::remote_cx::as_rpc([](upcxx::dist_object<uint32_t> &count)
-                                                                             { (*count)++; }, count));
+                upcxx::rput(value[i], root_ptr + dest + i, upcxx::remote_cx::as_rpc([](upcxx::dist_object<uint32_t> &count)
+                                                                                    { (*count)++; }, count));
             }
         }
 
         // Check for completion
         if (world_rank == 0)
         {
-            while (*count < number_count)
+            uint32_t goal = number_count * (world_size - 1);
+            while (*count < goal)
             {
                 upcxx::progress();
             }
@@ -71,14 +78,14 @@ public:
     void reset_result() override
     {
         // // Print result
-        // if (world_rank == 0)
-        // {
-        //     for (int i = 0; i < number_count; i++)
-        //     {
-        //         std::cout << value_g->local()[i] << " ";
-        //     }
-        //     std::cout << std::endl;
-        // }
+        if (world_rank == 0)
+        {
+            for (int i = 0; i < number_count * (world_size - 1); i++)
+            {
+                std::cout << value_g->local()[i] << " ";
+            }
+            std::cout << std::endl;
+        }
 
         // Reset result
         if (world_rank == 0)
