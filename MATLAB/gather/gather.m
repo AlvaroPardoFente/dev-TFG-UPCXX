@@ -5,7 +5,7 @@ addpath("../include/")
 
 %% ----------------------PRINTING----------------------
 
-do_print = false;
+do_print = true;
 
 %% Import and process data
 
@@ -68,13 +68,13 @@ num_processes = [2; 4; 8; 12; 16; 20; 24];
 
 % Get field names
 fields = fieldnames(data);
-fields_1N_2n = (1:5);
-fields_2N_4n = (6:10);
-fields_4N_8n = (11:15);
-fields_6N_12n = (16:20);
-fields_8N_16n = (21:25);
-fields_10N_20n = (26:30);
-fields_12N_24n = (31:35);
+fields_1N_2n = (2:5);
+fields_2N_4n = (7:10);
+fields_4N_8n = (12:15);
+fields_6N_12n = (17:20);
+fields_8N_16n = (22:25);
+fields_10N_20n = (27:30);
+fields_12N_24n = (32:35);
 
 % Apply function to each field
 for i = 1:numel(fields)
@@ -101,8 +101,8 @@ end
 
 markers = ["o"; "+"; "x";"square"; "diamond"];
 formatted_fields = regexprep(fields, "_", "\\_");
-size_tick_labels = {"4", "16", "64", "256", "512" "1K", "4K", "16K", "64K", "256K", "512K"};
-legend_names = {"mpi", "rget", "rget\_binomial", "rget\_no\_copy", "rput"};
+size_tick_labels = {"4", "16", "64", "256", "1K", "4K", "16K", "64K", "256K", "512K"};
+legend_names = {"rget", "rget\_binomial", "rget\_no\_copy", "rput"};
 
 %% Plot 2N
 
@@ -141,7 +141,7 @@ dcm = datacursormode(gcf);
 set(dcm, 'UpdateFcn', @updatedcm)
 
 if (do_print)
-    print("ping_pong_8N_8n", "-dpng");
+    print("gather_2N_4n", "-dpng");
 end
 
 % Biggest diffs in time and bandwidth
@@ -193,7 +193,7 @@ dcm = datacursormode(gcf);
 set(dcm, 'UpdateFcn', @updatedcm)
 
 if (do_print)
-    print("ping_pong_4N_8n", "-dpng");
+    print("gather_4N_8n", "-dpng");
 end
 
 % Biggest diffs in time and bandwidth
@@ -213,6 +213,49 @@ end
 % wait_mean_4N = data_mean.upcxx_rput_wait_4N_8n(1);
 % diff = ((wait_mean_4N - then_mean_8N) / then_mean_8N) * 100;
 % disp(['(1) 4N wait is ', int2str(diff), '% faster than 8N then']);
+
+%% Plot best upcxx against mpi
+
+mpi_plot = figure("Position", figure_position);
+plot_objects = gobjects(numel(fields), 1);
+
+hold on
+
+marker_i = 1;
+
+marker = markers(marker_i);
+marker_i = marker_i + 1;
+mpi_8N_plot = plot(unique_sizes_bytes, bandwidth_mean.mpi_4N_8n, "--", "Marker", marker, 'DisplayName', formatted_fields{6});
+
+marker = markers(marker_i);
+marker_i = marker_i + 1;
+upcxx_best_8N_plot = plot(unique_sizes_bytes, bandwidth_mean.upcxx_rput_4N_8n, "--", "Marker", marker, 'DisplayName', formatted_fields{10});
+
+set(gca, "XScale", "log");
+set(gca, "YScale", "log");
+ax = gca;
+ax.XTick = unique_sizes_bytes;
+ax.XTickLabel = size_tick_labels;
+ax.YTick = 10.^(0:10);
+remove_m_ticks();
+xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
+legend_names = {"mpi", "upcxx"};
+lgd = legend(legend_names, "Location","southeast");
+%lgd.FontSize = 7;
+xlabel('Size(Bytes)');
+ylabel('Bandwidth(B/s)');
+if (~do_print)
+    title('Mean bandwidth in best upcxx and mpi');
+end
+grid on;
+
+% Create a data cursor object and update its properties
+dcm = datacursormode(gcf);
+set(dcm, 'UpdateFcn', @updatedcm)
+
+if (do_print)
+    print("gather_best", "-dpng");
+end
 
 %% 64B: all processes
 
@@ -235,14 +278,14 @@ end
 % Plot bandwidth for 64 bytes against number of processes
 figure('Position', figure_position);
 
-plot(num_processes, mpi_bandwidth_64B, '--o', 'DisplayName', 'MPI')
+plot(num_processes, mpi_bandwidth_64B, '--o', 'DisplayName', 'mpi')
 hold on
-plot(num_processes, upcxx_bandwidth_64B, '--x', 'DisplayName', 'UPCXX')
+plot(num_processes, upcxx_bandwidth_64B, '--x', 'DisplayName', 'upcxx')
 set(gca, 'YScale', 'log')
 
 remove_m_ticks();
 xlim([min(num_processes) max(num_processes)]);
-legend('Location', 'northeast');
+legend('Location', 'southwest');
 xlabel('Number of Processes');
 ylabel('Bandwidth(B/s)');
 if (~do_print)
@@ -251,7 +294,7 @@ end
 grid on;
 
 if (do_print)
-    print("broadcast_64B_all", "-dpng");
+    print("gather_64B_all", "-dpng");
 end
 
 %% Extract bandwidth for 16 KB
@@ -273,13 +316,13 @@ end
 %% Plot bandwidth for 16 KB against number of processes
 figure('Position', figure_position);
 
-plot(num_processes, mpi_bandwidth_16KB, '--o', 'DisplayName', 'MPI')
+plot(num_processes, mpi_bandwidth_16KB, '--o', 'DisplayName', 'mpi')
 hold on
-plot(num_processes, upcxx_bandwidth_16KB, '--x', 'DisplayName', 'UPCXX')
+plot(num_processes, upcxx_bandwidth_16KB, '--x', 'DisplayName', 'upcxx')
 set(gca, 'YScale', 'log')
 remove_m_ticks();
 xlim([min(num_processes) max(num_processes)])
-legend('Location', 'northeast');
+legend('Location', 'southwest');
 xlabel('Number of Processes');
 ylabel('Bandwidth(B/s)');
 if (~do_print)
@@ -288,5 +331,5 @@ end
 grid on;
 
 if (do_print)
-    print("broadcast_16KB_all", "-dpng");
+    print("gather_16KB_all", "-dpng");
 end
