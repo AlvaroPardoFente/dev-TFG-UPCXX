@@ -5,7 +5,7 @@ addpath("../include/")
 
 %% ----------------------PRINTING----------------------
 
-do_print = false;
+do_print = true;
 
 %% Import and process data
 
@@ -68,7 +68,7 @@ end
 
 markers = ["o"; "+"; "x";"square"; "diamond"];
 formatted_fields = regexprep(fields, "_", "\\_");
-size_tick_labels = {"4", "16", "64", "256", "512", "1K", "4K", "16K", "64K", "256K", "512K"}
+size_tick_labels = {"4", "16", "64", "256", "1K", "4K", "16K", "64K", "256K", "512K"}
 
 %% SURF TEST
 
@@ -196,6 +196,9 @@ if (do_print)
     print("broadcast_2N_4n", "-dpng");
 end
 
+difference_2N = abs(bandwidth_mean.mpi_2N_4n ./ bandwidth_mean.upcxx_2N_4n);
+max_diff_2N = max(difference_2N)
+
 %% 8 processes
 
 sizes_figure_8n = figure("Position", figure_position);
@@ -227,6 +230,9 @@ if (do_print)
     print("broadcast_4N_8n", "-dpng");
 end
 
+difference_4N = abs(bandwidth_mean.mpi_4N_8n ./ bandwidth_mean.upcxx_4N_8n);
+max_diff_4N = max(difference_4N)
+
 %% 64B: all processes
 
 % Extract bandwidth for 64 bytes
@@ -245,12 +251,13 @@ for i = 1:length(num_processes)
     upcxx_bandwidth_64B(i) = bandwidth_mean.(upcxx_field)(size_64_idx);
 end
 
-% Plot bandwidth for 64 bytes against number of processes
+%% Plot bandwidth for 64 bytes against number of processes
+
 figure('Position', figure_position);
 
-plot(num_processes, mpi_bandwidth_64B, '--o', 'DisplayName', 'MPI')
+plot(num_processes, mpi_bandwidth_64B, '--o', 'DisplayName', 'mpi')
 hold on
-plot(num_processes, upcxx_bandwidth_64B, '--x', 'DisplayName', 'UPCXX')
+plot(num_processes, upcxx_bandwidth_64B, '--x', 'DisplayName', 'upcxx')
 set(gca, 'YScale', 'log')
 
 remove_m_ticks();
@@ -266,6 +273,9 @@ grid on;
 if (do_print)
     print("broadcast_64B_all", "-dpng");
 end
+
+difference_64B = abs(mpi_bandwidth_64B ./ upcxx_bandwidth_64B);
+max_diff_64B = max(difference_64B)
 
 %% Extract bandwidth for 16 KB
 size_16KB_idx = unique_sizes_bytes == 16 * 1024;
@@ -286,9 +296,9 @@ end
 %% Plot bandwidth for 16 KB against number of processes
 figure('Position', figure_position);
 
-plot(num_processes, mpi_bandwidth_16KB, '--o', 'DisplayName', 'MPI')
+plot(num_processes, mpi_bandwidth_16KB, '--o', 'DisplayName', 'mpi')
 hold on
-plot(num_processes, upcxx_bandwidth_16KB, '--x', 'DisplayName', 'UPCXX')
+plot(num_processes, upcxx_bandwidth_16KB, '--x', 'DisplayName', 'upcxx')
 set(gca, 'YScale', 'log')
 remove_m_ticks();
 xlim([min(num_processes) max(num_processes)])
@@ -304,7 +314,11 @@ if (do_print)
     print("broadcast_16KB_all", "-dpng");
 end
 
+difference_16KB = (mpi_bandwidth_16KB ./ upcxx_bandwidth_16KB);
+max_diff_mpi_16KB = max(difference_16KB)
 
+difference_upcxx_16KB = (upcxx_bandwidth_16KB ./ mpi_bandwidth_16KB);
+max_diff_mpi_16KB = max(difference_upcxx_16KB)
 
 % %% 8 nodes: Times in different sizes
 % 
