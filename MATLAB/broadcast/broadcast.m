@@ -197,7 +197,10 @@ if (do_print)
 end
 
 difference_2N = abs(bandwidth_mean.mpi_2N_4n ./ bandwidth_mean.upcxx_2N_4n);
-dispmaxdiff('[2N, mpi]', difference_2N, size_tick_labels)
+dispmaxdiff('[2N, mpi]', difference_2N, size_tick_labels);
+
+difference_2N_upcxx = abs(bandwidth_mean.upcxx_2N_4n ./ bandwidth_mean.mpi_2N_4n);
+dispmaxdiff('[2N, upcxx]', difference_2N_upcxx, size_tick_labels);
 
 %% 8 processes
 
