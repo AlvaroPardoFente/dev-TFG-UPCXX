@@ -5,7 +5,7 @@ addpath("../include/")
 
 %% ----------------------PRINTING----------------------
 
-do_print = true;
+do_print = false;
 
 %% Import and process data
 
@@ -67,7 +67,7 @@ end
 
 markers = ["o"; "+"; "x";"square"; "diamond"];
 formatted_fields = regexprep(fields, "_", "\\_");
-size_tick_labels = {"4", "16", "64", "256", "1K", "4K", "16K", "64K", "256K", "512K"};
+size_tick_labels = {'4', '16', '64', '256', '1K', '4K', '16K', '64K', '256K', '512K'};
 legend_names = {"rput\_as\_rpc", "rput\_no\_flag", "rput\_then", "rput\_wait"};
 
 %% Plot 8N
@@ -111,16 +111,16 @@ if (do_print)
 end
 
 % Biggest diffs in time and bandwidth
-then_mean = data_mean.upcxx_rput_then_8N_8n(2);
-mpi_mean = data_mean.mpi_8N_8n(2);
-
-then_mean_b = bandwidth_mean.upcxx_rput_then_8N_8n(2);
-mpi_mean_b = bandwidth_mean.mpi_8N_8n(2);
-
-diff = ((then_mean - mpi_mean) / mpi_mean) * 100;
-disp(['(8N) rput then is ', int2str(diff), '% faster than mpi']);
-diff = ((then_mean_b - mpi_mean_b) / mpi_mean_b) * 100;
-disp(['(8N) (bandwidth) rput then is ', int2str(diff), '% faster than mpi']);
+% then_mean = data_mean.upcxx_rput_then_8N_8n(2);
+% mpi_mean = data_mean.mpi_8N_8n(2);
+% 
+% then_mean_b = bandwidth_mean.upcxx_rput_then_8N_8n(2);
+% mpi_mean_b = bandwidth_mean.mpi_8N_8n(2);
+% 
+% diff = ((then_mean - mpi_mean) / mpi_mean) * 100;
+% disp(['(8N) rput then is ', int2str(diff), '% faster than mpi']);
+% diff = ((then_mean_b - mpi_mean_b) / mpi_mean_b) * 100;
+% disp(['(8N) (bandwidth) rput then is ', int2str(diff), '% faster than mpi']);
 
 %% Plot 4N
 
@@ -162,23 +162,23 @@ if (do_print)
     print("ping_pong_4N_8n", "-dpng");
 end
 
-% Biggest diffs in time and bandwidth
-wait_mean = data_mean.upcxx_rput_wait_4N_8n(1);
-mpi_mean = data_mean.mpi_4N_8n(1);
-
-wait_mean_b = bandwidth_mean.upcxx_rput_wait_4N_8n(1);
-mpi_mean_b = bandwidth_mean.mpi_4N_8n(1);
-
-diff = ((wait_mean - mpi_mean) / mpi_mean) * 100;
-disp(['(4N) rput wait is ', int2str(diff), '% faster than mpi']);
-diff = ((wait_mean_b - mpi_mean_b) / mpi_mean_b) * 100;
-disp(['(4N) (bandwidth) rput wait is ', int2str(diff), '% faster than mpi']);
-
-% Diffs size=1 in fastest 8N and 4N
-then_mean_8N = data_mean.upcxx_rput_then_8N_8n(1);
-wait_mean_4N = data_mean.upcxx_rput_wait_4N_8n(1);
-diff = ((wait_mean_4N - then_mean_8N) / then_mean_8N) * 100;
-disp(['(1) 4N wait is ', int2str(diff), '% faster than 8N then']);
+% % Biggest diffs in time and bandwidth
+% wait_mean = data_mean.upcxx_rput_wait_4N_8n(1);
+% mpi_mean = data_mean.mpi_4N_8n(1);
+% 
+% wait_mean_b = bandwidth_mean.upcxx_rput_wait_4N_8n(1);
+% mpi_mean_b = bandwidth_mean.mpi_4N_8n(1);
+% 
+% diff = ((wait_mean - mpi_mean) / mpi_mean) * 100;
+% disp(['(4N) rput wait is ', int2str(diff), '% faster than mpi']);
+% diff = ((wait_mean_b - mpi_mean_b) / mpi_mean_b) * 100;
+% disp(['(4N) (bandwidth) rput wait is ', int2str(diff), '% faster than mpi']);
+% 
+% % Diffs size=1 in fastest 8N and 4N
+% then_mean_8N = data_mean.upcxx_rput_then_8N_8n(1);
+% wait_mean_4N = data_mean.upcxx_rput_wait_4N_8n(1);
+% diff = ((wait_mean_4N - then_mean_8N) / then_mean_8N) * 100;
+% disp(['(1) 4N wait is ', int2str(diff), '% faster than 8N then']);
 
 %% Plot rpc
 
@@ -221,16 +221,16 @@ if (do_print)
 end
 
 % Diffs between rpc and fastest in 4MB
-then_mean_8N = data_mean.upcxx_rput_then_8N_8n(1);
-rpc_mean_8N = data_mean.upcxx_rpc_8N_8n(1);
-
-wait_mean_4N = data_mean.upcxx_rput_wait_4N_8n(1);
-rpc_mean_4N = data_mean.upcxx_rpc_4N_8n(1);
-
-diff = ((rpc_mean_8N - then_mean_8N) / then_mean_8N) * 100;
-disp(['(8N) rpc is ', int2str(diff), '% slower than then']);
-diff = ((rpc_mean_4N - wait_mean_4N) / wait_mean_4N) * 100;
-disp(['(4N) rpc is ', int2str(diff), '% slower than wait']);
+% then_mean_8N = data_mean.upcxx_rput_then_8N_8n(1);
+% rpc_mean_8N = data_mean.upcxx_rpc_8N_8n(1);
+% 
+% wait_mean_4N = data_mean.upcxx_rput_wait_4N_8n(1);
+% rpc_mean_4N = data_mean.upcxx_rpc_4N_8n(1);
+% 
+% diff = ((rpc_mean_8N - then_mean_8N) / then_mean_8N) * 100;
+% disp(['(8N) rpc is ', int2str(diff), '% slower than then']);
+% diff = ((rpc_mean_4N - wait_mean_4N) / wait_mean_4N) * 100;
+% disp(['(4N) rpc is ', int2str(diff), '% slower than wait']);
 
 %% Plot best upcxx against mpi
 
@@ -282,3 +282,15 @@ set(dcm, 'UpdateFcn', @updatedcm)
 if (do_print)
     print("ping_pong_best", "-dpng");
 end
+
+difference_8N = abs(bandwidth_mean.mpi_8N_8n ./ bandwidth_mean.upcxx_rput_then_8N_8n);
+dispmaxdiff('[8N, mpi]', difference_8N, size_tick_labels)
+
+difference_8N_upcxx = abs(bandwidth_mean.upcxx_rput_then_8N_8n ./ bandwidth_mean.mpi_8N_8n);
+dispmaxdiff('[8N, upcxx]', difference_8N_upcxx, size_tick_labels)
+
+difference_4N = abs(bandwidth_mean.mpi_4N_8n ./ bandwidth_mean.upcxx_rput_wait_4N_8n);
+dispmaxdiff('[4N, mpi]', difference_4N, size_tick_labels)
+
+difference_4N_upcxx = abs(bandwidth_mean.upcxx_rput_wait_4N_8n ./ bandwidth_mean.mpi_4N_8n);
+dispmaxdiff('[4N, upcxx]', difference_4N_upcxx, size_tick_labels)

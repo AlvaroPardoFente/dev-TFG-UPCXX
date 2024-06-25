@@ -68,7 +68,7 @@ end
 
 markers = ["o"; "+"; "x";"square"; "diamond"];
 formatted_fields = regexprep(fields, "_", "\\_");
-size_tick_labels = {"4", "16", "64", "256", "1K", "4K", "16K", "64K", "256K", "512K"}
+size_tick_labels = {'4', '16', '64', '256', '1K', '4K', '16K', '64K', '256K', '512K'};
 
 %% SURF TEST
 
@@ -196,6 +196,12 @@ if (do_print)
     print("reduce_one_2N_4n", "-dpng");
 end
 
+difference_2N = abs(bandwidth_mean.mpi_2N_4n ./ bandwidth_mean.upcxx_2N_4n);
+dispmaxdiff('[2N, mpi]', difference_2N, size_tick_labels)
+
+difference_2N_upcxx = abs(bandwidth_mean.upcxx_2N_4n ./ bandwidth_mean.mpi_2N_4n);
+dispmaxdiff('[2N, upcxx]', difference_2N_upcxx, size_tick_labels)
+
 %% 8 processes
 
 sizes_figure_8n = figure("Position", figure_position);
@@ -267,6 +273,12 @@ if (do_print)
     print("reduce_one_64B_all", "-dpng");
 end
 
+difference_64B = abs(mpi_bandwidth_64B ./ upcxx_bandwidth_64B);
+dispmaxdiff('[64B, mpi]', difference_64B, num_processes)
+
+difference_64B_upcxx = abs(upcxx_bandwidth_64B ./ mpi_bandwidth_64B);
+dispmaxdiff('[64B, upcxx]', difference_64B_upcxx, num_processes)
+
 %% Extract bandwidth for 16 KB
 size_16KB_idx = unique_sizes_bytes == 16 * 1024;
 
@@ -303,3 +315,9 @@ grid on;
 if (do_print)
     print("reduce_one_16KB_all", "-dpng");
 end
+
+difference_16KB = abs(mpi_bandwidth_16KB ./ upcxx_bandwidth_16KB);
+dispmaxdiff('[16KB, mpi]', difference_16KB, num_processes)
+
+difference_16KB_upcxx = abs(upcxx_bandwidth_16KB ./ mpi_bandwidth_16KB);
+dispmaxdiff('[16KB, upcxx]', difference_16KB_upcxx, num_processes)
