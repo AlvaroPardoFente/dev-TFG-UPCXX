@@ -9,7 +9,7 @@ public:
     uint32_t *value;
 
     // Completion bool as a dist_object
-    upcxx::global_ptr<bool> completion_flag_g;
+    upcxx::dist_object<upcxx::global_ptr<bool>> completion_flag_g;
     bool *completion_flag_l;
 
     // Broadcasting root completion flag
@@ -43,11 +43,11 @@ public:
         }
 
         // Completion bool as a dist_object
-        completion_flag_g = upcxx::new_<bool>(false);
-        completion_flag_l = completion_flag_g.local();
+        completion_flag_g = upcxx::dist_object<upcxx::global_ptr<bool>>(upcxx::new_<bool>(false));
+        completion_flag_l = completion_flag_g->local();
 
         // Broadcasting root completion flag
-        root_flag_ptr = upcxx::broadcast(completion_flag_g, 0).wait();
+        root_flag_ptr = completion_flag_g.fetch(0).wait();
 
         root_ptr = value_g.fetch(0).wait();
     };
