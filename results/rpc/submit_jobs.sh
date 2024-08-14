@@ -6,9 +6,9 @@
 NODE_VALUES=(1 2) # Different amount of nodes
 NTASKS_VALUES=(2 2)  # Corresponding number of tasks for each node value
 PROGRAM_PATH="$HOME/dev-TFG-UPCXX/build/rpc/"
-PROGRAMS=("upcxx_rpc_ff" "upcxx_rpc_ff_notice" "upcxx_rpc_notice" "upcxx_rpc_then" "upcxx_rpc_vector") 
+PROGRAMS=("mpi_rpc" "upcxx_rpc_ff" "upcxx_rpc_ff_notice" "upcxx_rpc_notice" "upcxx_rpc_then" "upcxx_rpc_vector") 
 MEASUREMENT_MODE="all" # root, min, max, avg, all
-MAX_ACTIVE_JOBS=25  # Maximum number of active jobs allowed
+MAX_ACTIVE_JOBS=20  # Maximum number of active jobs allowed
 
 # Check if NODE_VALUES and NTASKS_VALUES arrays have the same length
 if [ ${#NODE_VALUES[@]} -ne ${#NTASKS_VALUES[@]} ]; then
@@ -43,10 +43,10 @@ for i in "${!NODE_VALUES[@]}"; do
     # Determine which sbatch script to use based on the program name prefix
     if [[ $PROGRAM == mpi* ]]; then
       SBATCH_SCRIPT="new_mpi_sbatch.sh"
-      sbatch --exclusive -N "$NODES" -n "$NTASKS" --ntasks-per-node="$TASKS_PER_NODE" -c 1 -t 00:05:00 -p compute0 -o "$OUTPUT_FILE" ~/dev-TFG-UPCXX/"$SBATCH_SCRIPT" --value=sizes.txt "$PROGRAM_PATH""$PROGRAM" --repetitions 100 -m "$MEASUREMENT_MODE" -q --warmup-repetitions 200
+      sbatch --exclusive -N "$NODES" -n "$NTASKS" --ntasks-per-node="$TASKS_PER_NODE" -c 1 -t 00:08:00 -p compute0 -o "$OUTPUT_FILE" ~/dev-TFG-UPCXX/"$SBATCH_SCRIPT" --value=sizes.txt "$PROGRAM_PATH""$PROGRAM" --repetitions 200 -m "$MEASUREMENT_MODE" -q --warmup-repetitions 200
     elif [[ $PROGRAM == upcxx* ]]; then
       SBATCH_SCRIPT="new_upcxx_sbatch.sh"
-      UPCXX_SHARED_HEAP_SIZE=2G sbatch --exclusive -N "$NODES" -n "$NTASKS" --ntasks-per-node="$TASKS_PER_NODE" -c 1 -t 00:05:00 -p compute0 -o "$OUTPUT_FILE" ~/dev-TFG-UPCXX/"$SBATCH_SCRIPT" --value=sizes.txt "$PROGRAM_PATH""$PROGRAM" --repetitions 100 -m "$MEASUREMENT_MODE" -q --warmup-repetitions 200
+      UPCXX_SHARED_HEAP_SIZE=2G sbatch --exclusive -N "$NODES" -n "$NTASKS" --ntasks-per-node="$TASKS_PER_NODE" -c 1 -t 00:08:00 -p compute0 -o "$OUTPUT_FILE" ~/dev-TFG-UPCXX/"$SBATCH_SCRIPT" --value=sizes.txt "$PROGRAM_PATH""$PROGRAM" --repetitions 200 -m "$MEASUREMENT_MODE" -q --warmup-repetitions 200
     else
       echo "Unknown program prefix for $PROGRAM"
       continue
