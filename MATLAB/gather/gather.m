@@ -129,8 +129,8 @@ remove_m_ticks();
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 lgd = legend(legend_names, "Location","southeast");
 %lgd.FontSize = 7;
-xlabel('Size(Bytes)');
-ylabel('Bandwidth(B/s)');
+xlabel('Size (Bytes)');
+ylabel('Bandwidth (B/s)');
 if (~do_print)
     title('Mean bandwidth in N = 2 n = 4');
 end
@@ -181,8 +181,8 @@ remove_m_ticks();
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 lgd = legend(legend_names, "Location","southeast");
 %lgd.FontSize = 7;
-xlabel('Size(Bytes)');
-ylabel('Bandwidth(B/s)');
+xlabel('Size (Bytes)');
+ylabel('Bandwidth (B/s)');
 if (~do_print)
     title('Mean bandwidth in N = 4 n = 8');
 end
@@ -242,8 +242,8 @@ xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 legend_names = {"mpi", "upcxx"};
 lgd = legend(legend_names, "Location","southeast");
 %lgd.FontSize = 7;
-xlabel('Size(Bytes)');
-ylabel('Bandwidth(B/s)');
+xlabel('Size (Bytes)');
+ylabel('Bandwidth (B/s)');
 if (~do_print)
     title('Mean bandwidth in best upcxx and mpi');
 end
@@ -293,7 +293,12 @@ remove_m_ticks();
 xlim([min(num_processes) max(num_processes)]);
 legend('Location', 'southwest');
 xlabel('Number of Processes');
-ylabel('Bandwidth(B/s)');
+ylabel('Bandwidth (B/s)');
+
+ax = gca;
+ax.XTick = num_processes;
+ax.XTickLabel = num_processes;
+
 if (~do_print)
     title('Bandwidth for 64 bytes against number of processes');
 end
@@ -337,6 +342,11 @@ xlim([min(num_processes) max(num_processes)])
 legend('Location', 'southwest');
 xlabel('Number of Processes');
 ylabel('Bandwidth(B/s)');
+
+ax = gca;
+ax.XTick = num_processes;
+ax.XTickLabel = num_processes;
+
 if (~do_print)
     title('Bandwidth for 16 KB against number of processes');
 end

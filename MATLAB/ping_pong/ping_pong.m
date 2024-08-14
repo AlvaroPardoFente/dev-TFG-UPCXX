@@ -68,7 +68,7 @@ end
 markers = ["o"; "+"; "x";"square"; "diamond"];
 formatted_fields = regexprep(fields, "_", "\\_");
 size_tick_labels = {'4', '16', '64', '256', '1K', '4K', '16K', '64K', '256K', '512K'};
-legend_names = {"rput\_as\_rpc", "rput\_no\_flag", "rput\_then", "rput\_wait"};
+legend_names = {"as\_rpc", "no\_flag", "then", "wait"};
 
 %% Plot 8N
 
@@ -95,8 +95,8 @@ remove_m_ticks();
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 lgd = legend(legend_names, "Location","southeast");
 %lgd.FontSize = 7;
-xlabel('Size(Bytes)');
-ylabel('Bandwidth(B/s)');
+xlabel('Size (Bytes)');
+ylabel('Bandwidth (B/s)');
 if (~do_print)
     title('Mean bandwidth in N = 8 n = 8');
 end
@@ -147,8 +147,8 @@ remove_m_ticks();
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 lgd = legend(legend_names, "Location","southeast");
 %lgd.FontSize = 7;
-xlabel('Size(Bytes)');
-ylabel('Bandwidth(B/s)');
+xlabel('Size (Bytes)');
+ylabel('Bandwidth (B/s)');
 if (~do_print)
     title('Mean bandwidth in N = 4 n = 8');
 end
@@ -205,8 +205,8 @@ set(gca, "YScale", "log")
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 lgd = legend("show", "Location","southeast");
 lgd.FontSize = 7;
-xlabel('Size(Bytes)');
-ylabel('Bandwidth(B/s)');
+xlabel('Size (Bytes)');
+ylabel('Bandwidth (B/s)');
 if (~do_print)
     title('Mean bandwidth in rpcs');
 end
@@ -268,8 +268,8 @@ xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 legend_names = {"mpi\_8N", "upcxx\_8N", "mpi\_4N", "upcxx\_4N"};
 lgd = legend(legend_names, "Location","southeast");
 %lgd.FontSize = 7;
-xlabel('Size(Bytes)');
-ylabel('Bandwidth(B/s)');
+xlabel('Size (Bytes)');
+ylabel('Bandwidth (B/s)');
 if (~do_print)
     title('Mean bandwidth in best upcxx and mpi');
 end

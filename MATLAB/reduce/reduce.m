@@ -5,7 +5,7 @@ addpath("../include/")
 
 %% ----------------------PRINTING----------------------
 
-do_print = false;
+do_print = true;
 
 %% Import and process data
 
@@ -115,8 +115,8 @@ surf(X, Y, Z_upcxx, 'FaceAlpha', 1);
 
 % Customize plot appearance
 xlabel('Number of Processes');
-ylabel('Size(Bytes)');
-zlabel('Bandwidth(B/s)');
+ylabel('Size (Bytes)');
+zlabel('Bandwidth (B/s)');
 if (~do_print)
     title('3D Surface Plot of Mean Bandwidth (MPI and UPCXX)');
 end
@@ -154,8 +154,8 @@ remove_m_ticks();
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 
 legend("mpi", "upcxx", "Location","southeast");
-xlabel('Size');
-ylabel('Bandwidth(B/s)');
+xlabel('Size (Bytes)');
+ylabel('Bandwidth (B/s)');
 if (~do_print)
     title('Mean bandwidth per size on 2 processes (1 node)');
 end
@@ -185,8 +185,8 @@ remove_m_ticks();
 
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 legend("mpi", "upcxx", "Location","southeast");
-xlabel('Size');
-ylabel('Bandwidth(B/s)');
+xlabel('Size (Bytes)');
+ylabel('Bandwidth (B/s)');
 if (~do_print)
     title('Mean bandwidth per size on 4 processes (2 nodes)');
 end
@@ -222,8 +222,8 @@ remove_m_ticks();
 
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 legend("mpi", "upcxx", "Location","southeast");
-xlabel('Size');
-ylabel('Bandwidth(B/s)');
+xlabel('Size (Bytes)');
+ylabel('Bandwidth (B/s)');
 if (~do_print)
     title('Mean bandwidth per size on 8 processes (4 nodes)');
 end
@@ -263,7 +263,12 @@ remove_m_ticks();
 xlim([min(num_processes) max(num_processes)]);
 legend('Location', 'northeast');
 xlabel('Number of Processes');
-ylabel('Bandwidth(B/s)');
+ylabel('Bandwidth (B/s)');
+
+ax = gca;
+ax.XTick = num_processes;
+ax.XTickLabel = num_processes;
+
 if (~do_print)
     title('Bandwidth for 64 bytes against number of processes');
 end
@@ -306,7 +311,12 @@ remove_m_ticks();
 xlim([min(num_processes) max(num_processes)])
 legend('Location', 'northeast');
 xlabel('Number of Processes');
-ylabel('Bandwidth(B/s)');
+ylabel('Bandwidth (B/s)');
+
+ax = gca;
+ax.XTick = num_processes;
+ax.XTickLabel = num_processes;
+
 if (~do_print)
     title('Bandwidth for 16 KB against number of processes');
 end
