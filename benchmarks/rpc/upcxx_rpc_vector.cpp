@@ -2,14 +2,13 @@
 #include <upcxx_benchmark_scheme.hpp>
 #include <iostream>
 
-uint32_t count = 0;
+uint32_t count = 0, mivar = 0;
 
 constexpr const char loop_end[] = "Loop_end";
 
 class UpcxxRpcPromise : public UpcxxBenchmarkScheme
 {
     std::vector<upcxx::future<uint32_t>> fut_vector;
-    std::vector<uint32_t> result;
 
 public:
     UpcxxRpcPromise() : UpcxxBenchmarkScheme(2) {}
@@ -24,7 +23,6 @@ public:
         if (world_rank == 0)
         {
             fut_vector.reserve(number_count);
-            result.reserve(number_count);
         }
     };
 
@@ -43,7 +41,7 @@ public:
 
             for (uint32_t i = 0; i < number_count; i++)
             {
-                result.push_back(fut_vector.at(i).wait());
+                mivar += fut_vector.at(i).wait();
             }
         }
         // else
@@ -60,16 +58,12 @@ public:
     {
         if (world_rank == 0)
         {
-            // for (auto elem : result)
-            // {
-            //     std::cout << elem << " ";
-            // }
-            // std::cout << std::endl;
+            // std::cout << "mivar: " << mivar << std::endl;
 
-            result.clear();
             fut_vector.clear();
         }
         count = 0;
+        mivar = 0;
     }
 };
 
