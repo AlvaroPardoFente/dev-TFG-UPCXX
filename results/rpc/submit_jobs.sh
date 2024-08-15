@@ -7,7 +7,7 @@ NODE_VALUES=(1 2) # Different amount of nodes
 NTASKS_VALUES=(2 2)  # Corresponding number of tasks for each node value
 PROGRAM_PATH="$HOME/dev-TFG-UPCXX/build/rpc/"
 PROGRAMS=("mpi_rpc" "upcxx_rpc_ff" "upcxx_rpc_ff_notice" "upcxx_rpc_notice" "upcxx_rpc_then" "upcxx_rpc_vector") 
-MEASUREMENT_MODE="all" # root, min, max, avg, all
+MEASUREMENT_MODE="max" # root, min, max, avg, all
 MAX_ACTIVE_JOBS=20  # Maximum number of active jobs allowed
 
 # Check if NODE_VALUES and NTASKS_VALUES arrays have the same length
