@@ -116,7 +116,7 @@ surf(X, Y, Z_upcxx, 'FaceAlpha', 1);
 % Customize plot appearance
 xlabel('Number of Processes');
 ylabel('Size(Bytes)');
-zlabel('Bandwidth(B/s)');
+zlabel('Bandwidth (B/s)');
 if (~do_print)
     title('3D Surface Plot of Mean Bandwidth (MPI and UPCXX)');
 end
@@ -155,7 +155,7 @@ xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 
 legend("mpi", "upcxx", "Location","southeast");
 xlabel('Iterations');
-ylabel('Bandwidth(B/s)');
+ylabel('Bandwidth (B/s)');
 if (~do_print)
     title('Mean bandwidth per size on 2 processes (1 node)');
 end
@@ -223,7 +223,7 @@ remove_m_ticks();
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 legend("mpi", "upcxx", "Location","southeast");
 xlabel('Iterations');
-ylabel('Bandwidth(B/s)');
+ylabel('Bandwidth (B/s)');
 if (~do_print)
     title('Mean bandwidth per size on 8 processes (4 nodes)');
 end
@@ -267,7 +267,7 @@ remove_m_ticks();
 xlim([min(num_processes) max(num_processes)]);
 legend('Location', 'northeast');
 xlabel('Number of Processes');
-ylabel('Bandwidth(B/s)');
+ylabel('Bandwidth (B/s)');
 
 ax = gca;
 ax.XTick = num_processes;
@@ -369,7 +369,7 @@ dispmaxdiff('[2KI, upcxx]', difference_upcxx_16KB, num_processes);
 % xlim([min(unique_sizes) max(unique_sizes)])
 % legend("mpi", "upcxx");
 % xlabel('Iterations');
-% ylabel('Bandwidth(4B/s)');
+% ylabel('Bandwidth (4B/s)');
 % title('Mean bandwidth per size on 8 processes');
 % grid on;
 % 
@@ -386,7 +386,7 @@ dispmaxdiff('[2KI, upcxx]', difference_upcxx_16KB, num_processes);
 % %bar(unique_sizes_categorical, [mpi_mean_bandwidth, upcxx_mean_bandwidth])
 % %legend("mpi", "upcxx");
 % %xlabel('Iterations');
-% %ylabel('Bandwidth(4B/s)');
+% %ylabel('Bandwidth (4B/s)');
 % %title('Mean bandwidth per size');
 % %grid on;
 % 
