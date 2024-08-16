@@ -341,7 +341,7 @@ remove_m_ticks();
 xlim([min(num_processes) max(num_processes)])
 legend('Location', 'southwest');
 xlabel('Number of Processes');
-ylabel('Bandwidth(B/s)');
+ylabel('Bandwidth (B/s)');
 
 ax = gca;
 ax.XTick = num_processes;
