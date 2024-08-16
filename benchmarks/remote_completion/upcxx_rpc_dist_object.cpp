@@ -78,14 +78,14 @@ public:
     void reset_result() override
     {
         // // Print result
-        if (world_rank == 0)
-        {
-            for (int i = 0; i < number_count * (world_size - 1); i++)
-            {
-                std::cout << value_g->local()[i] << " ";
-            }
-            std::cout << std::endl;
-        }
+        // if (world_rank == 0)
+        // {
+        //     for (int i = 0; i < number_count * (world_size - 1); i++)
+        //     {
+        //         std::cout << value_g->local()[i] << " ";
+        //     }
+        //     std::cout << std::endl;
+        // }
 
         // Reset result
         if (world_rank == 0)
