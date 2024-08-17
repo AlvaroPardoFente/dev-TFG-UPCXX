@@ -88,4 +88,13 @@ void MpiNonContiguousScheme::init(int argc, char *argv[])
             exit(EXIT_FAILURE);
         }
     }
+
+    print_columns.clear();
+    print_columns["Chunks-per-rank"] = std::to_string(nchunks_per_rank);
+    print_columns["Chunk-size"] = std::to_string(chunk_size);
+    print_columns["In-stride"] = std::to_string(in_stride);
+    print_columns["Out-inter-chunk-stride"] = std::to_string(out_inter_chunk_stride);
+    print_columns["Out-inter-rank-stride"] = std::to_string(out_inter_rank_stride);
+    print_columns["Size-per-rank"] = std::to_string(nchunks_per_rank * chunk_size);
+    print_columns["Total-size"] = std::to_string(world_size * nchunks_per_rank * chunk_size);
 }
