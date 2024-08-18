@@ -60,20 +60,37 @@ if [[ ${#files_for_args[@]} -eq 0 ]]; then
         srun -N $nodes -n $procs --ntasks-per-node=$ntaskspernode $args
     done
 else
-    for arg in "${!files_for_args[@]}"; do
-        file="${files_for_args[$arg]}"
+
+    # Read lines from each file into arrays
+    declare -A file_lines
+    for arg_name in "${!files_for_args[@]}"; do
+        file="${files_for_args[$arg_name]}"
         mapfile -t lines < "$file"
-        for line in "${lines[@]}"; do
-            cmd="$args $arg $line"
-            for ((i=1; i<=$NREPS; i++)); do
-                if [[ $first -eq 0 ]]; then
-                    first=1
-                else
-                    cmd="$cmd --no-headers"
-                fi
-                # echo srun -N $nodes -n $procs --ntasks-per-node=$ntaskspernode $cmd
-                srun -N $nodes -n $procs --ntasks-per-node=$ntaskspernode $cmd
-            done
+        file_lines["$arg_name"]="${lines[@]}"
+    done
+
+    # Get the number of lines in the first file (assuming all files have the same number of lines)
+    for file in "${files_for_args[@]}"; do
+        first_file=$file
+        break
+    done
+    num_lines=$(wc -l < "$first_file")
+
+    # Iterate over the lines and run the program
+    for ((i=0; i<num_lines; i++)); do
+        cmd="$args"
+        for arg_name in "${!file_lines[@]}"; do
+            line=$(sed -n "$((i+1))p" "${files_for_args[$arg_name]}")
+            cmd="$cmd $arg_name $line"
+        done
+        for ((j=1; j<=$NREPS; j++)); do
+            if [[ $first -eq 0 ]]; then
+                first=1
+            else
+                cmd="$cmd --no-headers"
+            fi
+            # echo srun -N $nodes -n $procs --ntasks-per-node=$ntaskspernode $cmd
+            srun -N $nodes -n $procs --ntasks-per-node=$ntaskspernode $cmd
         done
     done
 fi
