@@ -2,7 +2,7 @@
 
 # Usage: ./generate_list_files.sh
 
-CHUNKS_PER_RANK=(1 2 4)  # Example list of chunks per rank
+CHUNKS_PER_RANK=(1 4 16 64 256 1024 $((4*1024)) $((16*1024)))  # Example list of chunks per rank
 CHUNK_SIZE=4
 IN_STRIDE=8
 OUT_INTER_CHUNK_SPACE=4

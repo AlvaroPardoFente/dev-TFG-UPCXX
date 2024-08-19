@@ -50,13 +50,12 @@ for i in "${!NODE_VALUES[@]}"; do
       continue
     fi
       
-    CMD="$ENV_PREFIX sbatch --exclusive -N \"$NODES\" -n \"$NTASKS\" --ntasks-per-node=2 -c 1 -t 00:05:00 -p compute0 -o \"$OUTPUT_FILE\" ~/dev-TFG-UPCXX/\"$SBATCH_SCRIPT\" --chunks-per-rank=chunks_per_rank.txt --out-inter-rank-stride=out_inter_rank_stride.txt \"$PROGRAM_PATH\"\"$PROGRAM\" \
+    CMD="$ENV_PREFIX sbatch --exclusive -N \"$NODES\" -n \"$NTASKS\" --ntasks-per-node=2 -c 1 -t 00:15:00 -p compute0 -o \"$OUTPUT_FILE\" ~/dev-TFG-UPCXX/\"$SBATCH_SCRIPT\" --chunks-per-rank=chunks_per_rank.txt --out-inter-rank-stride=out_inter_rank_stride.txt \"$PROGRAM_PATH\"\"$PROGRAM\" \
     --chunk-size 4 \
     --in-stride 8 \
     --out-inter-chunk-stride 8 \
     --repetitions 200 -m \"$MEASUREMENT_MODE\" -q --warmup-repetitions 200"
 
-    echo "Executing command: $CMD"
     eval $CMD
 
   done
