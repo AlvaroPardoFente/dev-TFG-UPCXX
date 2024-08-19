@@ -34,7 +34,8 @@ public:
 
     void benchmark_body() override
     {
-        MPI_Send(src_vector.data(), 1, src_type, 0, 0, MPI_COMM_WORLD);
+        MPI_Request request;
+        MPI_Isend(src_vector.data(), 1, src_type, 0, 0, MPI_COMM_WORLD, &request);
 
         if (world_rank == 0)
         {
@@ -43,6 +44,8 @@ public:
                 MPI_Recv(&dst_vector[i * out_inter_rank_stride], 1, dst_type, i, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
             }
         }
+
+        MPI_Wait(&request, MPI_STATUS_IGNORE);
     }
 
     void reset_result() override
