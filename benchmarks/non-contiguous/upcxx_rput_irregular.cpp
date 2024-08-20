@@ -9,15 +9,15 @@ int count = 0;
 class UpcxxRputIrregular : public UpcxxNonContiguousScheme
 {
 public:
-    std::vector<size_t> src_vector;
-    upcxx::global_ptr<size_t> dst_vector_g;
-    size_t dst_size;
+    std::vector<uint32_t> src_vector;
+    upcxx::global_ptr<uint32_t> dst_vector_g;
+    uint32_t dst_size;
 
     // Iterables for non-contiguous operations
-    std::vector<std::pair<size_t *, size_t>> srcs;
-    std::vector<std::pair<upcxx::global_ptr<size_t>, size_t>> dsts;
+    std::vector<std::pair<uint32_t *, uint32_t>> srcs;
+    std::vector<std::pair<upcxx::global_ptr<uint32_t>, uint32_t>> dsts;
 
-    upcxx::global_ptr<size_t> root_ptr;
+    upcxx::global_ptr<uint32_t> root_ptr;
 
     void init(int argc, char *argv[]) override
     {
@@ -29,7 +29,7 @@ public:
         if (world_rank == 0)
         {
             dst_size = std::max(world_size * out_inter_rank_stride, nchunks_per_rank * out_inter_chunk_stride);
-            dst_vector_g = upcxx::new_array<size_t>(dst_size);
+            dst_vector_g = upcxx::new_array<uint32_t>(dst_size);
             std::fill(dst_vector_g.local(), dst_vector_g.local() + dst_size, 0);
         }
 

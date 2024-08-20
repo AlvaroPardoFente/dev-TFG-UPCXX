@@ -5,8 +5,8 @@
 class MpiVector : public MpiNonContiguousScheme
 {
 public:
-    std::vector<size_t> src_vector;
-    std::vector<size_t> dst_vector;
+    std::vector<uint32_t> src_vector;
+    std::vector<uint32_t> dst_vector;
     MPI_Datatype src_type, dst_type;
 
     void init(int argc, char *argv[]) override
@@ -22,12 +22,12 @@ public:
             std::fill(dst_vector.begin(), dst_vector.end(), 0);
         }
 
-        MPI_Type_vector(nchunks_per_rank, chunk_size, in_stride, MPI_UNSIGNED_LONG, &src_type);
+        MPI_Type_vector(nchunks_per_rank, chunk_size, in_stride, MPI_UINT32_T, &src_type);
         MPI_Type_commit(&src_type);
 
         if (world_rank == 0)
         {
-            MPI_Type_vector(nchunks_per_rank, chunk_size, out_inter_chunk_stride, MPI_UNSIGNED_LONG, &dst_type);
+            MPI_Type_vector(nchunks_per_rank, chunk_size, out_inter_chunk_stride, MPI_UINT32_T, &dst_type);
             MPI_Type_commit(&dst_type);
         }
     }
