@@ -54,7 +54,7 @@ for i in "${!NODE_VALUES[@]}"; do
     --chunk-size 4 \
     --in-stride 8 \
     --out-inter-chunk-stride 8 \
-    --repetitions 200 -m \"$MEASUREMENT_MODE\" -q --warmup-repetitions 200"
+    --repetitions 1000 -m \"$MEASUREMENT_MODE\" -q --warmup-repetitions 200"
 
     eval $CMD
 
