@@ -35,7 +35,7 @@ data.dist_object_10N_20n = importtable(base_path + "upcxx_rpc_dist_object_10N_20
 data.dist_object_12N_24n = importtable(base_path + "upcxx_rpc_dist_object_12N_24n");
 
 unique_sizes = unique(data.global_var_1N_2n.Size);
-unique_sizes_bytes = unique_sizes .* 4;
+unique_sizes_bytes = unique_sizes;
 unique_sizes_categorical = categorical(unique_sizes);
 
 num_processes = [2; 4; 8; 12; 16; 20; 24];
@@ -68,7 +68,7 @@ end
 
 markers = ["o"; "+"; "x";"square"; "diamond"];
 formatted_fields = regexprep(fields, "_", "\\_");
-size_tick_labels = {'4', '16', '64', '256', '1K', '4K', '16K', '64K'};
+size_tick_labels = {'1', '4', '16', '64', '256', '1K', '4K', '16K'};
 
 %% SURF TEST
 % 
@@ -154,7 +154,7 @@ remove_m_ticks();
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 
 legend("global\_var", "dist\_object", "Location","southeast");
-xlabel('Size (Bytes)');
+xlabel('Iterations');
 ylabel('Bandwidth (B/s)');
 if (~do_print)
     title('Mean bandwidth per size on 2 processes (1 node)');
@@ -185,7 +185,7 @@ remove_m_ticks();
 
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 legend("global\_var", "dist\_object", "Location","southeast");
-xlabel('Size (Bytes)');
+xlabel('Iterations');
 ylabel('Bandwidth (B/s)');
 if (~do_print)
     title('Mean bandwidth per size on 4 processes (2 nodes)');
@@ -222,7 +222,7 @@ remove_m_ticks();
 
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 legend("global\_var", "dist\_object", "Location","southeast");
-xlabel('Size (Bytes)');
+xlabel('Iterations');
 ylabel('Bandwidth (B/s)');
 if (~do_print)
     title('Mean bandwidth per size on 8 processes (4 nodes)');
@@ -274,19 +274,19 @@ ax.XTick = num_processes;
 ax.XTickLabel = num_processes;
 
 if (~do_print)
-    title('Bandwidth for 64 bytes against number of processes');
+    title('Bandwidth for 64 iterations against number of processes');
 end
 grid on;
 
 if (do_print)
-    print("remote_completion_64B_all", "-dpng");
+    print("remote_completion_64I_all", "-dpng");
 end
 
 difference_64B = abs(global_var_bandwidth_64B ./ dist_object_bandwidth_64B);
 dispmaxdiff('[64B, global\_var]', difference_64B, num_processes);
 
 %% Extract bandwidth for 16 KB
-size_16KB_idx = unique_sizes_bytes == 16 * 1024;
+size_16KB_idx = unique_sizes_bytes == 4 * 1024;
 
 % Initialize arrays for MPI and UPCXX
 global_var_bandwidth_16KB = zeros(length(num_processes), 1);
@@ -319,12 +319,12 @@ ax.XTick = num_processes;
 ax.XTickLabel = num_processes;
 
 if (~do_print)
-    title('Bandwidth for 16 KB against number of processes');
+    title('Bandwidth for 4 K iterations against number of processes');
 end
 grid on;
 
 if (do_print)
-    print("remote_completion_16KB_all", "-dpng");
+    print("remote_completion_4KI_all", "-dpng");
 end
 
 difference_16KB = (global_var_bandwidth_16KB ./ dist_object_bandwidth_16KB);
@@ -353,7 +353,7 @@ dispmaxdiff('[16KB, upcxx]', difference_dist_object_16KB, num_processes);
 % %loglog(unique_sizes, dist_object_mean_times, "-o", "DisplayName", "upcxx mean")
 % 
 % %legend("global_var", "dist\_object");
-% %xlabel('Size (Bytes)');
+% %xlabel('Iterations');
 % %ylabel('Time (s)');
 % %title('Mean times without outliers');
 % %grid on;
@@ -365,7 +365,7 @@ dispmaxdiff('[16KB, upcxx]', difference_dist_object_16KB, num_processes);
 % set(gca, "XScale", "log")
 % xlim([min(unique_sizes) max(unique_sizes)])
 % legend("global_var", "dist\_object");
-% xlabel('Size (Bytes)');
+% xlabel('Iterations');
 % ylabel('Bandwidth (4B/s)');
 % title('Mean bandwidth per size on 8 processes');
 % grid on;
@@ -382,7 +382,7 @@ dispmaxdiff('[16KB, upcxx]', difference_dist_object_16KB, num_processes);
 % %nexttile
 % %bar(unique_sizes_categorical, [global_var_mean_bandwidth, dist_object_mean_bandwidth])
 % %legend("global_var", "dist\_object");
-% %xlabel('Size (Bytes)');
+% %xlabel('Iterations');
 % %ylabel('Bandwidth (4B/s)');
 % %title('Mean bandwidth per size');
 % %grid on;
