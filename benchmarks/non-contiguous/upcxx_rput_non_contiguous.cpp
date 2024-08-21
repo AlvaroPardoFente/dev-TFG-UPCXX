@@ -57,7 +57,7 @@ public:
 
         if (world_rank == 0)
         {
-            while (count < world_size)
+            while (count < world_size * nchunks_per_rank)
             {
                 upcxx::progress();
             }
