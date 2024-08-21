@@ -366,3 +366,15 @@ set(dcm, 'UpdateFcn', @updatedcm)
 if (do_print)
     print("upcxx_rpc_return_all", "-dpng");
 end
+
+difference_2N = abs(bandwidth_mean.upcxx_rpc_then_2N_2n ./ bandwidth_mean.upcxx_rpc_vector_2N_2n);
+dispmaxdiff('[2N, then]', difference_2N, size_tick_labels)
+
+difference_2N_upcxx = abs(bandwidth_mean.upcxx_rpc_vector_2N_2n ./ bandwidth_mean.upcxx_rpc_then_2N_2n);
+dispmaxdiff('[2N, vector]', difference_2N_upcxx, size_tick_labels)
+
+difference_1N = abs(bandwidth_mean.upcxx_rpc_then_1N_2n ./ bandwidth_mean.upcxx_rpc_vector_1N_2n);
+dispmaxdiff('[1N, then]', difference_1N, size_tick_labels)
+
+difference_1N_upcxx = abs(bandwidth_mean.upcxx_rpc_vector_1N_2n ./ bandwidth_mean.upcxx_rpc_then_1N_2n);
+dispmaxdiff('[1N, vector]', difference_1N_upcxx, size_tick_labels)

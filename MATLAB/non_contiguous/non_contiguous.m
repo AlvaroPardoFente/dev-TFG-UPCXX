@@ -62,7 +62,7 @@ data.upcxx_strided_12N_24n = importfile(base_path + "upcxx_rput_strided_12N_24n.
 
 
 unique_sizes = unique(data.mpi_1N_2n.Sizeperrank);
-unique_sizes_bytes = unique_sizes .* 8;
+unique_sizes_bytes = unique_sizes .* 4;
 % TODO repetir las pruebas usando uint32_t
 
 num_processes = [2; 4; 8; 12; 16; 20; 24];
@@ -76,6 +76,9 @@ fields_6N_12n = (17:20);
 fields_8N_16n = (22:25);
 fields_10N_20n = (27:30);
 fields_12N_24n = (32:35);
+
+upcxx_all_fields = {fields_1N_2n, fields_2N_4n, fields_4N_8n,...
+     fields_6N_12n, fields_8N_16n, fields_10N_20n, fields_12N_24n};
 
 % Apply function to each field
 for i = 1:numel(fields)
@@ -102,7 +105,7 @@ end
 
 markers = ["o"; "+"; "x";"square"; "diamond"];
 formatted_fields = regexprep(fields, "_", "\\_");
-size_tick_labels = {'4', '16', '64', '256', '1K', '4K', '16K', '64K', '256K', '512K'};
+size_tick_labels = {'16', '64', '256', '1K', '4K', '16K', '64K', '256K'};
 legend_names = {"sequence", "irregular", "regular", "strided"};
 
 %% Plot 2N
@@ -128,7 +131,7 @@ ax.XTickLabel = size_tick_labels;
 ax.YTick = get_ytick_range(min_bandwidth, max_bandwidth);
 remove_m_ticks();
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
-lgd = legend(legend_names, "Location","southeast");
+lgd = legend(legend_names, "Location","northwest");
 %lgd.FontSize = 7;
 xlabel('Size (Bytes)');
 ylabel('Bandwidth (B/s)');
@@ -142,7 +145,7 @@ dcm = datacursormode(gcf);
 set(dcm, 'UpdateFcn', @updatedcm)
 
 if (do_print)
-    print("gather_2N_4n", "-dpng");
+    print("non_contiguous_2N_4n", "-dpng");
 end
 
 % Biggest diffs in time and bandwidth
@@ -180,7 +183,7 @@ ax.XTickLabel = size_tick_labels;
 ax.YTick = get_ytick_range(min_bandwidth, max_bandwidth);
 remove_m_ticks();
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
-lgd = legend(legend_names, "Location","southeast");
+lgd = legend(legend_names, "Location","northwest");
 %lgd.FontSize = 7;
 xlabel('Size (Bytes)');
 ylabel('Bandwidth (B/s)');
@@ -194,7 +197,7 @@ dcm = datacursormode(gcf);
 set(dcm, 'UpdateFcn', @updatedcm)
 
 if (do_print)
-    print("gather_4N_8n", "-dpng");
+    print("non_contiguous_4N_8n", "-dpng");
 end
 
 % Biggest diffs in time and bandwidth
@@ -264,7 +267,7 @@ dcm = datacursormode(gcf);
 set(dcm, 'UpdateFcn', @updatedcm)
 
 if (do_print)
-    print("gather_best", "-dpng");
+    print("non_contiguous_best_2N_4n", "-dpng");
 end
 
 difference_2N = abs(bandwidth_mean.mpi_2N_4n ./ upcxx_best_2N);
@@ -322,7 +325,7 @@ dcm = datacursormode(gcf);
 set(dcm, 'UpdateFcn', @updatedcm)
 
 if (do_print)
-    print("gather_best", "-dpng");
+    print("non_contiguous_best_4N_8n", "-dpng");
 end
 
 difference_4N = abs(bandwidth_mean.mpi_4N_8n ./ upcxx_best_4N);
@@ -334,7 +337,7 @@ dispmaxdiff('[4N, upcxx]', difference_4N_upcxx, size_tick_labels)
 %% 64B: all processes
 
 % Extract bandwidth for 64 bytes
-size_64_idx = unique_sizes_bytes == 128;
+size_64_idx = unique_sizes_bytes == 64;
 
 % Initialize arrays for MPI and UPCXX
 mpi_bandwidth_64B = zeros(length(num_processes), 1);
@@ -343,10 +346,13 @@ upcxx_bandwidth_64B = zeros(length(num_processes), 1);
 % Extract data for each process count
 for i = 1:length(num_processes)
     mpi_field = ['mpi_' num2str(num_processes(i)/2) 'N_' num2str(num_processes(i)) 'n'];
-    upcxx_field = ['upcxx_strided_' num2str(num_processes(i)/2) 'N_' num2str(num_processes(i)) 'n'];
-    
     mpi_bandwidth_64B(i) = bandwidth_mean.(mpi_field)(size_64_idx);
-    upcxx_bandwidth_64B(i) = bandwidth_mean.(upcxx_field)(size_64_idx);
+
+    current_best = 0;
+    for j = upcxx_all_fields{i}
+        current_best = max(bandwidth_mean.(fields{j})(size_64_idx), current_best);
+    end
+    upcxx_bandwidth_64B(i) = current_best;
 end
 
 % Plot bandwidth for 64 bytes against number of processes
@@ -359,7 +365,7 @@ set(gca, 'YScale', 'log')
 
 remove_m_ticks();
 xlim([min(num_processes) max(num_processes)]);
-legend('Location', 'southwest');
+legend('Location', 'northeast');
 xlabel('Number of Processes');
 ylabel('Bandwidth (B/s)');
 
@@ -373,7 +379,7 @@ end
 grid on;
 
 if (do_print)
-    print("gather_64B_all", "-dpng");
+    print("non_contiguous_64B_all", "-dpng");
 end
 
 difference_64B = abs(mpi_bandwidth_64B ./ upcxx_bandwidth_64B);
@@ -382,8 +388,62 @@ dispmaxdiff('[64B, mpi]', difference_64B, num_processes)
 difference_64B_upcxx = abs(upcxx_bandwidth_64B ./ mpi_bandwidth_64B);
 dispmaxdiff('[64B, upcxx]', difference_64B_upcxx, num_processes)
 
+%% 1K: all processes
+
+% Extract bandwidth for 64 bytes
+size_1K_idx = unique_sizes_bytes == 1024;
+
+% Initialize arrays for MPI and UPCXX
+mpi_bandwidth_1K = zeros(length(num_processes), 1);
+upcxx_bandwidth_1K = zeros(length(num_processes), 1);
+
+% Extract data for each process count
+for i = 1:length(num_processes)
+    mpi_field = ['mpi_' num2str(num_processes(i)/2) 'N_' num2str(num_processes(i)) 'n'];
+    mpi_bandwidth_1K(i) = bandwidth_mean.(mpi_field)(size_1K_idx);
+
+    current_best = 0;
+    for j = upcxx_all_fields{i}
+        current_best = max(bandwidth_mean.(fields{j})(size_1K_idx), current_best);
+    end
+    upcxx_bandwidth_1K(i) = current_best;
+end
+
+% Plot bandwidth for 64 bytes against number of processes
+figure('Position', figure_position);
+
+plot(num_processes, mpi_bandwidth_1K, '--o', 'DisplayName', 'mpi')
+hold on
+plot(num_processes, upcxx_bandwidth_1K, '--x', 'DisplayName', 'upcxx')
+set(gca, 'YScale', 'log')
+
+remove_m_ticks();
+xlim([min(num_processes) max(num_processes)]);
+legend('Location', 'northeast');
+xlabel('Number of Processes');
+ylabel('Bandwidth (B/s)');
+
+ax = gca;
+ax.XTick = num_processes;
+ax.XTickLabel = num_processes;
+
+if (~do_print)
+    title('Bandwidth for 1KB against number of processes');
+end
+grid on;
+
+if (do_print)
+    print("non_contiguous_1KB_all", "-dpng");
+end
+
+difference_64B = abs(mpi_bandwidth_1K ./ upcxx_bandwidth_1K);
+dispmaxdiff('[64B, mpi]', difference_64B, num_processes)
+
+difference_64B_upcxx = abs(upcxx_bandwidth_1K ./ mpi_bandwidth_1K);
+dispmaxdiff('[64B, upcxx]', difference_64B_upcxx, num_processes)
+
 %% Extract bandwidth for 16 KB
-size_16KB_idx = unique_sizes_bytes == 32 * 1024;
+size_16KB_idx = unique_sizes_bytes == 16 * 1024;
 
 % Initialize arrays for MPI and UPCXX
 mpi_bandwidth_16KB = zeros(length(num_processes), 1);
@@ -391,11 +451,14 @@ upcxx_bandwidth_16KB = zeros(length(num_processes), 1);
 
 % Extract data for each process count
 for i = 1:length(num_processes)
-    mpi_field = ['mpi_' num2str(num_processes(i)/2) 'N_' num2str(num_processes(i)) 'n'];
-    upcxx_field = ['upcxx_strided_' num2str(num_processes(i)/2) 'N_' num2str(num_processes(i)) 'n'];
-    
+    mpi_field = ['mpi_' num2str(num_processes(i)/2) 'N_' num2str(num_processes(i)) 'n'];    
     mpi_bandwidth_16KB(i) = bandwidth_mean.(mpi_field)(size_16KB_idx);
-    upcxx_bandwidth_16KB(i) = bandwidth_mean.(upcxx_field)(size_16KB_idx);
+
+    current_best = 0;
+    for j = upcxx_all_fields{i}
+        current_best = max(bandwidth_mean.(fields{j})(size_16KB_idx), current_best);
+    end
+    upcxx_bandwidth_16KB(i) = current_best;
 end
 
 % Plot bandwidth for 16 KB against number of processes
@@ -408,7 +471,7 @@ plot(num_processes, upcxx_bandwidth_16KB, '--x', 'DisplayName', 'upcxx')
 set(gca, 'YScale', 'log')
 remove_m_ticks();
 xlim([min(num_processes) max(num_processes)])
-legend('Location', 'southwest');
+legend('Location', 'northeast');
 xlabel('Number of Processes');
 ylabel('Bandwidth (B/s)');
 
@@ -422,7 +485,7 @@ end
 grid on;
 
 if (do_print)
-    print("gather_16KB_all", "-dpng");
+    print("non_contiguous_16KB_all", "-dpng");
 end
 
 difference_16KB = abs(mpi_bandwidth_16KB ./ upcxx_bandwidth_16KB);
