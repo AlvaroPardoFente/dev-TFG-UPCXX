@@ -50,15 +50,9 @@ end
 
 %% Bandwidth means
 
-bandwidth_data = struct();
-bandwidth_mean = struct();
 data_mean = struct();
 
 for i = 1:numel(fields)
-    bandwidth_data.(fields{i}) = (clean_data.(fields{i}).Size .* int_size) ./ clean_data.(fields{i}).Time;
-    bandwidth_mean.(fields{i}) = arrayfun(@(size) ...
-        mean(bandwidth_data.(fields{i})(clean_data.(fields{i}).Size == size)), ...
-        unique_sizes);
     data_mean.(fields{i}) = arrayfun(@(size) ...
         mean(clean_data.(fields{i}).Time(clean_data.(fields{i}).Size == size)), ...
         unique_sizes);
@@ -79,9 +73,9 @@ upcxx_bandwidth_mean = struct();
 % Separate MPI and UPC++ data
 for i = 1:numel(fields)
     if contains(fields{i}, 'mpi')
-        mpi_bandwidth_mean.(fields{i}) = bandwidth_mean.(fields{i});
+        mpi_bandwidth_mean.(fields{i}) = data_mean.(fields{i});
     elseif contains(fields{i}, 'upcxx')
-        upcxx_bandwidth_mean.(fields{i}) = bandwidth_mean.(fields{i});
+        upcxx_bandwidth_mean.(fields{i}) = data_mean.(fields{i});
     end
 end
 
@@ -116,9 +110,9 @@ surf(X, Y, Z_upcxx, 'FaceAlpha', 1);
 % Customize plot appearance
 xlabel('Number of Processes');
 ylabel('Size(Bytes)');
-zlabel('Bandwidth (B/s)');
+zlabel('Time (s)');
 if (~do_print)
-    title('3D Surface Plot of Mean Bandwidth (MPI and UPCXX)');
+    title('3D Surface Plot of Mean Time (MPI and UPCXX)');
 end
 % legend('UPCXX');
 colormap jet;
@@ -139,25 +133,25 @@ hold off;
 sizes_figure_2n = figure("Position", figure_position);
 
 %nexttile
-plot(unique_sizes_bytes, bandwidth_mean.mpi_1N_2n, "--o")
+plot(unique_sizes_bytes, data_mean.mpi_1N_2n, "--o")
 hold on
-plot(unique_sizes_bytes, bandwidth_mean.upcxx_1N_2n, "--x")
+plot(unique_sizes_bytes, data_mean.upcxx_1N_2n, "--x")
 set(gca, "XScale", "log")
 set(gca, "YScale", "log")
 ax = gca;
 ax.XTick = unique_sizes_bytes;
 ax.XTickLabel = size_tick_labels;
-min_bandwidth = min(min([bandwidth_mean.mpi_1N_2n, bandwidth_mean.upcxx_1N_2n]));
-max_bandwidth = max(max([bandwidth_mean.mpi_1N_2n, bandwidth_mean.upcxx_1N_2n]));
+min_bandwidth = min(min([data_mean.mpi_1N_2n, data_mean.upcxx_1N_2n]));
+max_bandwidth = max(max([data_mean.mpi_1N_2n, data_mean.upcxx_1N_2n]));
 ax.YTick = get_ytick_range(min_bandwidth, max_bandwidth);
 remove_m_ticks();
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 
 legend("mpi", "upcxx", "Location","southeast");
 xlabel('Iterations');
-ylabel('Bandwidth (B/s)');
+ylabel('Time (s)');
 if (~do_print)
-    title('Mean bandwidth per size on 2 processes (1 node)');
+    title('Mean time per size on 2 processes (1 node)');
 end
 grid on;
 
@@ -170,25 +164,25 @@ end
 sizes_figure_4n = figure("Position", figure_position);
 
 %nexttile
-plot(unique_sizes_bytes, bandwidth_mean.mpi_2N_4n, "--o")
+plot(unique_sizes_bytes, data_mean.mpi_2N_4n, "--o")
 hold on
-plot(unique_sizes_bytes, bandwidth_mean.upcxx_2N_4n, "--x")
+plot(unique_sizes_bytes, data_mean.upcxx_2N_4n, "--x")
 set(gca, "XScale", "log")
 set(gca, "YScale", "log")
 ax = gca;
 ax.XTick = unique_sizes_bytes;
 ax.XTickLabel = size_tick_labels;
-min_bandwidth = min(min([bandwidth_mean.mpi_2N_4n, bandwidth_mean.upcxx_2N_4n]));
-max_bandwidth = max(max([bandwidth_mean.mpi_2N_4n, bandwidth_mean.upcxx_2N_4n]));
+min_bandwidth = min(min([data_mean.mpi_2N_4n, data_mean.upcxx_2N_4n]));
+max_bandwidth = max(max([data_mean.mpi_2N_4n, data_mean.upcxx_2N_4n]));
 ax.YTick = get_ytick_range(min_bandwidth, max_bandwidth);
 remove_m_ticks();
 
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 legend("mpi", "upcxx", "Location","east");
 xlabel('Iterations');
-ylabel('Bandwidth (B/s)');
+ylabel('Time (s)');
 if (~do_print)
-    title('Mean bandwidth per size on 4 processes (2 nodes)');
+    title('Mean time per size on 4 processes (2 nodes)');
 end
 grid on;
 
@@ -196,10 +190,10 @@ if (do_print)
     print("atomic_inc_2N_4n", "-dpng");
 end
 
-difference_2N = abs(bandwidth_mean.mpi_2N_4n ./ bandwidth_mean.upcxx_2N_4n);
+difference_2N = abs(data_mean.mpi_2N_4n ./ data_mean.upcxx_2N_4n);
 dispmaxdiff('[2N, mpi]', difference_2N, size_tick_labels);
 
-difference_2N_upcxx = abs(bandwidth_mean.upcxx_2N_4n ./ bandwidth_mean.mpi_2N_4n);
+difference_2N_upcxx = abs(data_mean.upcxx_2N_4n ./ data_mean.mpi_2N_4n);
 dispmaxdiff('[2N, upcxx]', difference_2N_upcxx, size_tick_labels);
 
 %% 8 processes
@@ -207,25 +201,25 @@ dispmaxdiff('[2N, upcxx]', difference_2N_upcxx, size_tick_labels);
 sizes_figure_8n = figure("Position", figure_position);
 
 %nexttile
-plot(unique_sizes_bytes, bandwidth_mean.mpi_4N_8n, "--o")
+plot(unique_sizes_bytes, data_mean.mpi_4N_8n, "--o")
 hold on
-plot(unique_sizes_bytes, bandwidth_mean.upcxx_4N_8n, "--x")
+plot(unique_sizes_bytes, data_mean.upcxx_4N_8n, "--x")
 set(gca, "XScale", "log")
 set(gca, "YScale", "log")
 ax = gca;
 ax.XTick = unique_sizes_bytes;
 ax.XTickLabel = size_tick_labels;
-min_bandwidth = min(min([bandwidth_mean.mpi_4N_8n, bandwidth_mean.upcxx_4N_8n]));
-max_bandwidth = max(max([bandwidth_mean.mpi_4N_8n, bandwidth_mean.upcxx_4N_8n]));
+min_bandwidth = min(min([data_mean.mpi_4N_8n, data_mean.upcxx_4N_8n]));
+max_bandwidth = max(max([data_mean.mpi_4N_8n, data_mean.upcxx_4N_8n]));
 ax.YTick = get_ytick_range(min_bandwidth, max_bandwidth);
 remove_m_ticks();
 
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 legend("mpi", "upcxx", "Location","southeast");
 xlabel('Iterations');
-ylabel('Bandwidth (B/s)');
+ylabel('Time (s)');
 if (~do_print)
-    title('Mean bandwidth per size on 8 processes (4 nodes)');
+    title('Mean time per size on 8 processes (4 nodes)');
 end
 grid on;
 
@@ -233,7 +227,7 @@ if (do_print)
     print("atomic_inc_4N_8n", "-dpng");
 end
 
-difference_4N = abs(bandwidth_mean.mpi_4N_8n ./ bandwidth_mean.upcxx_4N_8n);
+difference_4N = abs(data_mean.mpi_4N_8n ./ data_mean.upcxx_4N_8n);
 dispmaxdiff('[4N, mpi]', difference_4N, size_tick_labels);
 
 %% 8 Iterations: all processes
@@ -242,32 +236,32 @@ dispmaxdiff('[4N, mpi]', difference_4N, size_tick_labels);
 size_8_idx = unique_sizes_bytes == 8;
 
 % Initialize arrays for MPI and UPCXX
-mpi_bandwidth_8I = zeros(length(num_processes), 1);
-upcxx_bandwidth_8I = zeros(length(num_processes), 1);
+mpi_time_8I = zeros(length(num_processes), 1);
+upcxx_time_8I = zeros(length(num_processes), 1);
 
 % Extract data for each process count
 for i = 1:length(num_processes)
     mpi_field = ['mpi_' num2str(num_processes(i)/2) 'N_' num2str(num_processes(i)) 'n'];
     upcxx_field = ['upcxx_' num2str(num_processes(i)/2) 'N_' num2str(num_processes(i)) 'n'];
     
-    mpi_bandwidth_8I(i) = bandwidth_mean.(mpi_field)(size_8_idx);
-    upcxx_bandwidth_8I(i) = bandwidth_mean.(upcxx_field)(size_8_idx);
+    mpi_time_8I(i) = data_mean.(mpi_field)(size_8_idx);
+    upcxx_time_8I(i) = data_mean.(upcxx_field)(size_8_idx);
 end
 
 %% Plot bandwidth for 64 bytes against number of processes
 
 figure('Position', figure_position);
 
-plot(num_processes, mpi_bandwidth_8I, '--o', 'DisplayName', 'mpi')
+plot(num_processes, mpi_time_8I, '--o', 'DisplayName', 'mpi')
 hold on
-plot(num_processes, upcxx_bandwidth_8I, '--x', 'DisplayName', 'upcxx')
+plot(num_processes, upcxx_time_8I, '--x', 'DisplayName', 'upcxx')
 set(gca, 'YScale', 'log')
 
 remove_m_ticks();
 xlim([min(num_processes) max(num_processes)]);
 legend('Location', 'northeast');
 xlabel('Number of Processes');
-ylabel('Bandwidth (B/s)');
+ylabel('Time (s)');
 
 ax = gca;
 ax.XTick = num_processes;
@@ -282,40 +276,40 @@ if (do_print)
     print("atomic_inc_8I_all", "-dpng");
 end
 
-difference_8I = abs(mpi_bandwidth_8I ./ upcxx_bandwidth_8I);
+difference_8I = abs(mpi_time_8I ./ upcxx_time_8I);
 dispmaxdiff('[8I, mpi]', difference_8I, num_processes);
 
-difference_8I_upcxx = abs(upcxx_bandwidth_8I ./ mpi_bandwidth_8I);
+difference_8I_upcxx = abs(upcxx_time_8I ./ mpi_time_8I);
 dispmaxdiff('[8I, upcxx]', difference_8I_upcxx, num_processes);
 
 %% Extract bandwidth for 2K iterations
 size_2KI_idx = unique_sizes_bytes == 2 * 1024;
 
 % Initialize arrays for MPI and UPCXX
-mpi_bandwidth_2KI = zeros(length(num_processes), 1);
-upcxx_bandwidth_2KI = zeros(length(num_processes), 1);
+mpi_time_2KI = zeros(length(num_processes), 1);
+upcxx_time_2KI = zeros(length(num_processes), 1);
 
 % Extract data for each process count
 for i = 1:length(num_processes)
     mpi_field = ['mpi_' num2str(num_processes(i)/2) 'N_' num2str(num_processes(i)) 'n'];
     upcxx_field = ['upcxx_' num2str(num_processes(i)/2) 'N_' num2str(num_processes(i)) 'n'];
     
-    mpi_bandwidth_2KI(i) = bandwidth_mean.(mpi_field)(size_2KI_idx);
-    upcxx_bandwidth_2KI(i) = bandwidth_mean.(upcxx_field)(size_2KI_idx);
+    mpi_time_2KI(i) = data_mean.(mpi_field)(size_2KI_idx);
+    upcxx_time_2KI(i) = data_mean.(upcxx_field)(size_2KI_idx);
 end
 
 %% Plot bandwidth for 2K iterations against number of processes
 figure('Position', figure_position);
 
-plot(num_processes, mpi_bandwidth_2KI, '--o', 'DisplayName', 'mpi')
+plot(num_processes, mpi_time_2KI, '--o', 'DisplayName', 'mpi')
 hold on
-plot(num_processes, upcxx_bandwidth_2KI, '--x', 'DisplayName', 'upcxx')
+plot(num_processes, upcxx_time_2KI, '--x', 'DisplayName', 'upcxx')
 set(gca, 'YScale', 'log')
 remove_m_ticks();
 xlim([min(num_processes) max(num_processes)])
 legend('Location', 'northeast');
 xlabel('Number of Processes');
-ylabel('Bandwidth (B/s)');
+ylabel('Time (s)');
 
 ax = gca;
 ax.XTick = num_processes;
@@ -330,10 +324,10 @@ if (do_print)
     print("atomic_inc_2KI_all", "-dpng");
 end
 
-difference_16KB = (mpi_bandwidth_2KI ./ upcxx_bandwidth_2KI);
+difference_16KB = (mpi_time_2KI ./ upcxx_time_2KI);
 dispmaxdiff('[2KI, mpi]', difference_16KB, num_processes)
 
-difference_upcxx_16KB = (upcxx_bandwidth_2KI ./ mpi_bandwidth_2KI);
+difference_upcxx_16KB = (upcxx_time_2KI ./ mpi_time_2KI);
 dispmaxdiff('[2KI, upcxx]', difference_upcxx_16KB, num_processes);
 
 % %% 8 nodes: Times in different sizes
@@ -370,7 +364,7 @@ dispmaxdiff('[2KI, upcxx]', difference_upcxx_16KB, num_processes);
 % legend("mpi", "upcxx");
 % xlabel('Iterations');
 % ylabel('Bandwidth (4B/s)');
-% title('Mean bandwidth per size on 8 processes');
+% title('Mean time per size on 8 processes');
 % grid on;
 % 
 % % Calculate the directional relative difference for each size
@@ -387,7 +381,7 @@ dispmaxdiff('[2KI, upcxx]', difference_upcxx_16KB, num_processes);
 % %legend("mpi", "upcxx");
 % %xlabel('Iterations');
 % %ylabel('Bandwidth (4B/s)');
-% %title('Mean bandwidth per size');
+% %title('Mean time per size');
 % %grid on;
 % 
 % % print("atomic_inc_sizes", "-dpng")
