@@ -43,17 +43,11 @@ for i = 1:numel(fields)
     clean_data.(fields{i}) = rmopersize(data.(fields{i}));
 end
 
-%% Bandwidth means
+%% Time means
 
-bandwidth_data = struct();
-bandwidth_mean = struct();
 data_mean = struct();
 
 for i = 1:numel(fields)
-    bandwidth_data.(fields{i}) = (clean_data.(fields{i}).Size .* int_size) ./ clean_data.(fields{i}).Time;
-    bandwidth_mean.(fields{i}) = arrayfun(@(size) ...
-        mean(bandwidth_data.(fields{i})(clean_data.(fields{i}).Size == size)), ...
-        unique_sizes);
     data_mean.(fields{i}) = arrayfun(@(size) ...
         mean(clean_data.(fields{i}).Time(clean_data.(fields{i}).Size == size)), ...
         unique_sizes);
@@ -77,23 +71,23 @@ marker_i = 1;
 for i = fields_2N_2n
     marker = markers(marker_i);
     marker_i = marker_i + 1;
-    plot_objects(i) = plot(unique_sizes_bytes, bandwidth_mean.(fields{i}), "--", "Marker", marker, 'DisplayName', formatted_fields{i});
+    plot_objects(i) = plot(unique_sizes_bytes, data_mean.(fields{i}), "--", "Marker", marker, 'DisplayName', formatted_fields{i});
 end
 
 set(gca, "XScale", "log");
-% set(gca, "YScale", "log");
+set(gca, "YScale", "log");
 ax = gca;
 ax.XTick = unique_sizes_bytes;
 ax.XTickLabel = size_tick_labels;
-[min_bandwidth, max_bandwidth] = get_min_max(bandwidth_mean, fields(fields_2N_2n));
+[min_time, max_time] = get_min_max(data_mean, fields(fields_2N_2n));
 remove_m_ticks();
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 lgd = legend(legend_names, "Location","southeast");
 %lgd.FontSize = 7;
 xlabel('Iterations');
-ylabel('Bandwidth (B/s)');
+ylabel('Time (s)');
 if (~do_print)
-    title('Mean bandwidth for upcxx with no return in N = 2 n = 2');
+    title('Mean time for upcxx with no return in N = 2 n = 2');
 end
 grid on;
 
@@ -128,7 +122,7 @@ marker_i = 1;
 for i = fields_1N_2n
     marker = markers(marker_i);
     marker_i = marker_i + 1;
-    plot_objects(i) = plot(unique_sizes_bytes, bandwidth_mean.(fields{i}), "--", "Marker", marker, 'DisplayName', formatted_fields{i});
+    plot_objects(i) = plot(unique_sizes_bytes, data_mean.(fields{i}), "--", "Marker", marker, 'DisplayName', formatted_fields{i});
 end
 
 set(gca, "XScale", "log")
@@ -136,14 +130,14 @@ set(gca, "YScale", "log")
 ax = gca;
 ax.XTick = unique_sizes_bytes;
 ax.XTickLabel = size_tick_labels;
-[min_bandwidth, max_bandwidth] = get_min_max(bandwidth_mean, fields(fields_1N_2n));
+[min_time, max_time] = get_min_max(data_mean, fields(fields_1N_2n));
 % ax.YTick = get_ytick_range(min_bandwidth, max_bandwidth);
 remove_m_ticks();
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 lgd = legend(legend_names, "Location","southeast");
 %lgd.FontSize = 7;
 xlabel('Iterations');
-ylabel('Bandwidth (B/s)');
+ylabel('Time (s)');
 if (~do_print)
     title('Mean bandwidth for upcxx with no return in N = 1 n = 2');
 end
@@ -186,19 +180,19 @@ marker_i = 1;
 
 marker = markers(marker_i);
 marker_i = marker_i + 1;
-mpi_2N_plot = plot(unique_sizes_bytes, bandwidth_mean.mpi_rpc_2N_2n, "--", "Marker", marker, 'DisplayName', formatted_fields{1});
+mpi_2N_plot = plot(unique_sizes_bytes, data_mean.mpi_rpc_2N_2n, "--", "Marker", marker, 'DisplayName', formatted_fields{1});
 
 marker = markers(marker_i);
 marker_i = marker_i + 1;
-upcxx_best_2N_plot = plot(unique_sizes_bytes, bandwidth_mean.upcxx_rpc_ff_notice_2N_2n, "--", "Marker", marker, 'DisplayName', formatted_fields{3});
+upcxx_best_2N_plot = plot(unique_sizes_bytes, data_mean.upcxx_rpc_ff_notice_2N_2n, "--", "Marker", marker, 'DisplayName', formatted_fields{3});
 
 marker = markers(marker_i);
 marker_i = marker_i + 1;
-mpi_1N_plot = plot(unique_sizes_bytes, bandwidth_mean.mpi_rpc_1N_2n, "--", "Marker", marker, 'DisplayName', formatted_fields{6});
+mpi_1N_plot = plot(unique_sizes_bytes, data_mean.mpi_rpc_1N_2n, "--", "Marker", marker, 'DisplayName', formatted_fields{6});
 
 marker = markers(marker_i);
 marker_i = marker_i + 1;
-upcxx_best_1N_plot = plot(unique_sizes_bytes, bandwidth_mean.upcxx_rpc_ff_notice_1N_2n, "--", "Marker", marker, 'DisplayName', formatted_fields{8});
+upcxx_best_1N_plot = plot(unique_sizes_bytes, data_mean.upcxx_rpc_ff_notice_1N_2n, "--", "Marker", marker, 'DisplayName', formatted_fields{8});
 
 set(gca, "XScale", "log");
 set(gca, "YScale", "log");
@@ -209,12 +203,12 @@ ax.YTick = 10.^(0:10);
 remove_m_ticks();
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 legend_names = {"mpi\_2N", "upcxx\_2N", "mpi\_1N", "upcxx\_1N"};
-lgd = legend(legend_names, "Location","southeast");
-lgd.FontSize = 7;
+lgd = legend(legend_names, "Location","northwest");
+% lgd.FontSize = 7;
 xlabel('Iterations');
-ylabel('Bandwidth (B/s)');
+ylabel('Time (s)');
 if (~do_print)
-    title('Mean bandwidth in best upcxx and mpi on no return');
+    title('Mean time in best upcxx and mpi on no return');
 end
 grid on;
 
@@ -226,16 +220,16 @@ if (do_print)
     print("rpc_best", "-dpng");
 end
 
-difference_2N = abs(bandwidth_mean.mpi_rpc_2N_2n ./ bandwidth_mean.upcxx_rpc_ff_notice_2N_2n);
+difference_2N = abs(data_mean.mpi_rpc_2N_2n ./ data_mean.upcxx_rpc_ff_notice_2N_2n);
 dispmaxdiff('[8N, mpi]', difference_2N, size_tick_labels)
 
-difference_2N_upcxx = abs(bandwidth_mean.upcxx_rpc_ff_notice_2N_2n ./ bandwidth_mean.mpi_rpc_2N_2n);
+difference_2N_upcxx = abs(data_mean.upcxx_rpc_ff_notice_2N_2n ./ data_mean.mpi_rpc_2N_2n);
 dispmaxdiff('[8N, upcxx]', difference_2N_upcxx, size_tick_labels)
 
-difference_1N = abs(bandwidth_mean.mpi_rpc_1N_2n ./ bandwidth_mean.upcxx_rpc_ff_notice_1N_2n);
+difference_1N = abs(data_mean.mpi_rpc_1N_2n ./ data_mean.upcxx_rpc_ff_notice_1N_2n);
 dispmaxdiff('[4N, mpi]', difference_1N, size_tick_labels)
 
-difference_1N_upcxx = abs(bandwidth_mean.upcxx_rpc_ff_notice_1N_2n ./ bandwidth_mean.mpi_rpc_1N_2n);
+difference_1N_upcxx = abs(data_mean.upcxx_rpc_ff_notice_1N_2n ./ data_mean.mpi_rpc_1N_2n);
 dispmaxdiff('[4N, upcxx]', difference_1N_upcxx, size_tick_labels)
 
 %% Plot upcxx return 2N
@@ -249,25 +243,25 @@ marker_i = 1;
 for i = fields_return_2N_2n
     marker = markers(marker_i);
     marker_i = marker_i + 1;
-    plot_objects(i) = plot(unique_sizes_bytes, bandwidth_mean.(fields{i}), "--", "Marker", marker, 'DisplayName', formatted_fields{i});
+    plot_objects(i) = plot(unique_sizes_bytes, data_mean.(fields{i}), "--", "Marker", marker, 'DisplayName', formatted_fields{i});
 end
 
 set(gca, "XScale", "log");
-% set(gca, "YScale", "log");
+set(gca, "YScale", "log");
 ax = gca;
 ax.XTick = unique_sizes_bytes;
 ax.XTickLabel = size_tick_labels;
-[min_bandwidth, max_bandwidth] = get_min_max(bandwidth_mean, fields(fields_return_2N_2n));
+[min_time, max_time] = get_min_max(data_mean, fields(fields_return_2N_2n));
 % ax.YTick = get_ytick_range(min_bandwidth, max_bandwidth);
 remove_m_ticks();
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 legend_names = {"then", "vector"};
-lgd = legend(legend_names, "Location","northeast");
+lgd = legend(legend_names, "Location","northwest");
 %lgd.FontSize = 7;
 xlabel('Iterations');
-ylabel('Bandwidth (B/s)');
+ylabel('Time (s)');
 if (~do_print)
-    title('Mean bandwidth for upcxx with return in N = 2 n = 2');
+    title('Mean time for upcxx with return in N = 2 n = 2');
 end
 grid on;
 
@@ -290,25 +284,25 @@ marker_i = 1;
 for i = fields_return_1N_2n
     marker = markers(marker_i);
     marker_i = marker_i + 1;
-    plot_objects(i) = plot(unique_sizes_bytes, bandwidth_mean.(fields{i}), "--", "Marker", marker, 'DisplayName', formatted_fields{i});
+    plot_objects(i) = plot(unique_sizes_bytes, data_mean.(fields{i}), "--", "Marker", marker, 'DisplayName', formatted_fields{i});
 end
 
 set(gca, "XScale", "log");
-% set(gca, "YScale", "log");
+set(gca, "YScale", "log");
 ax = gca;
 ax.XTick = unique_sizes_bytes;
 ax.XTickLabel = size_tick_labels;
-[min_bandwidth, max_bandwidth] = get_min_max(bandwidth_mean, fields(fields_return_1N_2n));
+[min_time, max_time] = get_min_max(data_mean, fields(fields_return_1N_2n));
 % ax.YTick = get_ytick_range(min_bandwidth, max_bandwidth);
 remove_m_ticks();
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 legend_names = {"then", "vector"};
-lgd = legend(legend_names, "Location","southwest");
+lgd = legend(legend_names, "Location","northwest");
 %lgd.FontSize = 7;
 xlabel('Iterations');
-ylabel('Bandwidth (B/s)');
+ylabel('Time (s)');
 if (~do_print)
-    title('Mean bandwidth for upcxx with return in N = 1 n = 2');
+    title('Mean time for upcxx with return in N = 1 n = 2');
 end
 grid on;
 
@@ -331,13 +325,13 @@ marker_i = 1;
 for i = fields_return_2N_2n
     marker = markers(marker_i);
     marker_i = marker_i + 1;
-    plot_objects(i) = plot(unique_sizes_bytes, bandwidth_mean.(fields{i}), "--", "Marker", marker, 'DisplayName', formatted_fields{i});
+    plot_objects(i) = plot(unique_sizes_bytes, data_mean.(fields{i}), "--", "Marker", marker, 'DisplayName', formatted_fields{i});
 end
 
 for i = fields_return_1N_2n
     marker = markers(marker_i);
     marker_i = marker_i + 1;
-    plot_objects(i) = plot(unique_sizes_bytes, bandwidth_mean.(fields{i}), "--", "Marker", marker, 'DisplayName', formatted_fields{i});
+    plot_objects(i) = plot(unique_sizes_bytes, data_mean.(fields{i}), "--", "Marker", marker, 'DisplayName', formatted_fields{i});
 end
 
 set(gca, "XScale", "log");
@@ -345,15 +339,15 @@ set(gca, "YScale", "log");
 ax = gca;
 ax.XTick = unique_sizes_bytes;
 ax.XTickLabel = size_tick_labels;
-[min_bandwidth, max_bandwidth] = get_min_max(bandwidth_mean, fields(fields_return_2N_2n));
+[min_time, max_time] = get_min_max(data_mean, fields(fields_return_2N_2n));
 % ax.YTick = get_ytick_range(min_bandwidth, max_bandwidth);
 remove_m_ticks();
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 legend_names = {"then\_2N", "vector\_2N", "then\_1N", "vector\_1N"};
-lgd = legend(legend_names, "Location", "southwest");
+lgd = legend(legend_names, "Location", "northwest");
 lgd.FontSize = 7;
 xlabel('Iterations');
-ylabel('Bandwidth (B/s)');
+ylabel('Time (s)');
 if (~do_print)
     title('Mean bandwidth for upcxx with return in N = 1 n = 2');
 end
@@ -367,14 +361,14 @@ if (do_print)
     print("upcxx_rpc_return_all", "-dpng");
 end
 
-difference_2N = abs(bandwidth_mean.upcxx_rpc_then_2N_2n ./ bandwidth_mean.upcxx_rpc_vector_2N_2n);
+difference_2N = abs(data_mean.upcxx_rpc_then_2N_2n ./ data_mean.upcxx_rpc_vector_2N_2n);
 dispmaxdiff('[2N, then]', difference_2N, size_tick_labels)
 
-difference_2N_upcxx = abs(bandwidth_mean.upcxx_rpc_vector_2N_2n ./ bandwidth_mean.upcxx_rpc_then_2N_2n);
+difference_2N_upcxx = abs(data_mean.upcxx_rpc_vector_2N_2n ./ data_mean.upcxx_rpc_then_2N_2n);
 dispmaxdiff('[2N, vector]', difference_2N_upcxx, size_tick_labels)
 
-difference_1N = abs(bandwidth_mean.upcxx_rpc_then_1N_2n ./ bandwidth_mean.upcxx_rpc_vector_1N_2n);
+difference_1N = abs(data_mean.upcxx_rpc_then_1N_2n ./ data_mean.upcxx_rpc_vector_1N_2n);
 dispmaxdiff('[1N, then]', difference_1N, size_tick_labels)
 
-difference_1N_upcxx = abs(bandwidth_mean.upcxx_rpc_vector_1N_2n ./ bandwidth_mean.upcxx_rpc_then_1N_2n);
+difference_1N_upcxx = abs(data_mean.upcxx_rpc_vector_1N_2n ./ data_mean.upcxx_rpc_then_1N_2n);
 dispmaxdiff('[1N, vector]', difference_1N_upcxx, size_tick_labels)
