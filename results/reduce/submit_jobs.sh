@@ -6,7 +6,7 @@
 NODE_VALUES=(1 2 4 6 8 10 12) # Different amount of nodes
 NTASKS_VALUES=(2 4 8 12 16 20 24)  # Corresponding number of tasks for each node value
 PROGRAM_PATH="$HOME/dev-TFG-UPCXX/build/reduce/"
-PROGRAMS=("mpi_reduce_one" "upcxx_reduce_one") 
+PROGRAMS=("mpi_reduce_all" "upcxx_reduce_all" "upcxx_reduce_broadcast") 
 MEASUREMENT_MODE="max" # root, min, max, avg, all
 
 # Check if NODE_VALUES and NTASKS_VALUES arrays have the same length
