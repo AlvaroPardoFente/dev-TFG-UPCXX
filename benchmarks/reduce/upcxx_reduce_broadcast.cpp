@@ -31,7 +31,7 @@ public:
     {
         upcxx::reduce_one(value.data(), result.data(), nums_per_rank, upcxx::op_fast_add, 0).wait();
 
-        upcxx::broadcast(result.data(), nums_per_rank, 0);
+        upcxx::broadcast(result.data(), nums_per_rank, 0).wait();
     }
 
     void reset_result() override
