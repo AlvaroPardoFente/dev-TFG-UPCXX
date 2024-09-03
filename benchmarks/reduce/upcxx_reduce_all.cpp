@@ -42,11 +42,8 @@ public:
         // }
         // std::cout << std::endl;
 
-        if (world_rank == 0)
-        {
-            // Reset result
-            std::fill(result.begin(), result.end(), 0);
-        }
+        // Reset result
+        std::fill(result.begin(), result.end(), 0);
     }
 };
 
