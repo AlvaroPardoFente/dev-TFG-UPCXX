@@ -5,7 +5,7 @@ addpath("../include/")
 
 %% ----------------------PRINTING----------------------
 
-do_print = false;
+do_print = true;
 
 %% Import and process data
 
@@ -210,6 +210,44 @@ dispmaxdiff('[2N, reduce_all]', difference_2N, size_tick_labels)
 difference_2N_upcxx = abs(bandwidth_mean.upcxx_broadcast_2N_4n ./ bandwidth_mean.upcxx_2N_4n);
 dispmaxdiff('[2N, reduce_broadcast]', difference_2N_upcxx, size_tick_labels)
 
+%% 24 processes upcxx
+
+sizes_figure_4n = figure("Position", figure_position);
+
+%nexttile
+plot(unique_sizes_bytes, bandwidth_mean.upcxx_12N_24n, "--o")
+hold on
+plot(unique_sizes_bytes, bandwidth_mean.upcxx_broadcast_12N_24n, "--x")
+set(gca, "XScale", "log")
+set(gca, "YScale", "log")
+ax = gca;
+ax.XTick = unique_sizes_bytes;
+ax.XTickLabel = size_tick_labels;
+min_bandwidth = min(min([bandwidth_mean.upcxx_12N_24n, bandwidth_mean.upcxx_broadcast_12N_24n]));
+max_bandwidth = max(max([bandwidth_mean.upcxx_12N_24n, bandwidth_mean.upcxx_broadcast_12N_24n]));
+ax.YTick = get_ytick_range(min_bandwidth, max_bandwidth);
+remove_m_ticks();
+
+xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
+legend("reduce\_all", "reduce\_broadcast", "Location","southeast");
+xlabel('Size (Bytes)');
+ylabel('Bandwidth (B/s)');
+if (~do_print)
+    title('Mean bandwidth per size on 24 processes (12 nodes)');
+end
+grid on;
+
+if (do_print)
+    print("upcxx_reduce_all_12N_24n", "-dpng");
+end
+
+difference_2N = abs(bandwidth_mean.upcxx_12N_24n ./ bandwidth_mean.upcxx_broadcast_12N_24n);
+dispmaxdiff('[12N, reduce_all]', difference_2N, size_tick_labels)
+
+difference_2N_upcxx = abs(bandwidth_mean.upcxx_broadcast_12N_24n ./ bandwidth_mean.upcxx_12N_24n);
+dispmaxdiff('[12N, reduce_broadcast]', difference_2N_upcxx, size_tick_labels)
+
+
 %% 4 processes
 
 sizes_figure_4n = figure("Position", figure_position);
@@ -218,6 +256,7 @@ sizes_figure_4n = figure("Position", figure_position);
 plot(unique_sizes_bytes, bandwidth_mean.mpi_2N_4n, "--o")
 hold on
 plot(unique_sizes_bytes, bandwidth_mean.upcxx_broadcast_2N_4n, "--x")
+plot(unique_sizes_bytes, bandwidth_mean.upcxx_2N_4n, "--+")
 set(gca, "XScale", "log")
 set(gca, "YScale", "log")
 ax = gca;
@@ -229,7 +268,7 @@ ax.YTick = get_ytick_range(min_bandwidth, max_bandwidth);
 remove_m_ticks();
 
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
-legend("mpi", "upcxx", "Location","southeast");
+legend("mpi", "upcxx\_broadcast", "upcxx\_all", "Location","southeast");
 xlabel('Size (Bytes)');
 ylabel('Bandwidth (B/s)');
 if (~do_print)
@@ -286,14 +325,17 @@ size_64_idx = unique_sizes_bytes == 64;
 % Initialize arrays for MPI and UPCXX
 mpi_bandwidth_64B = zeros(length(num_processes), 1);
 upcxx_bandwidth_64B = zeros(length(num_processes), 1);
+upcxx_b_bandwidth_64B = zeros(length(num_processes), 1);
 
 % Extract data for each process count
 for i = 1:length(num_processes)
     mpi_field = ['mpi_' num2str(num_processes(i)/2) 'N_' num2str(num_processes(i)) 'n'];
-    upcxx_field = ['upcxx_broadcast_' num2str(num_processes(i)/2) 'N_' num2str(num_processes(i)) 'n'];
+    upcxx_field = ['upcxx_' num2str(num_processes(i)/2) 'N_' num2str(num_processes(i)) 'n'];
+    upcxx_b_field = ['upcxx_broadcast_' num2str(num_processes(i)/2) 'N_' num2str(num_processes(i)) 'n'];
     
     mpi_bandwidth_64B(i) = bandwidth_mean.(mpi_field)(size_64_idx);
     upcxx_bandwidth_64B(i) = bandwidth_mean.(upcxx_field)(size_64_idx);
+    upcxx_b_bandwidth_64B(i) = bandwidth_mean.(upcxx_b_field)(size_64_idx);
 end
 
 % Plot bandwidth for 64 bytes against number of processes
@@ -301,12 +343,13 @@ figure('Position', figure_position);
 
 plot(num_processes, mpi_bandwidth_64B, '--o', 'DisplayName', 'mpi')
 hold on
-plot(num_processes, upcxx_bandwidth_64B, '--x', 'DisplayName', 'upcxx')
+plot(num_processes, upcxx_b_bandwidth_64B, '--x', 'DisplayName', 'upcxx_broadcast')
+plot(num_processes, upcxx_bandwidth_64B, '--+', 'DisplayName', 'upcxx_all')
 set(gca, 'YScale', 'log')
 
 remove_m_ticks();
 xlim([min(num_processes) max(num_processes)]);
-legend('Location', 'northeast');
+legend("mpi", "upcxx\_broadcast", "upcxx\_all",'Location', 'northeast');
 xlabel('Number of Processes');
 ylabel('Bandwidth (B/s)');
 
@@ -335,14 +378,17 @@ size_16KB_idx = unique_sizes_bytes == 16 * 1024;
 % Initialize arrays for MPI and UPCXX
 mpi_bandwidth_16KB = zeros(length(num_processes), 1);
 upcxx_bandwidth_16KB = zeros(length(num_processes), 1);
+upcxx_b_bandwidth_16KB = zeros(length(num_processes), 1);
 
 % Extract data for each process count
 for i = 1:length(num_processes)
     mpi_field = ['mpi_' num2str(num_processes(i)/2) 'N_' num2str(num_processes(i)) 'n'];
-    upcxx_field = ['upcxx_broadcast_' num2str(num_processes(i)/2) 'N_' num2str(num_processes(i)) 'n'];
+    upcxx_field = ['upcxx_' num2str(num_processes(i)/2) 'N_' num2str(num_processes(i)) 'n'];
+    upcxx_b_field = ['upcxx_broadcast_' num2str(num_processes(i)/2) 'N_' num2str(num_processes(i)) 'n'];
     
     mpi_bandwidth_16KB(i) = bandwidth_mean.(mpi_field)(size_16KB_idx);
     upcxx_bandwidth_16KB(i) = bandwidth_mean.(upcxx_field)(size_16KB_idx);
+    upcxx_b_bandwidth_16KB(i) = bandwidth_mean.(upcxx_b_field)(size_16KB_idx);
 end
 
 %% Plot bandwidth for 16 KB against number of processes
@@ -350,11 +396,12 @@ figure('Position', figure_position);
 
 plot(num_processes, mpi_bandwidth_16KB, '--o', 'DisplayName', 'mpi')
 hold on
-plot(num_processes, upcxx_bandwidth_16KB, '--x', 'DisplayName', 'upcxx')
+plot(num_processes, upcxx_b_bandwidth_16KB, '--x', 'DisplayName', 'upcxx')
+plot(num_processes, upcxx_bandwidth_16KB, '--+', 'DisplayName', 'upcxx')
 set(gca, 'YScale', 'log')
 remove_m_ticks();
 xlim([min(num_processes) max(num_processes)])
-legend('Location', 'northeast');
+legend("mpi", "upcxx\_broadcast", "upcxx\_all", 'Location', 'northeast');
 xlabel('Number of Processes');
 ylabel('Bandwidth (B/s)');
 
