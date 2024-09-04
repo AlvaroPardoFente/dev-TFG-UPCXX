@@ -285,28 +285,28 @@ end
 difference_64B = abs(mpi_bandwidth_64B ./ upcxx_bandwidth_64B);
 dispmaxdiff('[64B, mpi]', difference_64B, num_processes);
 
-%% Extract bandwidth for 16 KB
-size_16KB_idx = unique_sizes_bytes == 16 * 1024;
+%% Extract bandwidth for 64 KB
+size_64KB_idx = unique_sizes_bytes == 64 * 1024;
 
 % Initialize arrays for MPI and UPCXX
-mpi_bandwidth_16KB = zeros(length(num_processes), 1);
-upcxx_bandwidth_16KB = zeros(length(num_processes), 1);
+mpi_bandwidth_64KB = zeros(length(num_processes), 1);
+upcxx_bandwidth_64KB = zeros(length(num_processes), 1);
 
 % Extract data for each process count
 for i = 1:length(num_processes)
     mpi_field = ['mpi_' num2str(num_processes(i)/2) 'N_' num2str(num_processes(i)) 'n'];
     upcxx_field = ['upcxx_' num2str(num_processes(i)/2) 'N_' num2str(num_processes(i)) 'n'];
     
-    mpi_bandwidth_16KB(i) = bandwidth_mean.(mpi_field)(size_16KB_idx);
-    upcxx_bandwidth_16KB(i) = bandwidth_mean.(upcxx_field)(size_16KB_idx);
+    mpi_bandwidth_64KB(i) = bandwidth_mean.(mpi_field)(size_64KB_idx);
+    upcxx_bandwidth_64KB(i) = bandwidth_mean.(upcxx_field)(size_64KB_idx);
 end
 
-%% Plot bandwidth for 16 KB against number of processes
+%% Plot bandwidth for 64 KB against number of processes
 figure('Position', figure_position);
 
-plot(num_processes, mpi_bandwidth_16KB, '--o', 'DisplayName', 'mpi')
+plot(num_processes, mpi_bandwidth_64KB, '--o', 'DisplayName', 'mpi')
 hold on
-plot(num_processes, upcxx_bandwidth_16KB, '--x', 'DisplayName', 'upcxx')
+plot(num_processes, upcxx_bandwidth_64KB, '--x', 'DisplayName', 'upcxx')
 set(gca, 'YScale', 'log')
 remove_m_ticks();
 xlim([min(num_processes) max(num_processes)])
@@ -319,19 +319,19 @@ ax.XTick = num_processes;
 ax.XTickLabel = num_processes;
 
 if (~do_print)
-    title('Bandwidth for 16 KB against number of processes');
+    title('Bandwidth for 64 KB against number of processes');
 end
 grid on;
 
 if (do_print)
-    print("allgather_16KB_all", "-dpng");
+    print("allgather_64KB_all", "-dpng");
 end
 
-difference_16KB = (mpi_bandwidth_16KB ./ upcxx_bandwidth_16KB);
-dispmaxdiff('[16KB, mpi]', difference_16KB, num_processes)
+difference_64KB = (mpi_bandwidth_64KB ./ upcxx_bandwidth_64KB);
+dispmaxdiff('[64KB, mpi]', difference_64KB, num_processes)
 
-difference_upcxx_16KB = (upcxx_bandwidth_16KB ./ mpi_bandwidth_16KB);
-dispmaxdiff('[16KB, upcxx]', difference_upcxx_16KB, num_processes);
+difference_upcxx_64KB = (upcxx_bandwidth_64KB ./ mpi_bandwidth_64KB);
+dispmaxdiff('[64KB, upcxx]', difference_upcxx_64KB, num_processes);
 
 % %% 8 nodes: Times in different sizes
 % 
