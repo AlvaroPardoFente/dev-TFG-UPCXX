@@ -133,8 +133,8 @@ remove_m_ticks();
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 lgd = legend(legend_names, "Location","northwest");
 %lgd.FontSize = 7;
-xlabel('Size (Bytes)');
-ylabel('Bandwidth (B/s)');
+xlabel('Tamaño (bytes)');
+ylabel('Ancho de banda (B/s)');
 if (~do_print)
     title('Mean bandwidth in N = 2 n = 4');
 end
@@ -185,8 +185,8 @@ remove_m_ticks();
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 lgd = legend(legend_names, "Location","northwest");
 %lgd.FontSize = 7;
-xlabel('Size (Bytes)');
-ylabel('Bandwidth (B/s)');
+xlabel('Tamaño (bytes)');
+ylabel('Ancho de banda (B/s)');
 if (~do_print)
     title('Mean bandwidth in N = 4 n = 8');
 end
@@ -255,8 +255,8 @@ xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 legend_names = {"mpi", "upcxx"};
 lgd = legend(legend_names, "Location","southeast");
 %lgd.FontSize = 7;
-xlabel('Size (Bytes)');
-ylabel('Bandwidth (B/s)');
+xlabel('Tamaño (bytes)');
+ylabel('Ancho de banda (B/s)');
 if (~do_print)
     title('Mean bandwidth in best upcxx and mpi 2N');
 end
@@ -313,8 +313,8 @@ xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 legend_names = {"mpi", "upcxx"};
 lgd = legend(legend_names, "Location","southeast");
 %lgd.FontSize = 7;
-xlabel('Size (Bytes)');
-ylabel('Bandwidth (B/s)');
+xlabel('Tamaño (bytes)');
+ylabel('Ancho de banda (B/s)');
 if (~do_print)
     title('Mean bandwidth in best upcxx and mpi 4N');
 end
@@ -366,8 +366,8 @@ set(gca, 'YScale', 'log')
 remove_m_ticks();
 xlim([min(num_processes) max(num_processes)]);
 legend('Location', 'northeast');
-xlabel('Number of Processes');
-ylabel('Bandwidth (B/s)');
+xlabel('Número de procesos');
+ylabel('Ancho de banda (B/s)');
 
 ax = gca;
 ax.XTick = num_processes;
@@ -420,8 +420,8 @@ set(gca, 'YScale', 'log')
 remove_m_ticks();
 xlim([min(num_processes) max(num_processes)]);
 legend('Location', 'northeast');
-xlabel('Number of Processes');
-ylabel('Bandwidth (B/s)');
+xlabel('Número de procesos');
+ylabel('Ancho de banda (B/s)');
 
 ax = gca;
 ax.XTick = num_processes;
@@ -472,8 +472,8 @@ set(gca, 'YScale', 'log')
 remove_m_ticks();
 xlim([min(num_processes) max(num_processes)])
 legend('Location', 'northeast');
-xlabel('Number of Processes');
-ylabel('Bandwidth (B/s)');
+xlabel('Número de procesos');
+ylabel('Ancho de banda (B/s)');
 
 ax = gca;
 ax.XTick = num_processes;

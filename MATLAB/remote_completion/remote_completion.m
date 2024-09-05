@@ -83,8 +83,8 @@ remove_m_ticks();
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 
 legend("global\_var", "dist\_object", "Location","southeast");
-xlabel('Iterations');
-ylabel('Time (s)');
+xlabel('Iteraciones');
+ylabel('Tiempo (s)');
 if (~do_print)
     title('Mean time per size on 2 processes (1 node)');
 end
@@ -113,8 +113,8 @@ remove_m_ticks();
 
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 legend("global\_var", "dist\_object", "Location","southeast");
-xlabel('Iterations');
-ylabel('Time (s)');
+xlabel('Iteraciones');
+ylabel('Tiempo (s)');
 if (~do_print)
     title('Mean time per size on 4 processes (2 nodes)');
 end
@@ -149,8 +149,8 @@ remove_m_ticks();
 
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 legend("global\_var", "dist\_object", "Location","southeast");
-xlabel('Iterations');
-ylabel('Time (s)');
+xlabel('Iteraciones');
+ylabel('Tiempo (s)');
 if (~do_print)
     title('Mean time per size on 8 processes (4 nodes)');
 end
@@ -193,8 +193,8 @@ set(gca, 'YScale', 'log')
 remove_m_ticks();
 xlim([min(num_processes) max(num_processes)]);
 legend("global\_var", "dist\_object", 'Location', 'southeast');
-xlabel('Number of Processes');
-ylabel('Time (s)');
+xlabel('Número de procesos');
+ylabel('Tiempo (s)');
 
 ax = gca;
 ax.XTick = num_processes;
@@ -244,8 +244,8 @@ set(gca, 'YScale', 'log')
 remove_m_ticks();
 xlim([min(num_processes) max(num_processes)])
 legend("global\_var", "dist\_object", 'Location', 'southeast');
-xlabel('Number of Processes');
-ylabel('Time (s)');
+xlabel('Número de procesos');
+ylabel('Tiempo (s)');
 
 ax = gca;
 ax.XTick = num_processes;

@@ -108,7 +108,7 @@ figure;
 surf(X, Y, Z_upcxx, 'FaceAlpha', 1);
 
 % Customize plot appearance
-xlabel('Number of Processes');
+xlabel('Número de procesos');
 ylabel('Size(Bytes)');
 zlabel('Time (s)');
 if (~do_print)
@@ -148,8 +148,8 @@ remove_m_ticks();
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 
 legend("mpi", "upcxx", "Location","southeast");
-xlabel('Iterations');
-ylabel('Time (s)');
+xlabel('Iteraciones');
+ylabel('Tiempo (s)');
 if (~do_print)
     title('Mean time per size on 2 processes (1 node)');
 end
@@ -178,9 +178,9 @@ ax.YTick = get_ytick_range(min_bandwidth, max_bandwidth);
 remove_m_ticks();
 
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
-legend("mpi", "upcxx", "Location","east");
-xlabel('Iterations');
-ylabel('Time (s)');
+legend("mpi", "upcxx", "Location","southeast");
+xlabel('Iteraciones');
+ylabel('Tiempo (s)');
 if (~do_print)
     title('Mean time per size on 4 processes (2 nodes)');
 end
@@ -216,8 +216,8 @@ remove_m_ticks();
 
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 legend("mpi", "upcxx", "Location","southeast");
-xlabel('Iterations');
-ylabel('Time (s)');
+xlabel('Iteraciones');
+ylabel('Tiempo (s)');
 if (~do_print)
     title('Mean time per size on 8 processes (4 nodes)');
 end
@@ -259,9 +259,9 @@ set(gca, 'YScale', 'log')
 
 remove_m_ticks();
 xlim([min(num_processes) max(num_processes)]);
-legend('Location', 'northeast');
-xlabel('Number of Processes');
-ylabel('Time (s)');
+legend('Location', 'southeast');
+xlabel('Número de procesos');
+ylabel('Tiempo (s)');
 
 ax = gca;
 ax.XTick = num_processes;
@@ -308,8 +308,8 @@ set(gca, 'YScale', 'log')
 remove_m_ticks();
 xlim([min(num_processes) max(num_processes)])
 legend('Location', 'northeast');
-xlabel('Number of Processes');
-ylabel('Time (s)');
+xlabel('Número de procesos');
+ylabel('Tiempo (s)');
 
 ax = gca;
 ax.XTick = num_processes;
@@ -350,8 +350,8 @@ dispmaxdiff('[2KI, upcxx]', difference_upcxx_16KB, num_processes);
 % %loglog(unique_sizes, upcxx_mean_times, "-o", "DisplayName", "upcxx mean")
 % 
 % %legend("mpi", "upcxx");
-% %xlabel('Iterations');
-% %ylabel('Time (s)');
+% %xlabel('Iteraciones');
+% %ylabel('Tiempo (s)');
 % %title('Mean times without outliers');
 % %grid on;
 % 
@@ -362,7 +362,7 @@ dispmaxdiff('[2KI, upcxx]', difference_upcxx_16KB, num_processes);
 % set(gca, "XScale", "log")
 % xlim([min(unique_sizes) max(unique_sizes)])
 % legend("mpi", "upcxx");
-% xlabel('Iterations');
+% xlabel('Iteraciones');
 % ylabel('Bandwidth (4B/s)');
 % title('Mean time per size on 8 processes');
 % grid on;
@@ -379,7 +379,7 @@ dispmaxdiff('[2KI, upcxx]', difference_upcxx_16KB, num_processes);
 % %nexttile
 % %bar(unique_sizes_categorical, [mpi_mean_bandwidth, upcxx_mean_bandwidth])
 % %legend("mpi", "upcxx");
-% %xlabel('Iterations');
+% %xlabel('Iteraciones');
 % %ylabel('Bandwidth (4B/s)');
 % %title('Mean time per size');
 % %grid on;

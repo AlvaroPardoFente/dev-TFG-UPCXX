@@ -95,8 +95,8 @@ remove_m_ticks();
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 lgd = legend(legend_names, "Location","southeast");
 %lgd.FontSize = 7;
-xlabel('Size (Bytes)');
-ylabel('Bandwidth (B/s)');
+xlabel('Tamaño (bytes)');
+ylabel('Ancho de banda (B/s)');
 if (~do_print)
     title('Mean bandwidth in N = 8 n = 8');
 end
@@ -147,8 +147,8 @@ remove_m_ticks();
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 lgd = legend(legend_names, "Location","southeast");
 %lgd.FontSize = 7;
-xlabel('Size (Bytes)');
-ylabel('Bandwidth (B/s)');
+xlabel('Tamaño (bytes)');
+ylabel('Ancho de banda (B/s)');
 if (~do_print)
     title('Mean bandwidth in N = 4 n = 8');
 end
@@ -205,8 +205,8 @@ set(gca, "YScale", "log")
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 lgd = legend("show", "Location","southeast");
 lgd.FontSize = 7;
-xlabel('Size (Bytes)');
-ylabel('Bandwidth (B/s)');
+xlabel('Tamaño (bytes)');
+ylabel('Ancho de banda (B/s)');
 if (~do_print)
     title('Mean bandwidth in rpcs');
 end
@@ -268,8 +268,8 @@ xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 legend_names = {"mpi\_8N", "upcxx\_8N", "mpi\_4N", "upcxx\_4N"};
 lgd = legend(legend_names, "Location","southeast");
 %lgd.FontSize = 7;
-xlabel('Size (Bytes)');
-ylabel('Bandwidth (B/s)');
+xlabel('Tamaño (bytes)');
+ylabel('Ancho de banda (B/s)');
 if (~do_print)
     title('Mean bandwidth in best upcxx and mpi');
 end

@@ -27,7 +27,6 @@ data.upcxx_rput_1N_2n = importtable(base_path + "upcxx_gather_rput_1N_2n.csv");
 data.mpi_2N_4n = importtable(base_path + "mpi_gather_2N_4n.csv");
 data.upcxx_rget_2N_4n = importtable(base_path + "upcxx_gather_rget_2N_4n.csv");
 data.upcxx_rget_binomial_2N_4n = importtable(base_path + "upcxx_gather_rget_binomial_2N_4n.csv");
-data.upcxx_rget_no_copy_2N_4n = importtable(base_path + "upcxx_gather_rget_no_copy_2N_4n.csv");
 data.upcxx_rput_2N_4n = importtable(base_path + "upcxx_gather_rput_2N_4n.csv");
 
 data.mpi_4N_8n = importtable(base_path + "mpi_gather_4N_8n.csv");
@@ -69,7 +68,7 @@ num_processes = [2; 4; 8; 12; 16; 20; 24];
 % Get field names
 fields = fieldnames(data);
 fields_1N_2n = (2:5);
-fields_2N_4n = (7:10);
+fields_2N_4n = (7:9);
 fields_4N_8n = (12:15);
 fields_6N_12n = (17:20);
 fields_8N_16n = (22:25);
@@ -127,10 +126,10 @@ ax.XTickLabel = size_tick_labels;
 ax.YTick = get_ytick_range(min_bandwidth, max_bandwidth);
 remove_m_ticks();
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
-lgd = legend(legend_names, "Location","southeast");
+lgd = legend("rget", "rget\_binomial", "rput", "Location","southeast");
 %lgd.FontSize = 7;
-xlabel('Size (Bytes)');
-ylabel('Bandwidth (B/s)');
+xlabel('Tamaño (bytes)');
+ylabel('Ancho de banda (B/s)');
 if (~do_print)
     title('Mean bandwidth in N = 2 n = 4');
 end
@@ -181,8 +180,8 @@ remove_m_ticks();
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 lgd = legend(legend_names, "Location","southeast");
 %lgd.FontSize = 7;
-xlabel('Size (Bytes)');
-ylabel('Bandwidth (B/s)');
+xlabel('Tamaño (bytes)');
+ylabel('Ancho de banda (B/s)');
 if (~do_print)
     title('Mean bandwidth in N = 4 n = 8');
 end
@@ -242,8 +241,8 @@ xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 legend_names = {"mpi", "upcxx"};
 lgd = legend(legend_names, "Location","southeast");
 %lgd.FontSize = 7;
-xlabel('Size (Bytes)');
-ylabel('Bandwidth (B/s)');
+xlabel('Tamaño (bytes)');
+ylabel('Ancho de banda (B/s)');
 if (~do_print)
     title('Mean bandwidth in best upcxx and mpi');
 end
@@ -292,8 +291,8 @@ set(gca, 'YScale', 'log')
 remove_m_ticks();
 xlim([min(num_processes) max(num_processes)]);
 legend('Location', 'southwest');
-xlabel('Number of Processes');
-ylabel('Bandwidth (B/s)');
+xlabel('Número de procesos');
+ylabel('Ancho de banda (B/s)');
 
 ax = gca;
 ax.XTick = num_processes;
@@ -340,8 +339,8 @@ set(gca, 'YScale', 'log')
 remove_m_ticks();
 xlim([min(num_processes) max(num_processes)])
 legend('Location', 'southwest');
-xlabel('Number of Processes');
-ylabel('Bandwidth (B/s)');
+xlabel('Número de procesos');
+ylabel('Ancho de banda (B/s)');
 
 ax = gca;
 ax.XTick = num_processes;

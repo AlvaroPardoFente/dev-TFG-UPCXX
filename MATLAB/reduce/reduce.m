@@ -5,7 +5,7 @@ addpath("../include/")
 
 %% ----------------------PRINTING----------------------
 
-do_print = true;
+do_print = false;
 
 %% Import and process data
 
@@ -114,7 +114,7 @@ figure;
 surf(X, Y, Z_upcxx, 'FaceAlpha', 1);
 
 % Customize plot appearance
-xlabel('Number of Processes');
+xlabel('Número de procesos');
 ylabel('Size (Bytes)');
 zlabel('Bandwidth (B/s)');
 if (~do_print)
@@ -154,8 +154,8 @@ remove_m_ticks();
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 
 legend("mpi", "upcxx", "Location","southeast");
-xlabel('Size (Bytes)');
-ylabel('Bandwidth (B/s)');
+xlabel('Tamaño (bytes)');
+ylabel('Ancho de banda (B/s)');
 if (~do_print)
     title('Mean bandwidth per size on 2 processes (1 node)');
 end
@@ -185,8 +185,8 @@ remove_m_ticks();
 
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 legend("mpi", "upcxx", "Location","southeast");
-xlabel('Size (Bytes)');
-ylabel('Bandwidth (B/s)');
+xlabel('Tamaño (bytes)');
+ylabel('Ancho de banda (B/s)');
 if (~do_print)
     title('Mean bandwidth per size on 4 processes (2 nodes)');
 end
@@ -222,8 +222,8 @@ remove_m_ticks();
 
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 legend("mpi", "upcxx", "Location","southeast");
-xlabel('Size (Bytes)');
-ylabel('Bandwidth (B/s)');
+xlabel('Tamaño (bytes)');
+ylabel('Ancho de banda (B/s)');
 if (~do_print)
     title('Mean bandwidth per size on 8 processes (4 nodes)');
 end
@@ -262,8 +262,8 @@ set(gca, 'YScale', 'log')
 remove_m_ticks();
 xlim([min(num_processes) max(num_processes)]);
 legend('Location', 'northeast');
-xlabel('Number of Processes');
-ylabel('Bandwidth (B/s)');
+xlabel('Número de procesos');
+ylabel('Ancho de banda (B/s)');
 
 ax = gca;
 ax.XTick = num_processes;
@@ -310,8 +310,8 @@ set(gca, 'YScale', 'log')
 remove_m_ticks();
 xlim([min(num_processes) max(num_processes)])
 legend('Location', 'northeast');
-xlabel('Number of Processes');
-ylabel('Bandwidth (B/s)');
+xlabel('Número de procesos');
+ylabel('Ancho de banda (B/s)');
 
 ax = gca;
 ax.XTick = num_processes;

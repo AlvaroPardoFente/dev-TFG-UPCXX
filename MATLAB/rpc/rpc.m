@@ -84,8 +84,8 @@ remove_m_ticks();
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 lgd = legend(legend_names, "Location","southeast");
 %lgd.FontSize = 7;
-xlabel('Iterations');
-ylabel('Time (s)');
+xlabel('Iteraciones');
+ylabel('Tiempo (s)');
 if (~do_print)
     title('Mean time for upcxx with no return in N = 2 n = 2');
 end
@@ -136,8 +136,8 @@ remove_m_ticks();
 xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 lgd = legend(legend_names, "Location","southeast");
 %lgd.FontSize = 7;
-xlabel('Iterations');
-ylabel('Time (s)');
+xlabel('Iteraciones');
+ylabel('Tiempo (s)');
 if (~do_print)
     title('Mean bandwidth for upcxx with no return in N = 1 n = 2');
 end
@@ -205,8 +205,8 @@ xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 legend_names = {"mpi\_2N", "upcxx\_2N", "mpi\_1N", "upcxx\_1N"};
 lgd = legend(legend_names, "Location","northwest");
 % lgd.FontSize = 7;
-xlabel('Iterations');
-ylabel('Time (s)');
+xlabel('Iteraciones');
+ylabel('Tiempo (s)');
 if (~do_print)
     title('Mean time in best upcxx and mpi on no return');
 end
@@ -258,8 +258,8 @@ xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 legend_names = {"then", "vector"};
 lgd = legend(legend_names, "Location","northwest");
 %lgd.FontSize = 7;
-xlabel('Iterations');
-ylabel('Time (s)');
+xlabel('Iteraciones');
+ylabel('Tiempo (s)');
 if (~do_print)
     title('Mean time for upcxx with return in N = 2 n = 2');
 end
@@ -299,8 +299,8 @@ xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 legend_names = {"then", "vector"};
 lgd = legend(legend_names, "Location","northwest");
 %lgd.FontSize = 7;
-xlabel('Iterations');
-ylabel('Time (s)');
+xlabel('Iteraciones');
+ylabel('Tiempo (s)');
 if (~do_print)
     title('Mean time for upcxx with return in N = 1 n = 2');
 end
@@ -346,8 +346,8 @@ xlim([min(unique_sizes_bytes) max(unique_sizes_bytes)])
 legend_names = {"then\_2N", "vector\_2N", "then\_1N", "vector\_1N"};
 lgd = legend(legend_names, "Location", "northwest");
 lgd.FontSize = 7;
-xlabel('Iterations');
-ylabel('Time (s)');
+xlabel('Iteraciones');
+ylabel('Tiempo (s)');
 if (~do_print)
     title('Mean bandwidth for upcxx with return in N = 1 n = 2');
 end
