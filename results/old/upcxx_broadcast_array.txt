@@ -1,7 +1,0 @@
-JOBID=27786
-Nodes=4 Procs=4 TasksPerNode=1 ThreadsPerTask=1 NREPS=1 /home/alvaro.pardo/dev-TFG-UPCXX/benchmarks/broadcast/upcxx_broadcast_array --value 100M --repetitions 10
-/home/alvaro.pardo/new_upcxx_202403/bin/upcxx-run -N 4 -n 4 /home/alvaro.pardo/dev-TFG-UPCXX/benchmarks/broadcast/upcxx_broadcast_array --value 100M --repetitions 10
-Number count: 104857600
-Repetitions: 10
-Average time: 0.128426
-Times: 0.128384, 0.128397, 0.128516, 0.12839, 0.128463, 0.128389, 0.128386, 0.128566, 0.128383, 0.128386
