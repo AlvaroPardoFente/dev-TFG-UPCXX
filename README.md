@@ -50,3 +50,6 @@ El valor puede ser un entero o un entero seguido de K, K, M, M, G o B.
      - min: El tiempo medido en cada repetición es el mínimo de todos los procesos.
      - max: Se calcula la media de tiempo para todos los procesos en cada repetición. Este argumento no se ha utilizado en las pruebas porque se han procesado los datos en MATLAB.
      - all: El resultado incluye las mediciones de tiempo de todos los procesos. En el caso del formato csv, la columna Rank indica el rango del proceso de cada entrada.
+
+## Nota para el desarrollo
+Tanto el ```Makefile``` como los scripts de ejecución y de MATLAB utilizan los prefijos ```upcxx_``` y ```mpi_``` para leer los archivos. Si se utilizan y se quiere añadir benchmarks, es necesario utilizar estos prefijos en los que se creen.
