@@ -50,5 +50,8 @@
 build/
 obj/
 
+# Matlab autosave
+*.asv
+
 # MATLAB generated
 MATLAB/**/*.png

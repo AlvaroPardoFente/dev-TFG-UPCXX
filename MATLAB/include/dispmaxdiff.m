@@ -1,0 +1,19 @@
+function dispmaxdiff(intro, difference, idx_meaning)
+[max_diff, idx_diff] = max(difference);
+
+if iscell(idx_meaning)
+    idx_str = idx_meaning{idx_diff};
+elseif isnumeric(idx_meaning)
+    idx_str = int2str(idx_meaning(idx_diff));
+else
+    error('idx_meaning must be an array of strings or ints');
+end
+
+disp([ ...
+    intro, ...
+    ' Max diff: ', ...
+    num2str(max_diff), ...
+    ' (', ...
+    idx_str, ...
+    ')']);
+end
