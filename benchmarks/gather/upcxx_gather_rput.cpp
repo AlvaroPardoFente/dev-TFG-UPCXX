@@ -6,6 +6,10 @@
 // Count for remote completions
 int count = 0;
 
+/**
+ * @brief Gather implemented in UPC++ with sequential calls to rput
+ *
+ */
 class UpcxxGatherRput : public UpcxxBenchmarkScheme
 {
 public:

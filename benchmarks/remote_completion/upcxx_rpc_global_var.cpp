@@ -5,6 +5,13 @@
 // Counter as a global variable
 int32_t count = 0;
 
+/**
+ * @brief Sequence of RMAs followed by as_rpc with a global variable as parameter
+ *
+ * The goal of this benchmark is to evaluate the performance of any form of rpc
+ * with global variables as parameters
+ *
+ */
 class UpcxxRpcGlobalVar : public UpcxxBenchmarkScheme
 {
 public:

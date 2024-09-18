@@ -1,3 +1,12 @@
+/**
+ * @file benchmark_settings.hpp
+ * @author Álvaro Pardo Fente (alvaro.pardo.fente@udc.es)
+ * @brief
+ * @version 1.0
+ * @date 2024-09-18
+ *
+ *
+ */
 #pragma once
 
 #include <functional>
@@ -97,10 +106,9 @@ public:
 
     typedef std::function<void(BenchmarkSettings &)> NoArgHandle;
 // No argument flag behavior
-#define S(str, f, v)                               \
-    {                                              \
-        str, [](BenchmarkSettings &s) { s.f = v; } \
-    }
+#define S(str, f, v) \
+    {                \
+        str, [](BenchmarkSettings &s) { s.f = v; }}
 
     // No argument flag behavior
     std::unordered_map<std::string, NoArgHandle> NoArgs{
@@ -119,10 +127,9 @@ public:
 
     typedef std::function<void(BenchmarkSettings &, const std::string &)> OneArgHandle;
 
-#define S(str, f, v)                                                       \
-    {                                                                      \
-        str, [](BenchmarkSettings &s, const std::string &arg) { s.f = v; } \
-    }
+#define S(str, f, v) \
+    {                \
+        str, [](BenchmarkSettings &s, const std::string &arg) { s.f = v; }}
 
     // One argument flag behavior
     std::unordered_map<std::string, OneArgHandle> OneArgs{
@@ -184,6 +191,11 @@ public:
          { s.measurement_mode = parseNodeMeasurementMode(arg); }}};
 #undef S
 
-    // Parse the command line arguments
+    /**
+     * @brief Parse command line arguments into settings
+     *
+     * @param argc main argc
+     * @param argv main argv
+     */
     void parse_settings(int argc, const char *argv[]);
 };

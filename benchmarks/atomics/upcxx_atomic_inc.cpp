@@ -2,6 +2,10 @@
 #include <upcxx_benchmark_scheme.hpp>
 #include <iostream>
 
+/**
+ * @brief Atomic increase benchmark implemented in UPC++ through atomic_domain
+ *
+ */
 class UpcxxAtomicInc : public UpcxxBenchmarkScheme
 {
 public:

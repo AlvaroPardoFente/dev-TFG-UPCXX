@@ -2,6 +2,13 @@
 #include <upcxx_benchmark_scheme.hpp>
 #include <iostream>
 
+/**
+ * @brief Sequence of RMAs followed by as_rpc with dist_object as parameter
+ *
+ * The goal of this benchmark is to evaluate the performance of any form of rpc
+ * with dist_object parameters
+ *
+ */
 class UpcxxRpcDistObject : public UpcxxBenchmarkScheme
 {
 public:

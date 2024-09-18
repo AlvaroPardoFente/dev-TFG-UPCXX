@@ -6,6 +6,10 @@ uint32_t count = 0, mivar = 0;
 
 constexpr const char loop_end[] = "Loop_end";
 
+/**
+ * @brief Sequence of RPCs with return values processed by vector assignment and later processing
+ *
+ */
 class UpcxxRpcPromise : public UpcxxBenchmarkScheme
 {
     std::vector<upcxx::future<uint32_t>> fut_vector;

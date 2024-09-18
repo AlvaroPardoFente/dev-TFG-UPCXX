@@ -2,6 +2,10 @@
 #include <mpi_benchmark_scheme.hpp>
 #include <iostream>
 
+/**
+ * @brief Atomic increment benchmark implemented in MPI with MPI_Win_fence and MPI_Accumulate
+ *
+ */
 class MpiAtomicInc : public MpiBenchmarkScheme
 {
 public:

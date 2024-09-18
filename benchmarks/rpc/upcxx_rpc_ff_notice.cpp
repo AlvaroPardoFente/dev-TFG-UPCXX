@@ -4,6 +4,10 @@
 
 uint32_t count = 0;
 
+/**
+ * @brief Sequence of no return RPCs with rpc_ff
+ *
+ */
 class UpcxxRpcFfNotice : public UpcxxBenchmarkScheme
 {
 public:

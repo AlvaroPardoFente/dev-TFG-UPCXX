@@ -55,3 +55,8 @@ obj/
 
 # MATLAB generated
 MATLAB/**/*.png
+
+# Doxygen generated
+docs/html/
+docs/latex
+docs/xml

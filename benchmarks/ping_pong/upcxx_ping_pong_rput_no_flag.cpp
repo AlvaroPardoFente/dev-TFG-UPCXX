@@ -3,6 +3,10 @@
 #include <ping_pong_settings.hpp>
 #include <iostream>
 
+/**
+ * @brief Ping-pong benchmark implementation in UPC++ using int comparison in place of a counter
+ *
+ */
 class UpcxxPingPongRputNoFlag : public UpcxxBenchmarkScheme
 {
 public:

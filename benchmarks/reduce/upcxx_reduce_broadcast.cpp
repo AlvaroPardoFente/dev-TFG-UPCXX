@@ -2,6 +2,10 @@
 #include <upcxx_benchmark_scheme.hpp>
 #include <iostream>
 
+/**
+ * @brief Mock UPC++ implementation of reduce_all with reduced_one followed by broadcast
+ *
+ */
 class UpcxxReduceBroadcast : public UpcxxBenchmarkScheme
 {
 public:

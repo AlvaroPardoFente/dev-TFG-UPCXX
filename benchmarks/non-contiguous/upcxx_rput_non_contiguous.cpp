@@ -6,6 +6,10 @@
 // Count for remote completions
 int count = 0;
 
+/**
+ * @brief Mock non contiguous RMA implementation in UPC++ using a sequence of rput calls
+ *
+ */
 class UpcxxRputRegular : public UpcxxNonContiguousScheme
 {
 public:

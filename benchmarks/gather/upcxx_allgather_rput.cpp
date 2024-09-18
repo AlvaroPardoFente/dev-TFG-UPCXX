@@ -5,6 +5,10 @@
 // Count for remote completions
 int count = 0;
 
+/**
+ * @brief Allgather implemented in UPC++ using crossed sequences of rput
+ *
+ */
 class UpcxxAllgatherRput : public UpcxxBenchmarkScheme
 {
 public:

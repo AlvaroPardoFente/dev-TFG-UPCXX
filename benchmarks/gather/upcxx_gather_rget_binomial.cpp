@@ -2,6 +2,10 @@
 #include <upcxx_benchmark_scheme.hpp>
 #include <iostream>
 
+/**
+ * @brief Gather implemented in UPC++ using a binomial algorithm with rget
+ *
+ */
 class UpcxxGatherRgetBinomial : public UpcxxBenchmarkScheme
 {
 public:

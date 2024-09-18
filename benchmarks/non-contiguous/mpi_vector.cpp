@@ -2,6 +2,10 @@
 #include <mpi_non_contiguous_scheme.hpp>
 #include <numeric>
 
+/**
+ * @brief Non contiguous messaging implemented in MPI through derived types
+ *
+ */
 class MpiVector : public MpiNonContiguousScheme
 {
 public:

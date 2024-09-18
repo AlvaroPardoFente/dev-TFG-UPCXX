@@ -5,6 +5,10 @@
 
 bool received_flag = false;
 
+/**
+ * @brief Ping-pong benchmark implementation in UPC++ using as_rpc for counter updating
+ *
+ */
 class UpcxxPingPongRput : public UpcxxBenchmarkScheme
 {
 public:

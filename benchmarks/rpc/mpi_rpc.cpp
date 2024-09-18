@@ -88,6 +88,10 @@ void run_rpc()
 
 uint32_t count = 0;
 
+/**
+ * @brief Mock RPC implementation in MPI using function serialization
+ *
+ */
 class MpiRpc : public MpiBenchmarkScheme
 {
 public:

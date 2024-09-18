@@ -1,3 +1,12 @@
+/**
+ * @file benchmark_timer.hpp
+ * @author Álvaro Pardo Fente (alvaro.pardo.fente@udc.es)
+ * @brief
+ * @version 1.0
+ * @date 2024-09-18
+ *
+ *
+ */
 #pragma once
 
 #include <benchmark_settings.hpp>
@@ -7,6 +16,10 @@
 
 constexpr const char TIMER_END[] = "End";
 
+/**
+ * @brief Timer that keeps a set of timepoints and time measurments for each repetition
+ *
+ */
 class BenchmarkTimer
 {
 private:

@@ -4,6 +4,10 @@
 #include <iostream>
 #include <algorithm>
 
+/**
+ * @brief Ping-pong benchmark MPI implementation with variable byte count
+ *
+ */
 class MpiPingPong : public MpiBenchmarkScheme
 {
 public:

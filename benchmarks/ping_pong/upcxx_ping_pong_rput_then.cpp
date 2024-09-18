@@ -3,6 +3,10 @@
 #include <ping_pong_settings.hpp>
 #include <iostream>
 
+/**
+ * @brief Ping-pong benchmark implementation in UPC++ using then() for counter updating
+ *
+ */
 class UpcxxPingPongRput : public UpcxxBenchmarkScheme
 {
 public:
